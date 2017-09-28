@@ -46,10 +46,11 @@ import com.example.bot.spring.DatabaseEngine;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+//@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
 public class KitchenSinkTester {
 	@Autowired
-	private DatabaseEngine databaseEngine;
+	private SQLDatabaseEngine databaseEngine;
 	
 	@Test
 	public void testNotFound() throws Exception {
@@ -67,24 +68,24 @@ public class KitchenSinkTester {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("abc");
+			result = this.databaseEngine.search("HKUST");
 		} catch (Exception e) {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("def");
+		assertThat(result).isEqualTo("COMP3111");
 	}
 	@Test
 	public void testFound2() throws Exception {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("Hi");
+			result = this.databaseEngine.search("JAVA");
 		} catch (Exception e) {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("Hey, how things going?");
+		assertThat(result).isEqualTo("JAVA1.8");
 	}
 
 }
