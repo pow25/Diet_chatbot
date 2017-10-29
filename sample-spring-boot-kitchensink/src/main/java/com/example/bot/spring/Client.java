@@ -15,9 +15,9 @@ public class Client{
 	private String name;
 	private int age;
 	private String gender;
-	private int height;
-	private int weight;
-	public Client(String name, int age, String gender, int height, int weight) {
+	private double height;
+	private double weight;
+	public Client(String name, int age, String gender, double height, double weight) {
 		this.name=name;
 		this.age=age;
 		this.gender=gender;
@@ -29,8 +29,8 @@ public class Client{
 			stmt.setString(1,name);
 			stmt.setString(3,gender);
 			stmt.setInt(2,age);
-			stmt.setInt(4,height);
-			stmt.setInt(5,weight);
+			stmt.setDouble(4,height);
+			stmt.setDouble(5,weight);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
@@ -38,9 +38,8 @@ public class Client{
 			System.out.println(e);;
 		}
 	}
-	public float calculateBMI() {
-		int a=(weight*100/height)/height;
-		return (float)a/100;
+	public double calculateBMI() {
+		return (weight/height)/height;
 	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
