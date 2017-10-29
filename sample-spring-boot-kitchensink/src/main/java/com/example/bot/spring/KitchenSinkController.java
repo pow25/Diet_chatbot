@@ -318,7 +318,7 @@ public class KitchenSinkController {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client=new Client(itscLOGIN,20,"male",1.8,70);
+		client=new Client(itscLOGIN,20,"male",1.8,70.5);
 	}
 
 	private SQLDatabaseEngine database;
