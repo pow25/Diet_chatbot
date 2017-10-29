@@ -41,6 +41,21 @@ public class Client{
 	public double calculateBMI() {
 		return (weight/height)/height;
 	}
+	public void addHistory(Date orderDate,String menu) throws Exception{
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
+			stmt.setString(1,name);
+			stmt.setDate(3,orderDate);
+			stmt.setInt(2,age);
+			stmt.setString(4,menu);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);;
+		}
+	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
