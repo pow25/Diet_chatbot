@@ -267,7 +267,7 @@ public class KitchenSinkController {
                 log.info("Returns echo message {}: {}", replyToken, reply);
                 this.replyText(
                         replyToken,
-                        itscLOGIN + " says " + reply+client.calculateBMI();
+                        itscLOGIN + " says " + reply+String.valueOf(client.calculateBMI())
                 );
                 break;
         }
