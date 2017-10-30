@@ -35,26 +35,64 @@ public class Client{
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);;
+			System.out.println(e);
+		}
+	}
+	public void updateClient(double height, double weight) throws Exception{
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set height=?,weight=? where name=? and age=?;");
+			stmt.setString(3,name);
+			stmt.setInt(4,age);
+			stmt.setDouble(2,weight);
+			stmt.setDouble(1,height);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 	public double calculateBMI() {
 		return (weight/height)/height;
 	}
-	public void addHistory(Date orderDate,String menu) throws Exception{
+	public void addHistory(Date orderDate,String dish) throws Exception{
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?,?);");
 			stmt.setString(1,name);
 			stmt.setDate(3,orderDate);
 			stmt.setInt(2,age);
-			stmt.setString(4,menu);
+			stmt.setDouble(4,weight);
+			stmt.setString(5,dish);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);;
+			System.out.println(e);
 		}
+	}
+	public String getHistory() throws Exception{
+		String result = null;
+		 try {
+				Connection connection = getConnection();
+				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM history where name=? and age=?;");
+				stmt.setString(1, name);
+				stmt.setInt(2, age);
+				ResultSet rs = stmt.executeQuery();
+				
+				while (rs.next()) {
+					result=result+rs.getDate(3).toString()+"\t"+String.valueOf(rs.getDouble(4))+"\t"+rs.getString(5)+"\n";
+				}
+				rs.close();
+				stmt.close();
+				connection.close();
+		 	 } catch (Exception e) {
+			    System.out.println(e);
+		 	 	}
+			if (result != null)
+				return result;
+			throw new Exception("NOT FOUND");
 	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
