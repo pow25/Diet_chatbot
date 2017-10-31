@@ -17,6 +17,7 @@
 package com.example.bot.spring;
 
 import java.io.IOException;
+
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -316,7 +317,7 @@ public class KitchenSinkController {
 
 
 	public KitchenSinkController() {
-		database = new DatabaseEngine();
+		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
 
