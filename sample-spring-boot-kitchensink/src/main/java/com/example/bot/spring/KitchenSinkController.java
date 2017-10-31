@@ -242,6 +242,13 @@ public class KitchenSinkController {
             	this.replyText(replyToken,"Testing output: " + output);
             	break;
             }
+            case "ocr2": {
+            	String imageUrl = createUri("/static/test-image.png");
+            	OcrApiController test= new OcrApiController();
+            	String output = test.test();
+            	this.reply(replyToken, new ImageMessage(imageUrl, imageUrl));
+            	break;
+            }
             case "carousel": {
                 String imageUrl = createUri("/static/buttons/1040.jpg");
                 CarouselTemplate carouselTemplate = new CarouselTemplate(
