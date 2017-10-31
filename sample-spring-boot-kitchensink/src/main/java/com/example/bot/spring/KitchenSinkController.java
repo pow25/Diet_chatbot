@@ -210,8 +210,9 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
-
+        
         log.info("Got text message from {}: {}", replyToken, text);
+
         switch (text) {
             case "profile": {
                 String userId = event.getSource().getUserId();
@@ -224,51 +225,91 @@ public class KitchenSinkController {
                 }
                 break;
             }
-            case "confirm": {
-                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                        "Do it?",
-                        new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
-                );
-                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
+//            case "confirm": {
+//                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+//                        "Do it?",
+//                        new MessageAction("Yes", "Yes!"),
+//                        new MessageAction("No", "No!")
+//                );
+//                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+//                this.reply(replyToken, templateMessage);
+//                break;
+//            }
+            case "menu":{
+            	
+            	break;
             }
-            case "carousel": {
-                String imageUrl = createUri("/static/buttons/1040.jpg");
-                CarouselTemplate carouselTemplate = new CarouselTemplate(
-                        Arrays.asList(
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new URIAction("Go to line.me",
-                                                      "https://line.me"),
-                                        new PostbackAction("Say hello1",
-                                                           "hello 茫锟解�溍ｂ�氣�溍ｏ拷芦茫锟铰∶ｏ拷炉")
-                                )),
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new PostbackAction("猫篓鈧� hello2",
-                                                           "hello 茫锟解�溍ｂ�氣�溍ｏ拷芦茫锟铰∶ｏ拷炉",
-                                                           "hello 茫锟解�溍ｂ�氣�溍ｏ拷芦茫锟铰∶ｏ拷炉"),
-                                        new MessageAction("Say message",
-                                                          "Rice=莽卤鲁")
-                                ))
-                        ));
-                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
+            
+            case "input":{
+            	
+            	break;
             }
+            
+            case "create":{
+            	
+            	break;
+            }
+            case "hi":{
+               String reply = null;
+//            String userid = event.getSource().getUserId();
+               String user_name = "czhangar";
+        	//first, search whether the user is a new user or not
+//            try {
+//        		user_name = database.search(userid);
+//        		user_name=lineMessagingClient.getProfile(userid);
+//        	} catch (Exception e) {
+//        		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
+//        		break;
+//        	}
+               reply = "Welcome to the diet chatbot!";
+               reply += user_name;
+               reply += '\n';
+               reply += "There are several functions you can use:";
+               reply += '\n';
+               reply += "Keyword: profile ";
+               reply += '\n';
+               reply += "It will provide you the personal health information";
+               reply += '\n';
+               reply += "Keyword: menu ";
+               reply += '\n';
+               reply += "It will offer you the advised menu for your meal based on your personal infomation";
+               reply +="Keyword: input ";
+               reply += '\n';
+               reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
+               this.replyText(replyToken, reply);	
+
+             break;
+            }
+//            case "carousel": {
+//                String imageUrl = createUri("/static/buttons/1040.jpg");
+//                CarouselTemplate carouselTemplate = new CarouselTemplate(
+//                        Arrays.asList(
+//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                        new URIAction("Go to line.me",
+//                                                      "https://line.me"),
+//                                        new PostbackAction("Say hello1",
+//                                                           "hello")
+//                                )),
+//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                        new PostbackAction()
+//                                        new MessageAction("Say message",
+//                                                          "Rice")
+//                                ))
+//                        ));
+//                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+//                this.reply(replyToken, templateMessage);
+//                break;
+//            }
 
             default:
             	String reply = null;
             	try {
             		reply = database.search(text);
             	} catch (Exception e) {
-            		reply = text;
+            		reply = "We couldn't find the usuful information about your input, please type hi to get started";
             	}
                 log.info("Returns echo message {}: {}", replyToken, reply);
-                this.replyText(
-                        replyToken,
-                        itscLOGIN + " says " + reply+String.valueOf(client.calculateBMI())
-                );
+                this.replyText(replyToken,reply);
                 break;
         }
     }
