@@ -78,7 +78,7 @@ import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-//import com.asprise.ocr.Ocr
+import com.asprise.ocr.Ocr
 
 import lombok.NonNull;
 import lombok.Value;
