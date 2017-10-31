@@ -13,7 +13,7 @@ public class OcrApiController {
 		ocr.startEngine("eng", Ocr.SPEED_SLOW); // English
 		String testing_result = new String();
 		try {
-			testing_result = ocr.recognize(new URL[] {new URL(FILERUL)}, Ocr.RECOGNIZE_TYPE_ALL, Ocr.OUTPUT_FORMAT_PLAINTEXT);
+			testing_result = ocr.recognize(new URL[] {new URL(FILEURL)}, Ocr.RECOGNIZE_TYPE_ALL, Ocr.OUTPUT_FORMAT_PLAINTEXT);
 			ocr.stopEngine();
 		} catch (Exception e) {
 			return e.toString();
