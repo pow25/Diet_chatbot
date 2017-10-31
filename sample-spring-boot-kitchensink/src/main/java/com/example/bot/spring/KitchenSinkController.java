@@ -250,9 +250,9 @@ public class KitchenSinkController {
             	break;
             }
             case "hi":{
-            String reply = null;
+               String reply = null;
 //            String userid = event.getSource().getUserId();
-            String user_name = "czhangar";
+               String user_name = "czhangar";
         	//first, search whether the user is a new user or not
 //            try {
 //        		user_name = database.search(userid);
@@ -261,22 +261,22 @@ public class KitchenSinkController {
 //        		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
 //        		break;
 //        	}
-            reply = "Welcome to the diet chatbot!";
-            reply += user_name;
-            reply += '\n';
-            reply += "There are several functions you can use:";
-            reply += '\n';
-            reply += "Keyword: profile ";
-            reply += '\n';
-            reply += "It will provide you the personal health information";
-            reply += '\n';
-            reply += "Keyword: menu ";
-            reply += '\n';
-            reply += "It will offer you the advised menu for your meal based on your personal infomation";
-            reply +="Keyword: input ";
-            reply += '\n';
-            reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
-            this.replyText(replyToken, reply);	
+               reply = "Welcome to the diet chatbot!";
+               reply += user_name;
+               reply += '\n';
+               reply += "There are several functions you can use:";
+               reply += '\n';
+               reply += "Keyword: profile ";
+               reply += '\n';
+               reply += "It will provide you the personal health information";
+               reply += '\n';
+               reply += "Keyword: menu ";
+               reply += '\n';
+               reply += "It will offer you the advised menu for your meal based on your personal infomation";
+               reply +="Keyword: input ";
+               reply += '\n';
+               reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
+               this.replyText(replyToken, reply);	
 
              break;
             }
