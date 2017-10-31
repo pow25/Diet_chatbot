@@ -109,7 +109,6 @@ subprojects {
         testCompile 'org.hibernate:hibernate-validator'
         testCompile 'org.springframework.boot:spring-boot-starter-test' // MockHttpServletRequest
         testCompile 'org.springframework.boot:spring-boot-starter-logging'
-        compile group: 'com.asprise.ocr', name: 'java-ocr-api', version: '[15,)'
     }
 
     compileJava.dependsOn(processResources) // http://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
