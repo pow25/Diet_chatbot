@@ -1,8 +1,8 @@
 /*
  * Copyright 2016 LINE Corporation
  *
- * LINE Corporation licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
+ * LINE Corporation licenses this  to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this  except in compliance
  * with the License. You may obtain a copy of the License at:
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
@@ -78,7 +78,7 @@ import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-//import com.asprise.ocr.Ocr;
+import com.asprise.ocr.Ocr;
 
 import lombok.NonNull;
 import lombok.Value;
@@ -237,9 +237,10 @@ public class KitchenSinkController {
                 break;
             }
             case "ocr": {
-            	OcrApiController test= OcrApiController();
+            	OcrApiController test= new OcrApiController();
             	String output = test.test();
             	this.replyText(replyToken,"Testing output: " + output);
+            	break;
             }
             case "carousel": {
                 String imageUrl = createUri("/static/buttons/1040.jpg");
