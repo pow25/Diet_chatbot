@@ -237,8 +237,8 @@ public class KitchenSinkController {
             }
             
             case "hi":{
-            String [] reply = new String[5];
-            reply[0] = "Welcome to the diet chatbot!There are several functions you can use:";
+            	
+            reply = "Welcome to the diet chatbot!There are several functions you can use:";
             this.replyText(replyToken, reply);	
 
              break;
