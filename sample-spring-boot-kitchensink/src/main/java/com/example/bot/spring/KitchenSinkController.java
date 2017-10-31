@@ -239,8 +239,8 @@ public class KitchenSinkController {
             case "hi":{
             String reply = "Welcome to the diet chatbot!There are several functions you can use:";
             this.replyText(replyToken, reply);	
-            String reply = "Type:profile,you can view you current health information" ;
-            this.replyText(replyToken, reply);
+            String reply2 = "Type:profile,you can view you current health information" ;
+            this.replyText(replyToken, reply2);
              break;
             }
 //            case "carousel": {
