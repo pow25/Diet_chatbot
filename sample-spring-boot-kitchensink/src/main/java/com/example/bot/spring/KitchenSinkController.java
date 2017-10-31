@@ -309,8 +309,7 @@ public class KitchenSinkController {
             		reply = "We couldn't find the usuful information about your input, please type hi to get started";
             	}
                 log.info("Returns echo message {}: {}", replyToken, reply);
-                this.replyText(
-                        replyToken,reply);
+                this.replyText(replyToken,reply);
                 break;
         }
     }
@@ -360,7 +359,7 @@ public class KitchenSinkController {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client=new Client(itscLOGIN,20,"male",180,70);
+		client=new Client(itscLOGIN,20,"male",1.8,70.5);
 	}
 
 	private SQLDatabaseEngine database;
