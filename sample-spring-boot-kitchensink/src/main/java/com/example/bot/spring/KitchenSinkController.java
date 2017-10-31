@@ -225,22 +225,57 @@ public class KitchenSinkController {
                 }
                 break;
             }
-            case "confirm": {
-                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                        "Do it?",
-                        new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
-                );
-                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
+//            case "confirm": {
+//                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+//                        "Do it?",
+//                        new MessageAction("Yes", "Yes!"),
+//                        new MessageAction("No", "No!")
+//                );
+//                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+//                this.reply(replyToken, templateMessage);
+//                break;
+//            }
+            case "menu":{
+            	
+            	break;
             }
             
+            case "input":{
+            	
+            	break;
+            }
+            
+            case "create":{
+            	
+            	break;
+            }
             case "hi":{
-            String reply = null;	
-            reply = "Welcome to the diet chatbot!There are several functions you can use:";
+            String reply = null;
+//            String userid = event.getSource().getUserId();
+            String user_name = "czhangar";
+        	//first, search whether the user is a new user or not
+//            try {
+//        		user_name = database.search(userid);
+//        		user_name=lineMessagingClient.getProfile(userid);
+//        	} catch (Exception e) {
+//        		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
+//        		break;
+//        	}
+            reply = "Welcome to the diet chatbot!";
+            reply += user_name;
             reply += '\n';
-            reply += "what a wonderful day";
+            reply += "There are several functions you can use:";
+            reply += '\n';
+            reply += "Keyword: profile ";
+            reply += '\n';
+            reply += "It will provide you the personal health information";
+            reply += '\n';
+            reply += "Keyword: menu ";
+            reply += '\n';
+            reply += "It will offer you the advised menu for your meal based on your personal infomation";
+            reply +="Keyword: input ";
+            reply += '\n';
+            reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
             this.replyText(replyToken, reply);	
 
              break;
