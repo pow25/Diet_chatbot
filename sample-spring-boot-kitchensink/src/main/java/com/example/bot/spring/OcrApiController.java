@@ -6,7 +6,7 @@ import java.net.*;
 
 public class OcrApiController {
 	private final String FILEURL = "http://asprise.com/ocr/img/test-image.png";
-	private final String FILENAME = "test.jpg";
+	private final String FILENAME = "~/sample-spring-boot-kitchensink/src/main/resources/static/test-image.png";
 	
 	public String test(String input_type,String uri) {
 		Ocr.setUp(); // one time setup
