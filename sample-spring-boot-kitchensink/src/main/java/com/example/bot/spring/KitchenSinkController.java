@@ -128,8 +128,10 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 		DownloadedContent jpg = saveContent("jpg", response);
-		reply(((MessageEvent) event).getReplyToken(), new ImageMessage(jpg.getUri(), jpg.getUri()));
-
+		
+		OcrApiController test= new OcrApiController();
+    	String output = test.test("Img",jpg.getUri());
+    	this.replyText(replyToken,"Testing output: " + output);
 	}
 
 	@EventMapping
@@ -238,15 +240,19 @@ public class KitchenSinkController {
             }
             case "ocr": {
             	OcrApiController test= new OcrApiController();
-            	String output = test.test();
+            	String output = test.test("URL","");
             	this.replyText(replyToken,"Testing output: " + output);
             	break;
             }
             case "ocr2": {
-            	String imageUrl = createUri("/static/test-image.png");
+            	String imageUri = createUri("/static/test-image.png");
+            	this.reply(replyToken, new ImageMessage(imageUri, imageUri));
+            	break;
+            }
+            case "ocr3": {
             	OcrApiController test= new OcrApiController();
-            	String output = test.test();
-            	this.reply(replyToken, new ImageMessage(imageUrl, imageUrl));
+            	String output = test.test("Default","");
+            	this.replyText(replyToken,"Testing output: " + output);
             	break;
             }
             case "carousel": {
