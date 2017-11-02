@@ -212,7 +212,7 @@ public class KitchenSinkController {
         String text = content.getText();
         
         log.info("Got text message from {}: {}", replyToken, text);
-
+        
         switch (text) {
             case "profile": {
                 String userId = event.getSource().getUserId();
@@ -240,15 +240,7 @@ public class KitchenSinkController {
             	break;
             }
             
-            case "input":{
-            	
-            	break;
-            }
-            
-            case "create":{
-            	
-            	break;
-            }
+
             case "hi":{
                String reply = null;
 //            String userid = event.getSource().getUserId();
