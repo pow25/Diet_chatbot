@@ -110,16 +110,17 @@ public class KitchenSinkController {
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
 		try {
-				int complete_indicator = client.isInfoComplete(userld);
+
+				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
 					handleTextContent(replytoken, event, message);
 				}
 				else {
-					handleTextContent_newuser(replytoken,event,message,userld,complete_indicator);
+					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
 				}
 		 } catch (Exception e) {
-			 	handleTextContent_newuser(replytoken,event,message,userld,1);
+			 	handleTextContent_newuser(replytoken,event,message,userId,1);
 		 	}
 	}
 
@@ -247,7 +248,7 @@ public class KitchenSinkController {
 		
 	}
 	
-	private void handleTextContent_newuser(String replyToken, Event event, TextMessageContent content,String userld,int complete_indicator)
+	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
 			throws Exception {
 					String text = content.getText();
 					String replytext = null;
