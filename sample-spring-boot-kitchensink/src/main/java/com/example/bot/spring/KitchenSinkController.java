@@ -359,28 +359,28 @@ throws Exception{
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
-       	try {
-       		URL url = new URL(text);
-       		JsonHandler jsonHandler = new JsonHandler(text);
-       		Quote[] quote = jsonHandler.getQuote();
-       		String stackmessage = null;
-       		for(Quote q: quote) {
-       			if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
-           			stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+       	try {//it gives error when url is https://
+       		if (text != "https://") {
+       			URL url = new URL(text);
+       			JsonHandler jsonHandler = new JsonHandler(text);
+       			Quote[] quote = jsonHandler.getQuote();
+       			String stackmessage = null;
+       			for(Quote q: quote) {
+       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+       				}
+       				else {
+       					stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
+       				}
        			}
-       			else {
-       				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
-       			}
+       			this.replyText(replyToken, stackmessage);
+       			return;
        		}
-       		this.replyText(replyToken, stackmessage);
-       		return;
-//       		String reply1 = jsonHandler.getJson());
-       	}catch(Exception e) {
+       	}catch(MalformedURLException e) {
        		log.info("url handle json failed, perhaps not a real url");
-        //-----------------------------------------------------------//
-        //-----------------------------------------------------------------//
       	}
-       	//-----------------------------------------------------------------//
+        //-----------------------------------------------------------//
+
         switch (text) {
             case "profile": {
                 	String reply = null;
