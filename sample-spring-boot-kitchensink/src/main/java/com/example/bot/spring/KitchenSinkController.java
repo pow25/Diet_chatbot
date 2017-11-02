@@ -130,7 +130,7 @@ public class KitchenSinkController {
 		DownloadedContent jpg = saveContent("jpg", response);
 		OcrApiController OcrApi = new OcrApiController();
 		String imageText = OcrApi.recognize("IMG",jpg.getUri());
-		this.replyText(replyToken, imageText);
+		this.replyText(replyToken, "Recognized message:"+imageText);
 	}
 	
 	@EventMapping
