@@ -377,7 +377,7 @@ throws Exception {
        		this.replyText(replyToken, stackmessage);
 //       		String reply1 = jsonHandler.getJson());
        	}catch(MalformedURLException e) {
-       		log.info("url handle json failed, perhaps not a real url");
+       		this.replyText(replyToken,"url handle json failed, perhaps not a real url");
         //-----------------------------------------------------------//
         //-----------------------------------------------------------------//
       	}
