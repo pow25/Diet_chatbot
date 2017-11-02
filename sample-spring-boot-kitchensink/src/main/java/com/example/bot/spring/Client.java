@@ -63,6 +63,11 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	public String getProfile() {
+		String result;
+		result=result+"UserID: "+userID+"\nName: "+name+"\nGender: "+gender+"\nHeight(m): "+height+"\nWeight(kg): "+weight;
+		return result;
+	}
 	public void updateName(String name) throws Exception{
 		try {
 			this.name=name;
