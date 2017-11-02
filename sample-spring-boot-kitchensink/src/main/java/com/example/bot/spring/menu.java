@@ -57,7 +57,7 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
-	public void insertMenu(String dish,int price,String ingredients) throws Exception{
+	public void insertMenu(String dish,int price,String ingredients){
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO menu values (?,?,?);");

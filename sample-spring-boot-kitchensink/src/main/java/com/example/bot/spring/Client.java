@@ -68,7 +68,7 @@ public class Client{
 		result=result+"UserID: "+userID+"\nName: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight);
 		return result;
 	}
-	public void updateName(String name) throws Exception{
+	public void updateName(String name){
 		try {
 			this.name=name;
 			Connection connection=getConnection();
@@ -82,7 +82,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public void updateAge(int age) throws Exception{
+	public void updateAge(int age){
 		try {
 			this.age=age;
 			Connection connection=getConnection();
@@ -96,7 +96,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public void updateGender(String gender) throws Exception{
+	public void updateGender(String gender){
 		try {
 			this.gender=gender;
 			Connection connection=getConnection();
@@ -110,7 +110,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public void updateHeight(double height) throws Exception{
+	public void updateHeight(double height){
 		try {
 			this.height=height;
 			Connection connection=getConnection();
@@ -124,7 +124,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public void updateWeight(double weight) throws Exception{
+	public void updateWeight(double weight){
 		try {
 			this.weight=weight;
 			Connection connection=getConnection();
@@ -181,7 +181,7 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-	public void addHistory(Date orderDate,String dish) throws Exception{
+	public void addHistory(Date orderDate,String dish){
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
