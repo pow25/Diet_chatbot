@@ -122,7 +122,7 @@ public class KitchenSinkController {
 					this.replyText(event.getReplyToken(),"not complete");
 					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
 				}
-		 } catch (SQLException e) {
+		 } catch (Exception e) {
 			 	handleTextContent_newuser(replytoken,event,message,userId,1);
 		 	}
 	}
@@ -377,7 +377,7 @@ throws Exception {
        		this.replyText(replyToken, stackmessage);
 //       		String reply1 = jsonHandler.getJson());
        	}catch(MalformedURLException e) {
-       		this.replyText(replyToken,"url handle json failed, perhaps not a real url");
+       		log.info("url handle json failed, perhaps not a real url");
         //-----------------------------------------------------------//
         //-----------------------------------------------------------------//
       	}
