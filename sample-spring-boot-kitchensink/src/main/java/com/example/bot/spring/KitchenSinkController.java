@@ -240,13 +240,20 @@ public class KitchenSinkController {
 		}
 		return true;
 	}
-	
-	private void menu_insert(String text, String replyToken,int price,String ingredients) {
+	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
+	private String menu_handler(String text, int price,String ingredients) throws Exception {
 		 String reply = null;
-		 reply = "Insert the dish into database sucessfully";
-		 mymenu.insertMenu(text,price,ingredients);
-		 this.replyText(replyToken, reply);
-		
+		 try{
+			 reply = mymenu.getMenu(text);
+			 
+			 return reply;
+			 
+		 } catch (Exception e) {
+			 
+			 mymenu.insertMenu(text,price,ingredients);
+			 return reply;
+		 }
+
 	}
 	
 	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
@@ -368,12 +375,13 @@ throws Exception {
             case "profile": {
                 try  {
                 	String reply = null;
-                	reply = client.getHistory();
+                	reply = client.getProfile();
                 } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
                 }
                 break;
             }
+            
             case "history": {
                 try  {
                 	String reply = null;
@@ -395,9 +403,12 @@ throws Exception {
 //                this.reply(replyToken, templateMessage);
 //                break;
 //            }
-            case "menu":{	
-            	break;
-            }
+
+//            case "insert":{
+//            	
+//            	break;
+//            }
+
             case "hi":{
             	String reply = null;
 //              String userid = event.getSource().getUserId();
@@ -418,16 +429,20 @@ throws Exception {
                  reply += "Keyword: profile ";
                  reply += '\n';
                  reply += '\n';
+                 reply += "It will provide you the personal information";
+                 reply += "Keyword: history ";
+                 reply += '\n';
+                 reply += '\n';
                  reply += "It will provide you the personal health information";
                  reply += '\n';
                  reply += '\n';
-                 reply += "Keyword: menu ";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "It will offer you the advised menu for your meal based on your personal infomation";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will reply you related information. ";
+//                 reply += "Keyword: insert ";
+//                 reply += '\n';
+//                 reply += '\n'
+//                 reply += "Now you can insert you own dish name to the database";
+//                 reply += '\n';
+//                 reply += '\n';
+                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database, if there doesn't exist, it will insert it to the database. ";
                  this.replyText(replyToken, reply);	
 
                break;
@@ -452,18 +467,23 @@ throws Exception {
 //                  this.reply(replyToken, templateMessage);
 //                  break;
 //              }
-              default:
-              	String reply = null;
-              	try {
-              		menu_search(text,replyToken);
-              	} catch (Exception e) {
-              		reply = "We couldn't find the usuful information about your input, please type hi to get started";
-              	}
-                  log.info("Returns echo message {}: {}", replyToken, reply);
-                  this.replyText(replyToken,reply);
-                  break;
-          }
-      }
+
+
+              default:{
+              	 	String reply = null;
+              	
+              	 	reply = menu_handler(text,0,"null");
+              	 
+              	 	if(reply==null) {            
+              	 		reply = "The dish inputed has been inserted to the database successfully";
+              	 	}
+                  
+              	 	this.replyText(replyToken,reply);
+              	 	log.info("Returns echo message {}: {}", replyToken, reply);
+              	 	break;
+              }
+        }
+	}
 
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
@@ -512,7 +532,7 @@ throws Exception {
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 		client = new Client();
 		mymenu=new menu();
-	
+		response = null;
 	}
 
 	private SQLDatabaseEngine database;
