@@ -240,16 +240,18 @@ public class KitchenSinkController {
 		}
 		return true;
 	}
-	
-	private void menu_handler(String text, String replyToken,int price,String ingredients) {
+	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
+	private String menu_handler(String text, int price,String ingredients) throws Exception {
 		 String reply = null;
 		 try{
 			 reply = mymenu.getMenu(text);
-			 this.replyText(replyToken, reply);
+			 
+			 return reply;
+			 
 		 } catch (Exception e) {
-			 reply = "Insert the dish sucessfully";
+			 
 			 mymenu.insertMenu(text,price,ingredients);
-			 this.replyText(replyToken, reply);
+			 return reply;
 		 }
 	}
 	
@@ -451,19 +453,21 @@ throws Exception {
 //                  break;
 //              }
 
-              default:
-              	String reply = null;
-              	try {
-              		menu_handler(text,replyToken,0,"null");
-              	} catch (Exception e) {
-              		reply = "We couldn't find the usuful information about your input, please type hi to get started";
-              		this.replyText(replyToken,reply);
-              	}
-                  log.info("Returns echo message {}: {}", replyToken, reply);
-                  break;
-          }
-      }
-
+              default:{
+              	 	String reply = null;
+              	
+              	 	reply = menu_handler(text,0,"null");
+              	 
+              	 	if(reply==null) {            
+              	 		reply = "The dish inputed has been inserted to the database successfully";
+              	 	}
+                  
+              	 	this.replyText(replyToken,reply);
+              	 	log.info("Returns echo message {}: {}", replyToken, reply);
+              	 	break;
+              }
+        }
+	}
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
