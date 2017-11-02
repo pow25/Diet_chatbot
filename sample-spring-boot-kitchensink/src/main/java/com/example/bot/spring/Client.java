@@ -65,7 +65,7 @@ public class Client{
 	}
 	public String getProfile() {
 		String result=null;
-		result=result+"UserID: "+userID+"\nName: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight);
+		result=result+"Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight);
 		return result;
 	}
 	public void updateName(String name){
@@ -138,7 +138,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public int isInfoComplete(String userID) throws Exception{
+	public int isInfoComplete(String userID) throws SQLException{
 		int result = 1;
 		try {
 				Connection connection = getConnection();
@@ -174,7 +174,7 @@ public class Client{
 		 	 	}
 			if (result != 1)
 				return result;
-			throw new Exception("NOT FOUND");
+			throw new SQLException("NOT COMPLETE");
 	}
 	public double calculateBMI() {
 		if (weight!=0 && height!=0)

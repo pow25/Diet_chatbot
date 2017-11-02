@@ -86,6 +86,7 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.asprise.ocr.Ocr;
+import java.sql.*;
 
 import lombok.NonNull;
 import lombok.Value;
@@ -118,9 +119,10 @@ public class KitchenSinkController {
 					handleTextContent(replytoken, event, message);
 				}
 				else {
+					this.replyText(event.getReplyToken(),"not complete");
 					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
 				}
-		 } catch (Exception e) {
+		 } catch (SQLException e) {
 			 	handleTextContent_newuser(replytoken,event,message,userId,1);
 		 	}
 	}
