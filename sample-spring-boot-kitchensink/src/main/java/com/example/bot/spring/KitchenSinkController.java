@@ -490,8 +490,7 @@ throws Exception {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client = new Client();
-		mymenu=new menu();
+
 	}
 
 	private SQLDatabaseEngine database;
