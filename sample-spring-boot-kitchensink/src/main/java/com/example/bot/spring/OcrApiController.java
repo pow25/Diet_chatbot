@@ -9,7 +9,7 @@ public class OcrApiController {
 	public final String TYPE_URL = "URL";
 	public final String TYPE_IMG = "IMG";
 	
-	//just some constant for testing
+	//just some constant for testing, can ignore this
 	private final String FILEURL = "http://asprise.com/ocr/img/test-image.png";
 	private final String FILENAME = "/app/sample-spring-boot-kitchensink/src/main/resources/static/test-image.png";
 	
@@ -17,7 +17,7 @@ public class OcrApiController {
 	public String test(String type,String type_content) {
 		Ocr.setUp(); // one time setup
 		Ocr ocr = new Ocr(); // create a new OCR engine
-		ocr.startEngine("eng", Ocr.SPEED_SLOW); // English
+		ocr.startEngine(Ocr.LANGUAGE_ENG, Ocr.SPEED_SLOW); // English,best accuracy
 		String testing_result ="";
 		try {
 			switch(type) {
