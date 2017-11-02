@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 public class JsonHandler {
-	String message;
+//	String message;
 	Quote[]  quote;
 	public JsonHandler(String url) {
 		RestTemplate restTemplate = new RestTemplate();
@@ -24,9 +24,13 @@ public class JsonHandler {
 	}
 	public String getJson() {
 		String total = null;
-		for(int i=0;i<quote.length;i++) {
-			total += quote[i].toString() + '\n';
+		for(Quote q :quote) {
+			total += q.printString() + '\n';
 		}
 		return total;
+	}
+	
+	public Quote[] getQuote() {
+		return quote;
 	}
 }

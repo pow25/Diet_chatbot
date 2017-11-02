@@ -253,6 +253,7 @@ public class KitchenSinkController {
 			 mymenu.insertMenu(text,price,ingredients);
 			 return reply;
 		 }
+
 	}
 	
 	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
@@ -352,11 +353,24 @@ throws Exception {
        	try {
        		URL url = new URL(text);
        		JsonHandler jsonHandler = new JsonHandler(text);
-       		this.replyText(replyToken,jsonHandler.getJson());
+       		Quote[] quote = jsonHandler.getQuote();
+       		String stackmessage = null;
+       		for(Quote q: quote) {
+       			if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+           			stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+       			}
+       			else {
+       				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
+       			}
+       		}
+       		this.reply(replyToken, stackmessage);
+//       		String reply1 = jsonHandler.getJson());
        	}catch(MalformedURLException e) {
        		log.info("url handle json failed, perhaps not a real url");
-       	}
         //-----------------------------------------------------------//
+        //-----------------------------------------------------------------//
+      	}
+       	//-----------------------------------------------------------------//
         switch (text) {
             case "profile": {
                 try  {
@@ -389,11 +403,12 @@ throws Exception {
 //                this.reply(replyToken, templateMessage);
 //                break;
 //            }
+
 //            case "insert":{
 //            	
 //            	break;
 //            }
-            
+
             case "hi":{
             	String reply = null;
 //              String userid = event.getSource().getUserId();
@@ -453,6 +468,7 @@ throws Exception {
 //                  break;
 //              }
 
+
               default:{
               	 	String reply = null;
               	
@@ -468,6 +484,7 @@ throws Exception {
               }
         }
 	}
+
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
