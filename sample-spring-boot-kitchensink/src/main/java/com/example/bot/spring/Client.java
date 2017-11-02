@@ -12,25 +12,28 @@ import java.net.URI;
 
 @Slf4j
 public class Client{
+	private String userID;
 	private String name;
 	private int age;
 	private String gender;
 	private double height;
 	private double weight;
-	public Client(String name, int age, String gender, double height, double weight) {
+	public Client(String userID,String name, int age, String gender, double height, double weight) {
 		this.name=name;
+		this.userID=userID;
 		this.age=age;
 		this.gender=gender;
 		this.height=height;
 		this.weight=weight;
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?);");
-			stmt.setString(1,name);
-			stmt.setString(3,gender);
-			stmt.setInt(2,age);
-			stmt.setDouble(4,height);
-			stmt.setDouble(5,weight);
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?,?);");
+			stmt.setString(2,name);
+			stmt.setString(1, user_ID);
+			stmt.setString(4,gender);
+			stmt.setInt(3,age);
+			stmt.setDouble(5,height);
+			stmt.setDouble(6,weight);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
@@ -38,13 +41,11 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public void updateClient(double height, double weight) throws Exception{
+	public void updateHeight(double height) throws Exception{
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("UPDATE client set height=?,weight=? where name=? and age=?;");
-			stmt.setString(3,name);
-			stmt.setInt(4,age);
-			stmt.setDouble(2,weight);
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set height=? where userID=?;");
+			stmt.setString(2,userID);
 			stmt.setDouble(1,height);
 			stmt.executeQuery();
 			stmt.close();
@@ -52,6 +53,22 @@ public class Client{
 		}catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+	public void updateWeight(double weight) throws Exception{
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set weight=? where userID=?;");
+			stmt.setString(2,userID);
+			stmt.setDouble(1,weight);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	public int isInfoComplete() {
+		
 	}
 	public double calculateBMI() {
 		return (weight/height)/height;
