@@ -64,8 +64,8 @@ public class Client{
 		}
 	}
 	public String getProfile() {
-		String result;
-		result=result+"UserID: "+userID+"\nName: "+name+"\nGender: "+gender+"\nHeight(m): "+height+"\nWeight(kg): "+weight;
+		String result=null;
+		result=result+"UserID: "+userID+"\nName: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight);
 		return result;
 	}
 	public void updateName(String name) throws Exception{
