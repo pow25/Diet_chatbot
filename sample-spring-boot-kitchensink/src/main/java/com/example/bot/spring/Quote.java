@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
     private String name;
-    private String price;
-    private String ingredients;
+    private Long price;
+    private String[] ingredients;
 
     public Quote() {
     }
@@ -19,19 +19,19 @@ public class Quote {
         this.name = name;
     }
 
-    public String getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
     
-    public String getIngredients() {
+    public String[] getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(String ingredients) {
+    public void setIngredients(String[] ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -39,8 +39,8 @@ public class Quote {
     public String toString() {
         return "{" +
                 "name='" + name + '\'' +
-                ", price=" + price +
-                ", ingredients='" + ingredients +
+                ", price=" + String.valueOf(price) +
+                ", ingredients=" + ingredients +
                 '}';
     }
 }

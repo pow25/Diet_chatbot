@@ -349,8 +349,10 @@ throws Exception {
        		this.replyText(replyToken,jsonHandler.getJson());
        	}catch(MalformedURLException e) {
        		log.info("url handle json failed, perhaps not a real url");
-       	}
         //-----------------------------------------------------------//
+        //-----------------------------------------------------------------//
+      	}
+       	//-----------------------------------------------------------------//
         switch (text) {
             case "profile": {
                 try  {
@@ -371,11 +373,9 @@ throws Exception {
 //                this.reply(replyToken, templateMessage);
 //                break;
 //            }
-            case "menu":{
-            	
+            case "menu":{	
             	break;
             }
-            
             case "hi":{
             	String reply = null;
 //              String userid = event.getSource().getUserId();
@@ -430,7 +430,6 @@ throws Exception {
 //                  this.reply(replyToken, templateMessage);
 //                  break;
 //              }
-
               default:
               	String reply = null;
               	try {
