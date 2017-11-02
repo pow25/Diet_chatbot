@@ -101,7 +101,15 @@ public class KitchenSinkController {
 		log.info("This is your entry point:");
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		TextMessageContent message = event.getMessage();
-		handleTextContent(event.getReplyToken(), event, message);
+		String replytoken = event.getReplyToken();
+		String userId = event.getSource().getUserId();
+		//if userld is not in the database
+		if() {
+			handleTextContent_newuser(replytoken,event,message);
+		}
+		else {
+			handleTextContent(replytoken, event, message);
+		}
 	}
 
 	@EventMapping
@@ -209,6 +217,60 @@ public class KitchenSinkController {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
+	public static boolean isNumeric(String str)
+	{
+	　　for (int i = 0; i < str.length(); i++)
+	　　{　　
+	　　　　if (!Character.isDigit(str.charAt(i)))
+	　　　　{
+	    　　　　return false;
+	   　　　}
+	　　}
+	　　return true;
+	}
+	private void menu_search(String text, String replyToken) {
+		
+		
+		
+		 this.replyText(replyToken, "Bot can't use profile API without user ID");
+		
+	}
+	private void handleTextContent_newuser(String replyToken, Event event, TextMessageContent content)
+throws Exception {
+		String text = content.getText();
+		String replytext = null;
+		
+		if() {   //there is no information at all
+			replytext = "Welcome to the diet chatbot, system detects it is your first time to use the system, please create personal file.";
+			replytext += '\n';  
+			replytext += '\n';
+			replytext += "Please input your age";
+			this.replyText(replytoken, replytext);	
+		}
+		else if() {
+			boolean temp = isNumeric(text);
+			
+			if(temp==true) {
+				int i = Integer.parseInt(text);
+				// insert i to database
+				replytext = "Great, you have just inputed the age, now please input you weight";
+				this.replyText(replytoken, replytext);	
+			}
+			else {
+				replytext = "sorry, you input may contain none interger letters, like a space, please re-input your age";
+
+				this.replyText(replytoken, replytext);	
+			}
+		}
+		
+		else if() {
+			
+		}
+		else {
+			
+		}
+		
+	}
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
 throws Exception {
         String text = content.getText();
@@ -246,7 +308,6 @@ throws Exception {
             case "hi":{
                String reply = null;
 //            String userid = event.getSource().getUserId();
-               String user_name = "czhangar";
         	//first, search whether the user is a new user or not
 //            try {
 //        		user_name = database.search(userid);
@@ -255,8 +316,7 @@ throws Exception {
 //        		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
 //        		break;
 //        	}
-               reply = "Welcome to the diet chatbot!";
-               reply += user_name;
+               reply = "Welcome back to the diet chatbot!";
                reply += '\n';
                reply += '\n';
                reply += "There are several functions you can use:";
@@ -274,10 +334,7 @@ throws Exception {
                reply += "It will offer you the advised menu for your meal based on your personal infomation";
                reply += '\n';
                reply += '\n';
-               reply +="Keyword: input ";
-               reply += '\n';
-               reply += '\n';
-               reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
+               reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will reply you related information. ";
                this.replyText(replyToken, reply);	
 
              break;
@@ -306,7 +363,7 @@ throws Exception {
             default:
             	String reply = null;
             	try {
-            		reply = database.search(text);
+            		menu_search(text,replyToken);
             	} catch (Exception e) {
             		reply = "We couldn't find the usuful information about your input, please type hi to get started";
             	}
