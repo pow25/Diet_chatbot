@@ -18,18 +18,21 @@ public class Client{
 	private String gender;
 	private double height;
 	private double weight;
-	public Client(String userID,String name, int age, String gender, double height, double weight) {
-		this.name=name;
-		this.userID=userID;
-		this.age=age;
-		this.gender=gender;
-		this.height=height;
-		this.weight=weight;
+	public Client() {
+		userID=null;
+		name=null;
+		age=0;
+		gender=null;
+		height=0;
+		weight=0;
+	}
+	public void addClient(String userID) {
 		try {
+			this.userID=userID;
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?,?);");
 			stmt.setString(2,name);
-			stmt.setString(1, user_ID);
+			stmt.setString(1, userID);
 			stmt.setString(4,gender);
 			stmt.setInt(3,age);
 			stmt.setDouble(5,height);
@@ -41,8 +44,51 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	public void updateName(String name) throws Exception{
+		try {
+			this.name=name;
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set name=? where userID=?;");
+			stmt.setString(2,userID);
+			stmt.setString(1,name);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	public void updateAge(int age) throws Exception{
+		try {
+			this.age=age;
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set age=? where userID=?;");
+			stmt.setString(2,userID);
+			stmt.setInt(1,age);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	public void updateGender(String gender) throws Exception{
+		try {
+			this.gender=gender;
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("UPDATE client set gender=? where userID=?;");
+			stmt.setString(2,userID);
+			stmt.setString(1,gender);
+			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 	public void updateHeight(double height) throws Exception{
 		try {
+			this.height=height;
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set height=? where userID=?;");
 			stmt.setString(2,userID);
@@ -56,6 +102,7 @@ public class Client{
 	}
 	public void updateWeight(double weight) throws Exception{
 		try {
+			this.weight=weight;
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set weight=? where userID=?;");
 			stmt.setString(2,userID);
@@ -67,21 +114,57 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public int isInfoComplete() {
-		
+	public int isInfoComplete(String userID) throws Exception{
+		int result = 1;
+		try {
+				Connection connection = getConnection();
+				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM client where userID=?;");
+				stmt.setString(1, userID);
+				ResultSet rs = stmt.executeQuery();
+				
+				while (rs.next()) {
+					if (rs.getString(2)==null) {
+						result=2;
+						break;
+					}
+					else if (rs.getInt(3)==0) {
+						result=3;
+					}
+					else if (rs.getString(4)==null) {
+						result=4;
+					}
+					else if (rs.getDouble(5)==0) {
+						result=5;
+					}
+					else if (rs.getDouble(6)==0) {
+						result=6;
+					}
+					else
+						result=0;
+				}
+				rs.close();
+				stmt.close();
+				connection.close();
+		 	} catch (Exception e) {
+			    System.out.println(e);
+		 	 	}
+			if (result != 1)
+				return result;
+			throw new Exception("NOT FOUND");
 	}
 	public double calculateBMI() {
-		return (weight/height)/height;
+		if (weight!=0 && height!=0)
+			return (weight/height)/height;
+		else return 0;
 	}
 	public void addHistory(Date orderDate,String dish) throws Exception{
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?,?);");
-			stmt.setString(1,name);
-			stmt.setDate(3,orderDate);
-			stmt.setInt(2,age);
-			stmt.setDouble(4,weight);
-			stmt.setString(5,dish);
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
+			stmt.setString(1,userID);
+			stmt.setDate(2,orderDate);
+			stmt.setDouble(3,weight);
+			stmt.setString(4,dish);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
@@ -93,13 +176,12 @@ public class Client{
 		String result = null;
 		 try {
 				Connection connection = getConnection();
-				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM history where name=? and age=?;");
-				stmt.setString(1, name);
-				stmt.setInt(2, age);
+				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM history where userID=?;");
+				stmt.setString(1, userID);
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=result+rs.getDate(3).toString()+"\t"+String.valueOf(rs.getDouble(4))+"\t"+rs.getString(5)+"\n";
+					result=result+rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
 				}
 				rs.close();
 				stmt.close();

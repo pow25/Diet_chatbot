@@ -56,7 +56,7 @@ public class OcrTester {
 	public void testocrurl()  throws Exception{
 		boolean thrown = false;
 		try {
-			String return_result = ocr.test("URL","https://github.com/khwang0/2017F-COMP3111/blob/master/Project/topic%202/sample-menu.png");
+			String return_result = ocr.recognize("URL","http://www.who.int/about/WHOLogoTwitter.jpg");
 			System.out.println("\n\n\nURL:\n\n\n"+return_result);
 			if (return_result.equals("null")){
 				thrown = true;
@@ -72,7 +72,7 @@ public class OcrTester {
 		boolean thrown = false;
 		try {
 			final String FILENAME = "../java-ocr-api/build/resources/static/test-image.png";		
-			String return_result = ocr.test("IMG",FILENAME);
+			String return_result = ocr.recognize("IMG",FILENAME);
 			System.out.println("\n\n\nFILE:\n\n\n"+return_result);
 			if (return_result.equals("null")){
 				thrown = true;

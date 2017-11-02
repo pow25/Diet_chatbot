@@ -14,7 +14,7 @@ public class OcrApiController {
 	private final String FILENAME = "/app/sample-spring-boot-kitchensink/src/main/resources/static/test-image.png";
 	
 	//testing function
-	public String test(String type,String type_content) {
+	public String recognize(String type,String type_content) {
 		Ocr.setUp(); // one time setup
 		Ocr ocr = new Ocr(); // create a new OCR engine
 		ocr.startEngine(Ocr.LANGUAGE_ENG, Ocr.SPEED_SLOW); // English,best accuracy
