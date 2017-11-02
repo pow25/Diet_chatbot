@@ -231,6 +231,15 @@ public class KitchenSinkController {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
+    public boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+	
 	public static boolean isNumeric(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
@@ -300,7 +309,7 @@ public class KitchenSinkController {
 					   if( text.equals("women") || text.equals("men") ) {
 							client.updateGender(text);
 						
-							replytext = "Great, you have just inputed the gender, now please input you height";
+							replytext = "Great, you have just inputed the gender, now please input you height(m)";
 							this.replyText(replytoken, replytext);	
 						}
 						else {
@@ -309,13 +318,13 @@ public class KitchenSinkController {
 						}
 					}
 					else if(complete_indicator==5) {
-						boolean temp = isNumeric(text);
+						boolean temp = isDouble(text);
 						
 						if(temp==true) {
 							double i = Double.parseDouble(text);;
 							client.updateHeight(i);
 							// insert i to database
-							replytext = "Great, you have just inputed the height, now please input you weight";
+							replytext = "Great, you have just inputed the height, now please input you weight(Kg)";
 							this.replyText(replytoken, replytext);	
 						}
 						else {
@@ -324,7 +333,7 @@ public class KitchenSinkController {
 						}
 					}
 					else {  //the last case, tell the user to update the weight
-						boolean temp = isNumeric(text);
+						boolean temp = isDouble(text);
 						
 						if(temp==true) {
 							double i = Double.parseDouble(text);;
@@ -373,12 +382,9 @@ throws Exception {
        	//-----------------------------------------------------------------//
         switch (text) {
             case "profile": {
-                try  {
                 	String reply = null;
                 	reply = client.getProfile();
-                } catch(Exception e)  {
-                    this.replyText(replyToken, "Bot can't use profile,something wrong!");
-                }
+                	this.replyText(replyToken,reply);
                 break;
             }
             
@@ -386,6 +392,7 @@ throws Exception {
                 try  {
                 	String reply = null;
                 	reply = client.getHistory();
+                	this.replyText(replyToken,reply);
                 } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
                 }
@@ -430,6 +437,8 @@ throws Exception {
                  reply += '\n';
                  reply += '\n';
                  reply += "It will provide you the personal information";
+                 reply += '\n';
+                 reply += '\n';
                  reply += "Keyword: history ";
                  reply += '\n';
                  reply += '\n';
