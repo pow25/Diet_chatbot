@@ -360,7 +360,7 @@ throws Exception{
         
         //-----------------------------------------------------------//
        	try {
-       		URL url = new URL(text);
+//       		URL url = new URL(text);
        		JsonHandler jsonHandler = new JsonHandler(text);
        		Quote[] quote = jsonHandler.getQuote();
        		String stackmessage = null;
