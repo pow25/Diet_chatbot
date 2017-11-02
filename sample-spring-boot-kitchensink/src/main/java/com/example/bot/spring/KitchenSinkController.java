@@ -241,11 +241,11 @@ public class KitchenSinkController {
 		return true;
 	}
 	
-	private void menu_search(String text, String replyToken) {
-		
-		
-		
-		 this.replyText(replyToken, "Bot can't use profile API without user ID");
+	private void menu_insert(String text, String replyToken,int price,String ingredients) {
+		 String reply = null;
+		 reply = "Insert the dish sucessfully";
+		 mymenu.insertMenu(text,price,ingredients);
+		 this.replyText(replyToken, reply);
 		
 	}
 	
@@ -361,6 +361,17 @@ throws Exception {
                 }
                 break;
             }
+            case "history": {
+                try  {
+                	String reply = null;
+                	reply = client.getHistory();
+                } catch(Exception e)  {
+                    this.replyText(replyToken, "Bot can't use profile,something wrong!");
+                }
+                break;
+            }
+            
+
 //            case "confirm": {
 //                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
 //                        "Do it?",
