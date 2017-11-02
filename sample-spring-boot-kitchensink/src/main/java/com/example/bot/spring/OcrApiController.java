@@ -9,7 +9,7 @@ public class OcrApiController {
 	public final String TYPE_URL = "URL";
 	public final String TYPE_IMG = "IMG";
 	
-	//just some constant for testing
+	//just some constant for testing, can ignore this
 	private final String FILEURL = "http://asprise.com/ocr/img/test-image.png";
 	private final String FILENAME = "/app/sample-spring-boot-kitchensink/src/main/resources/static/test-image.png";
 	
