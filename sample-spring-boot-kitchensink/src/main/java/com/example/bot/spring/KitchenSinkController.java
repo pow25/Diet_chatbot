@@ -338,7 +338,8 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
 throws Exception {
         String text = content.getText();
-        
+        String userId = event.getSource().getUserId();
+        client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
@@ -352,13 +353,11 @@ throws Exception {
         //-----------------------------------------------------------//
         switch (text) {
             case "profile": {
-                String userId = event.getSource().getUserId();
-                if (userId != null) {
-                    lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete(new ProfileGetter (this, replyToken));
-                } else {
-                    this.replyText(replyToken, "Bot can't use profile API without user ID");
+                try  {
+                	String reply = null;
+                	reply = client.getHistory();
+                } catch(Exception e)  {
+                    this.replyText(replyToken, "Bot can't use profile,something wrong!");
                 }
                 break;
             }
