@@ -251,7 +251,7 @@ public class KitchenSinkController {
 		return true;
 	}
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
-	private String menu_handler(String text, int price,String ingredients) throws Exception {
+	private String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
 		 
 		 reply = mymenu.getMenu(text);
@@ -359,26 +359,26 @@ throws Exception{
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
-       	try {
-       		URL url = new URL(text);
-       		JsonHandler jsonHandler = new JsonHandler(text);
-       		Quote[] quote = jsonHandler.getQuote();
-       		String stackmessage = null;
-       		for(Quote q: quote) {
-       			if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
-           			stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
-       			}
-       			else {
-       				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
-       			}
-       		}
-       		this.replyText(replyToken, stackmessage);
-//       		String reply1 = jsonHandler.getJson());
-       	}catch(MalformedURLException e) {
-       		log.info("url handle json failed, perhaps not a real url");
+//       	try {
+//       		URL url = new URL(text);
+//       		JsonHandler jsonHandler = new JsonHandler(text);
+//       		Quote[] quote = jsonHandler.getQuote();
+//       		String stackmessage = null;
+//       		for(Quote q: quote) {
+//       			if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+//           			stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+//       			}
+//       			else {
+//       				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
+//       			}
+//       		}
+//       		this.replyText(replyToken, stackmessage);
+////       		String reply1 = jsonHandler.getJson());
+//       	}catch(MalformedURLException e) {
+//       		log.info("url handle json failed, perhaps not a real url");
         //-----------------------------------------------------------//
         //-----------------------------------------------------------------//
-      	}
+//      	}
        	//-----------------------------------------------------------------//
         switch (text) {
             case "profile": {
