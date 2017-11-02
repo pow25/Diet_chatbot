@@ -106,7 +106,22 @@ public class KitchenSinkController {
 		log.info("This is your entry point:");
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		TextMessageContent message = event.getMessage();
-		handleTextContent(event.getReplyToken(), event, message);
+		String replytoken = event.getReplyToken();
+		String userId = event.getSource().getUserId();
+		//if userld is not in the database
+		try {
+
+				int complete_indicator = client.isInfoComplete(userId);
+			
+				if(complete_indicator==0) {  // the user's info is full
+					handleTextContent(replytoken, event, message);
+				}
+				else {
+					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
+				}
+		 } catch (Exception e) {
+			 	handleTextContent_newuser(replytoken,event,message,userId,1);
+		 	}
 	}
 
 	@EventMapping
@@ -215,6 +230,110 @@ public class KitchenSinkController {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
+	public static boolean isNumeric(String str)
+	{
+		for (int i = 0; i < str.length(); i++){
+			if (!Character.isDigit(str.charAt(i))){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void menu_search(String text, String replyToken) {
+		
+		
+		
+		 this.replyText(replyToken, "Bot can't use profile API without user ID");
+		
+	}
+	
+	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
+			throws Exception {
+					String text = content.getText();
+					String replytext = null;
+					
+					if(complete_indicator==1) {   //there is no information at all
+						client.addClient(userld);
+						replytext = "Welcome to the diet chatbot, system detects it is your first time to use the system, please create personal file.";
+						replytext += '\n';  
+						replytext += '\n';
+						replytext += "Please input your name";
+						this.replyText(replytoken, replytext);	
+					}
+					else if(complete_indicator==2) { //input the name
+						
+							client.updateName(text);
+							
+							replytext = "Great, you have just inputed the name, now please input you age";
+							this.replyText(replytoken, replytext);	
+					}
+					else if(complete_indicator==3) {
+						boolean temp = isNumeric(text);
+						
+						if(temp==true) {
+							int i = Integer.parseInt(text);
+							client.updateAge(i);
+							// insert i to database
+							replytext = "Great, you have just inputed the age, now please input you gender";
+							replytext +='\n';
+							replytext +='\n';
+							replytext += "The gender should be 'men' or 'women'";
+							this.replyText(replytoken, replytext);	
+						}
+						else {
+							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your age";
+
+							this.replyText(replytoken, replytext);	
+						}
+					}
+					
+					else if(complete_indicator==4) {
+					   if( text.equals("women") || text.equals("men") ) {
+							client.updateGender(text);
+						
+							replytext = "Great, you have just inputed the gender, now please input you height";
+							this.replyText(replytoken, replytext);	
+						}
+						else {
+							replytext = "sorry, you input is not 'men' nor 'women', please re-input you gender";
+							this.replyText(replytoken, replytext);	
+						}
+					}
+					else if(complete_indicator==5) {
+						boolean temp = isNumeric(text);
+						
+						if(temp==true) {
+							double i = Double.parseDouble(text);;
+							client.updateHeight(i);
+							// insert i to database
+							replytext = "Great, you have just inputed the height, now please input you weight";
+							this.replyText(replytoken, replytext);	
+						}
+						else {
+							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your height";
+							this.replyText(replytoken, replytext);	
+						}
+					}
+					else {  //the last case, tell the user to update the weight
+						boolean temp = isNumeric(text);
+						
+						if(temp==true) {
+							double i = Double.parseDouble(text);;
+							client.updateWeight(i);
+							// insert i to database
+							replytext = "Great, you have just inputed the final piece of information, please type hi to start";
+							this.replyText(replytoken, replytext);	
+						}
+						else {
+							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your weight";
+							this.replyText(replytoken, replytext);	
+						}
+					}
+					
+		}
+	
+	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
 throws Exception {
         String text = content.getText();
@@ -259,79 +378,73 @@ throws Exception {
             	break;
             }
             
-            case "input":{
-            	
-            	break;
-            }
-            
-            case "create":{
-            	
-            	break;
-            }
             case "hi":{
-               String reply = null;
-//            String userid = event.getSource().getUserId();
-               String user_name = "czhangar";
-        	//first, search whether the user is a new user or not
-//            try {
-//        		user_name = database.search(userid);
-//        		user_name=lineMessagingClient.getProfile(userid);
-//        	} catch (Exception e) {
-//        		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
-//        		break;
-//        	}
-               reply = "Welcome to the diet chatbot!";
-               reply += user_name;
-               reply += '\n';
-               reply += "There are several functions you can use:";
-               reply += '\n';
-               reply += "Keyword: profile ";
-               reply += '\n';
-               reply += "It will provide you the personal health information";
-               reply += '\n';
-               reply += "Keyword: menu ";
-               reply += '\n';
-               reply += "It will offer you the advised menu for your meal based on your personal infomation";
-               reply +="Keyword: input ";
-               reply += '\n';
-               reply += "After type 'input', you can input the text,image or url as you wish. The chatbot will reply related information. ";
-               this.replyText(replyToken, reply);	
-
-             break;
-            }
-//            case "carousel": {
-//                String imageUrl = createUri("/static/buttons/1040.jpg");
-//                CarouselTemplate carouselTemplate = new CarouselTemplate(
-//                        Arrays.asList(
-//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-//                                        new URIAction("Go to line.me",
-//                                                      "https://line.me"),
-//                                        new PostbackAction("Say hello1",
-//                                                           "hello")
-//                                )),
-//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-//                                        new PostbackAction()
-//                                        new MessageAction("Say message",
-//                                                          "Rice")
-//                                ))
-//                        ));
-//                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-//                this.reply(replyToken, templateMessage);
-//                break;
-//            }
-
-            default:
             	String reply = null;
-            	try {
-            		reply = database.search(text);
-            	} catch (Exception e) {
-            		reply = "We couldn't find the usuful information about your input, please type hi to get started";
-            	}
-                log.info("Returns echo message {}: {}", replyToken, reply);
-                this.replyText(replyToken,reply);
-                break;
-        }
-    }
+//              String userid = event.getSource().getUserId();
+          	//first, search whether the user is a new user or not
+//              try {
+//          		user_name = database.search(userid);
+//          		user_name=lineMessagingClient.getProfile(userid);
+//          	} catch (Exception e) {
+//          		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
+//          		break;
+//          	}
+                 reply = "Welcome back to the diet chatbot!";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "There are several functions you can use:";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "Keyword: profile ";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "It will provide you the personal health information";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "Keyword: menu ";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "It will offer you the advised menu for your meal based on your personal infomation";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will reply you related information. ";
+                 this.replyText(replyToken, reply);	
+
+               break;
+              }
+//              case "carousel": {
+//                  String imageUrl = createUri("/static/buttons/1040.jpg");
+//                  CarouselTemplate carouselTemplate = new CarouselTemplate(
+//                          Arrays.asList(
+//                                  new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                          new URIAction("Go to line.me",
+//                                                        "https://line.me"),
+//                                          new PostbackAction("Say hello1",
+//                                                             "hello")
+//                                  )),
+//                                  new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                          new PostbackAction()
+//                                          new MessageAction("Say message",
+//                                                            "Rice")
+//                                  ))
+//                          ));
+//                  TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+//                  this.reply(replyToken, templateMessage);
+//                  break;
+//              }
+
+              default:
+              	String reply = null;
+              	try {
+              		menu_search(text,replyToken);
+              	} catch (Exception e) {
+              		reply = "We couldn't find the usuful information about your input, please type hi to get started";
+              	}
+                  log.info("Returns echo message {}: {}", replyToken, reply);
+                  this.replyText(replyToken,reply);
+                  break;
+          }
+      }
 
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
@@ -378,13 +491,16 @@ throws Exception {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client=new Client();
+		client = new Client();
+		mymenu=new menu();
+	
 	}
 
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private Client client;
-	
+	private menu mymenu;
+	private static String response;
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
