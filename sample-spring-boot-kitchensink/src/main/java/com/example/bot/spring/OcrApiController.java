@@ -17,7 +17,7 @@ public class OcrApiController {
 	public String test(String type,String type_content) {
 		Ocr.setUp(); // one time setup
 		Ocr ocr = new Ocr(); // create a new OCR engine
-		ocr.startEngine("eng", Ocr.SPEED_SLOW); // English
+		ocr.startEngine(Ocr.LANGUAGE_ENG, Ocr.SPEED_SLOW); // English,best accuracy
 		String testing_result ="";
 		try {
 			switch(type) {
