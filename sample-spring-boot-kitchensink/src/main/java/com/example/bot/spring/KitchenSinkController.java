@@ -363,7 +363,7 @@ throws Exception {
        				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
        			}
        		}
-       		this.reply(replyToken, stackmessage);
+       		this.replyText(replyToken, stackmessage);
 //       		String reply1 = jsonHandler.getJson());
        	}catch(MalformedURLException e) {
        		log.info("url handle json failed, perhaps not a real url");

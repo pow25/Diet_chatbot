@@ -37,7 +37,7 @@ public class Quote {
         this.ingredients = ingredients;
     }
 
-    @Override
+//    @Override
     public String printString() {
         return "{" +
                 "name='" + name + "\'" +
