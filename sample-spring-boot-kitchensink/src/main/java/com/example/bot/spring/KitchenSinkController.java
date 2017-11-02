@@ -86,6 +86,7 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.asprise.ocr.Ocr;
+import java.sql.*;
 
 import lombok.NonNull;
 import lombok.Value;
@@ -250,18 +251,17 @@ public class KitchenSinkController {
 		return true;
 	}
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
-	private String menu_handler(String text, int price,String ingredients) throws Exception {
+	private String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
-		 try{
-			 reply = mymenu.getMenu(text);
+		 
+		 reply = mymenu.getMenu(text);
 			 
-			 return reply;
 			 
-		 } catch (Exception e) {
-			 
+		 if(reply==null) {
 			 mymenu.insertMenu(text,price,ingredients);
-			 return reply;
 		 }
+			 return reply;
+		 
 
 	}
 	
@@ -352,7 +352,7 @@ public class KitchenSinkController {
 	
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
-throws Exception {
+throws Exception{
         String text = content.getText();
         String userId = event.getSource().getUserId();
         client.loadClient(userId);
@@ -373,8 +373,9 @@ throws Exception {
        			}
        		}
        		this.replyText(replyToken, stackmessage);
+       		return;
 //       		String reply1 = jsonHandler.getJson());
-       	}catch(MalformedURLException e) {
+       	}catch(Exception e) {
        		log.info("url handle json failed, perhaps not a real url");
         //-----------------------------------------------------------//
         //-----------------------------------------------------------------//
