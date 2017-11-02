@@ -32,7 +32,7 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
-	public String getMenu() throws Exception{
+	public String getMenu(String dish) throws Exception{
 		String result = null;
 		 try {
 				Connection connection = getConnection();

@@ -378,7 +378,7 @@ throws Exception {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client=new Client(itscLOGIN,20,"male",1.8,70.5);
+		client=new Client();
 	}
 
 	private SQLDatabaseEngine database;
