@@ -241,12 +241,16 @@ public class KitchenSinkController {
 		return true;
 	}
 	
-	private void menu_insert(String text, String replyToken,int price,String ingredients) {
+	private void menu_handler(String text, String replyToken,int price,String ingredients) {
 		 String reply = null;
-		 reply = "Insert the dish sucessfully";
-		 mymenu.insertMenu(text,price,ingredients);
-		 this.replyText(replyToken, reply);
-		
+		 try{
+			 reply = mymenu.getMenu(text);
+			 this.replyText(replyToken, reply);
+		 } catch (Exception e) {
+			 reply = "Insert the dish sucessfully";
+			 mymenu.insertMenu(text,price,ingredients);
+			 this.replyText(replyToken, reply);
+		 }
 	}
 	
 	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
@@ -355,12 +359,13 @@ throws Exception {
             case "profile": {
                 try  {
                 	String reply = null;
-                	reply = client.getHistory();
+                	reply = client.getProfile();
                 } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
                 }
                 break;
             }
+            
             case "history": {
                 try  {
                 	String reply = null;
@@ -382,10 +387,10 @@ throws Exception {
 //                this.reply(replyToken, templateMessage);
 //                break;
 //            }
-            case "menu":{
-            	
-            	break;
-            }
+//            case "insert":{
+//            	
+//            	break;
+//            }
             
             case "hi":{
             	String reply = null;
@@ -407,16 +412,20 @@ throws Exception {
                  reply += "Keyword: profile ";
                  reply += '\n';
                  reply += '\n';
+                 reply += "It will provide you the personal information";
+                 reply += "Keyword: history ";
+                 reply += '\n';
+                 reply += '\n';
                  reply += "It will provide you the personal health information";
                  reply += '\n';
                  reply += '\n';
-                 reply += "Keyword: menu ";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "It will offer you the advised menu for your meal based on your personal infomation";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will reply you related information. ";
+//                 reply += "Keyword: insert ";
+//                 reply += '\n';
+//                 reply += '\n'
+//                 reply += "Now you can insert you own dish name to the database";
+//                 reply += '\n';
+//                 reply += '\n';
+                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database, if there doesn't exist, it will insert it to the database. ";
                  this.replyText(replyToken, reply);	
 
                break;
@@ -445,12 +454,12 @@ throws Exception {
               default:
               	String reply = null;
               	try {
-              		menu_search(text,replyToken);
+              		menu_handler(text,replyToken,0,"null");
               	} catch (Exception e) {
               		reply = "We couldn't find the usuful information about your input, please type hi to get started";
+              		this.replyText(replyToken,reply);
               	}
                   log.info("Returns echo message {}: {}", replyToken, reply);
-                  this.replyText(replyToken,reply);
                   break;
           }
       }
@@ -502,7 +511,7 @@ throws Exception {
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 		client = new Client();
 		mymenu=new menu();
-	
+		response = null;
 	}
 
 	private SQLDatabaseEngine database;
