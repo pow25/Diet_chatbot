@@ -104,12 +104,20 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
-		if() {
-			handleTextContent_newuser(replytoken,event,message);
-		}
-		else {
-			handleTextContent(replytoken, event, message);
-		}
+		try {
+			int complete_indicator = client.isInfoComplete(userld);
+			
+			if(complete_indicator==0) {  // the user's info is full
+				handleTextContent(replytoken, event, message);
+			}
+			else {
+				handleTextContent_newuser(replytoken,event,message,userld,complete_indicator);
+			}
+		} catch (Exception e) {
+    		handleTextContent_newuser(replytoken,event,message,userld,1);
+    	}
+		
+		
 	}
 
 	@EventMapping
@@ -235,25 +243,37 @@ public class KitchenSinkController {
 		 this.replyText(replyToken, "Bot can't use profile API without user ID");
 		
 	}
-	private void handleTextContent_newuser(String replyToken, Event event, TextMessageContent content)
+	private void handleTextContent_newuser(String replyToken, Event event, TextMessageContent content,String userld,int complete_indicator)
 throws Exception {
 		String text = content.getText();
 		String replytext = null;
 		
-		if() {   //there is no information at all
+		if(complete_indicator==1) {   //there is no information at all
+			client.addClient(userld);
 			replytext = "Welcome to the diet chatbot, system detects it is your first time to use the system, please create personal file.";
 			replytext += '\n';  
 			replytext += '\n';
-			replytext += "Please input your age";
+			replytext += "Please input your name";
 			this.replyText(replytoken, replytext);	
 		}
-		else if() {
+		else if(complete_indicator==2) { //input the name
+			
+				client.updateName(text);
+				
+				replytext = "Great, you have just inputed the name, now please input you age";
+				this.replyText(replytoken, replytext);	
+		}
+		else if(complete_indicator==3) {
 			boolean temp = isNumeric(text);
 			
 			if(temp==true) {
 				int i = Integer.parseInt(text);
+				client.updateAge(i);
 				// insert i to database
-				replytext = "Great, you have just inputed the age, now please input you weight";
+				replytext = "Great, you have just inputed the age, now please input you gender";
+				replytext +='\n';
+				replytext +='\n';
+				replytext += "The gender should be 'men' or 'women'";
 				this.replyText(replytoken, replytext);	
 			}
 			else {
@@ -263,11 +283,47 @@ throws Exception {
 			}
 		}
 		
-		else if() {
+		else if(complete_indicator==4) {
+		   if( text.equals("women") || text.equals("men") ) {
+				client.updateGender(text);
 			
+				replytext = "Great, you have just inputed the gender, now please input you height";
+				this.replyText(replytoken, replytext);	
+			}
+			else {
+				replytext = "sorry, you input is not 'men' nor 'women', please re-input you gender";
+				this.replyText(replytoken, replytext);	
+			}
 		}
-		else {
+		else if(complete_indicator==5) {
+			boolean temp = isNumeric(text);
 			
+			if(temp==true) {
+				double i = Double.parseDouble(text);;
+				client.updateHeight(i);
+				// insert i to database
+				replytext = "Great, you have just inputed the height, now please input you weight";
+				this.replyText(replytoken, replytext);	
+			}
+			else {
+				replytext = "sorry, you input may contain none interger letters, like a space, please re-input your height";
+				this.replyText(replytoken, replytext);	
+			}
+		}
+		else {  //the last case, tell the user to update the weight
+			boolean temp = isNumeric(text);
+			
+			if(temp==true) {
+				double i = Double.parseDouble(text);;
+				client.updateWeight(i);
+				// insert i to database
+				replytext = "Great, you have just inputed the final piece of information, please type hi to start";
+				this.replyText(replytoken, replytext);	
+			}
+			else {
+				replytext = "sorry, you input may contain none interger letters, like a space, please re-input your weight";
+				this.replyText(replytoken, replytext);	
+			}
 		}
 		
 	}
@@ -418,13 +474,15 @@ throws Exception {
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
-		client=new Client(itscLOGIN,20,"male",1.8,70.5);
+		client = new Client();
+		mymenu=new menu();
 	}
 
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private Client client;
-	
+	private menu mymenu;
+	private static String response;
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
