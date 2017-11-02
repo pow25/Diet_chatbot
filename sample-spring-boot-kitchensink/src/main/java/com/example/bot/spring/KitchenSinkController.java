@@ -128,8 +128,9 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 		DownloadedContent jpg = saveContent("jpg", response);
-		reply(((MessageEvent) event).getReplyToken(), new ImageMessage(jpg.getUri(), jpg.getUri()));
-
+		OcrApiController OcrApi = new OcrApiController();
+		String imageText = OcrApi.recognize("IMG",jpg.getUri());
+		this.replyText(replyToken, imageText);
 	}
 	
 	@EventMapping
