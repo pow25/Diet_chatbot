@@ -19,6 +19,8 @@ package com.example.bot.spring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
+import java.net.*;
+//import java.io.*;
 //--------------------------------------------------//
 
 import java.io.IOException;
@@ -89,7 +91,6 @@ import lombok.NonNull;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.URI;
 
 @Slf4j
 @LineMessageHandler
@@ -341,15 +342,13 @@ throws Exception {
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
-//        if(url is true) {
-        try {
-        	JsonHandler jsonHandler = new JsonHandler(text);
-            log.info("Returns echo message {}: {}", replyToken, jsonHandler.getJson());
-            this.replyText(replyToken,jsonHandler.getJson());
-        }catch(Exception e) {
-        	System.out.println("fku");
-        }
-//        }
+       	try {
+       		URL url = new URL(text);
+       		JsonHandler jsonHandler = new JsonHandler(text);
+       		this.replyText(replyToken,jsonHandler.getJson());
+       	}catch(MalformedURLException e) {
+       		log.info("url handle json failed, perhaps not a real url");
+       	}
         //-----------------------------------------------------------//
         switch (text) {
             case "profile": {
