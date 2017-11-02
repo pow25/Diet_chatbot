@@ -243,7 +243,7 @@ public class KitchenSinkController {
 	
 	private void menu_insert(String text, String replyToken,int price,String ingredients) {
 		 String reply = null;
-		 reply = "Insert the dish sucessfully";
+		 reply = "Insert the dish into database sucessfully";
 		 mymenu.insertMenu(text,price,ingredients);
 		 this.replyText(replyToken, reply);
 		
@@ -346,7 +346,18 @@ throws Exception {
        	try {
        		URL url = new URL(text);
        		JsonHandler jsonHandler = new JsonHandler(text);
-       		this.replyText(replyToken,jsonHandler.getJson());
+       		Quote[] quote = jsonHandler.getQuote();
+       		String stackmessage = null;
+       		for(Quote q: quote) {
+       			if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+           			stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+       			}
+       			else {
+       				stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
+       			}
+       		}
+       		this.reply(replyToken, stackmessage);
+//       		String reply1 = jsonHandler.getJson());
        	}catch(MalformedURLException e) {
        		log.info("url handle json failed, perhaps not a real url");
         //-----------------------------------------------------------//

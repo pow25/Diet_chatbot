@@ -1,11 +1,13 @@
 package com.example.bot.spring;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
     private String name;
-    private Long price;
+    private int price;
     private String[] ingredients;
 
     public Quote() {
@@ -19,16 +21,16 @@ public class Quote {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(int price) {
         this.price = price;
     }
     
-    public String[] getIngredients() {
-        return ingredients;
+    public String getIngredients() {
+        return Arrays.toString(ingredients);
     }
 
     public void setIngredients(String[] ingredients) {
@@ -36,11 +38,11 @@ public class Quote {
     }
 
     @Override
-    public String toString() {
+    public String printString() {
         return "{" +
-                "name='" + name + '\'' +
+                "name='" + name + "\'" +
                 ", price=" + String.valueOf(price) +
-                ", ingredients=" + ingredients +
+                ", ingredients=" + Arrays.toString(ingredients) +
                 '}';
     }
 }
