@@ -15,6 +15,11 @@
  */
 
 package com.example.bot.spring;
+//--------------------------------------------------//
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.client.RestTemplate;
+//--------------------------------------------------//
 
 import java.io.IOException;
 
@@ -214,7 +219,18 @@ throws Exception {
         String text = content.getText();
         
         log.info("Got text message from {}: {}", replyToken, text);
-
+        
+        //-----------------------------------------------------------//
+//        if(url is true) {
+        try {
+        	JsonHandler jsonHandler = new JsonHandler(text);
+            log.info("Returns echo message {}: {}", replyToken, jsonHandler.getJson());
+            this.replyText(replyToken,jsonHandler.getJson());
+        }catch(Exception e) {
+        	System.out.println("fku");
+        }
+//        }
+        //-----------------------------------------------------------//
         switch (text) {
             case "profile": {
                 String userId = event.getSource().getUserId();
