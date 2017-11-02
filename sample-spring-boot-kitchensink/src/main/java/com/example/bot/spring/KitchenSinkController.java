@@ -254,14 +254,13 @@ public class KitchenSinkController {
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
 	private String menu_handler(String text, int price,String ingredients) throws Exception {
 		 String reply = null;
-		 try{
-			 reply = mymenu.getMenu(text);
+		 
+		 reply = mymenu.getMenu(text);
 			 
-			 return reply;
 			 
-		 } catch (Exception e) {
-			 
+		 if(reply==null) {
 			 mymenu.insertMenu(text,price,ingredients);
+		 }
 			 return reply;
 		 }
 

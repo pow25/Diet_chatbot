@@ -36,7 +36,7 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
-	public String getMenu(String dish) throws Exception{
+	public String getMenu(String dish){
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -52,10 +52,9 @@ public class menu{
 				connection.close();
 		 	 } catch (Exception e) {
 			    System.out.println(e);
-		 	 	}
-			if (result != null)
-				return result;
-			throw new Exception("NOT FOUND");
+		 	 }
+			return result;
+			
 	}
 	public void insertMenu(String dish,int price,String ingredients){
 		try {
