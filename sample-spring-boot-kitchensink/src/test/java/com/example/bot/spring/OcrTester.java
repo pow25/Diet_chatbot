@@ -47,45 +47,24 @@ import com.example.bot.spring.DatabaseEngine;
 
 @RunWith(SpringRunner.class)
 //@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
-@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
-public class KitchenSinkTester {
+@SpringBootTest(classes = { OcrTester.class, OcrApiController.class })
+public class OcrTester {
 	@Autowired
-	private SQLDatabaseEngine databaseEngine;
+	private OcrApiController ocr;
 	
 	@Test
-	public void testNotFound() throws Exception {
+	public void testocrurl()  throws Exception{
 		boolean thrown = false;
 		try {
-			this.databaseEngine.search("no");
+			String return_result = ocr.test("URL","http://asprise.com/ocr/img/test-image.png");
+			System.out.println("\n\n\nURL:\n\n\n"+return_result);
+			if (return_result.equals("null")){
+				thrown = true;
+			}
 		} catch (Exception e) {
 			thrown = true;
 		}
-		assertThat(thrown).isEqualTo(true);
-	}
-	
-	@Test
-	public void testFound() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = this.databaseEngine.search("HKUST");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("COMP3111");
-	}
-	@Test
-	public void testFound2() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = this.databaseEngine.search("JAVA");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("JAVA1.8");
+		assertThat(thrown).isEqualTo(false);
 	}
 
 }
