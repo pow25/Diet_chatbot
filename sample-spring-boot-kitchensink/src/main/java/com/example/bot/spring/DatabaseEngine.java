@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 // database.txt located in 
 // sample-spring-boot-kitchensink/resources/static/database.txt.
 //
-// This file contains a few lines with the format <input>:<output>.
+// This  contains a few lines with the format <input>:<output>.
 // The program below wish to perform an exact word match the input text
 // against the <input> against each line. The bot should replys 
 // "XXX says <output>"
@@ -39,7 +39,7 @@ public class DatabaseEngine {
 				}
 			}
 		} catch (IOException e) {
-			log.info("IOException while reading file: {}", e.toString());
+			log.info("IOException while reading : {}", e.toString());
 		} finally {
 			try {
 				if (br != null)
@@ -47,7 +47,7 @@ public class DatabaseEngine {
 				if (isr != null)
 					isr.close();
 			} catch (IOException ex) {
-				log.info("IOException while closing file: {}", ex.toString());
+				log.info("IOException while closing : {}", ex.toString());
 			}
 		}
 		if (result != null)

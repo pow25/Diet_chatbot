@@ -1,8 +1,8 @@
 /*
  * Copyright 2016 LINE Corporation
  *
- * LINE Corporation licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
+ * LINE Corporation licenses this  to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this  except in compliance
  * with the License. You may obtain a copy of the License at:
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
@@ -17,6 +17,7 @@
 package com.example.bot.spring;
 
 import java.io.IOException;
+
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -77,6 +78,7 @@ import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import com.asprise.ocr.Ocr;
 
 import lombok.NonNull;
 import lombok.Value;
@@ -129,7 +131,7 @@ public class KitchenSinkController {
 		reply(((MessageEvent) event).getReplyToken(), new ImageMessage(jpg.getUri(), jpg.getUri()));
 
 	}
-
+	
 	@EventMapping
 	public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
 		final MessageContentResponse response;
@@ -208,7 +210,7 @@ public class KitchenSinkController {
 	}
 
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
-            throws Exception {
+throws Exception {
         String text = content.getText();
         
         log.info("Got text message from {}: {}", replyToken, text);
