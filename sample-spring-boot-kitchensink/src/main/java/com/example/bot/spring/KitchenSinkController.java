@@ -261,7 +261,7 @@ public class KitchenSinkController {
 			 mymenu.insertMenu(text,price,ingredients);
 		 }
 			 return reply;
-		 }
+		 
 
 	}
 	
@@ -352,7 +352,7 @@ public class KitchenSinkController {
 	
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
-{
+throws Exception{
         String text = content.getText();
         String userId = event.getSource().getUserId();
         client.loadClient(userId);
