@@ -119,7 +119,6 @@ public class KitchenSinkController {
 					handleTextContent(replytoken, event, message);
 				}
 				else {
-					this.replyText(event.getReplyToken(),"not complete");
 					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
 				}
 		 } catch (Exception e) {
