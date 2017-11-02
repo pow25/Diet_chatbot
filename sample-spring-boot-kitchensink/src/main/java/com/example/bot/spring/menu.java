@@ -12,11 +12,15 @@ import java.net.URI;
 
 @Slf4j
 public class menu{
-	public String getRecommendServing(String gender,String ageRange,boolean pregnant,boolean lactating) throws Exception{
+	public String getRecommendServing(String gender,String ageRange,boolean pregnant) throws Exception{
 		String result = null;
 		 try {
 				Connection connection = getConnection();
-				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM recommendserving where gender=? and agerange=? and pregnant=? and lactating=?;");
+				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM recommendserving where gender=? and agerange like ? and pregnant=? and lactating=false;");
+				stmt.setString(1,gender);
+				ageRange="%"+ageRange+"%";
+				stmt.setString(2, ageRange);
+				stmt.setBoolean(3, pregnant);
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
@@ -36,11 +40,12 @@ public class menu{
 		String result = null;
 		 try {
 				Connection connection = getConnection();
-				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM menu;");
+				PreparedStatement stmt = connection.prepareStatement("SELECT * FROM menu WHERE dish=?;");
+				stmt.setString(1, dish);
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=result+rs.getString(1)+"\t"+String.valueOf(rs.getInt(2))+"\t"+rs.getString(3)+String.valueOf(rs.getDouble(4))+"\t"+String.valueOf(rs.getDouble(5))+"\t"+String.valueOf(rs.getDouble(6))+"\t"+String.valueOf(rs.getDouble(7))+"\n";
+					result=result+rs.getString(1)+"\t"+String.valueOf(rs.getInt(2))+"\t"+rs.getString(3)+"\n";
 				}
 				rs.close();
 				stmt.close();
@@ -52,17 +57,13 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
-	public void insertMenu(String dish,int price,String ingredients,double energy,double protein,double fat,double sodium) throws Exception{
+	public void insertMenu(String dish,int price,String ingredients) throws Exception{
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history menu (?,?,?,?,?,?,?);");
+			PreparedStatement stmt=connection.prepareStatement("INSERT INTO menu values (?,?,?);");
 			stmt.setString(1,dish);
 			stmt.setString(3,ingredients);
 			stmt.setInt(2,price);
-			stmt.setDouble(4,energy);
-			stmt.setDouble(5,protein);
-			stmt.setDouble(6,fat);
-			stmt.setDouble(7,sodium);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
