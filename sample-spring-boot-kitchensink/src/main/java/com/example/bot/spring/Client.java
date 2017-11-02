@@ -26,6 +26,25 @@ public class Client{
 		height=0;
 		weight=0;
 	}
+	public void loadClient(String userID) {
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM client WHERE userID=?;");
+			stmt.setString(1, userID);
+			ResultSet rs=stmt.executeQuery();
+			rs.next();
+			this.name=rs.getString(2);
+			this.age=rs.getInt(3);
+			this.gender=rs.getString(4);
+			this.height=rs.getDouble(5);
+			this.weight=rs.getDouble(6);
+			stmt.close();
+			rs.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 	public void addClient(String userID) {
 		try {
 			this.userID=userID;
