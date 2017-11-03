@@ -421,6 +421,26 @@ throws Exception{
                 	reply = client.getHistory();
                 	this.replyText(replyToken,reply);
                 } catch(Exception e)  {
+                    this.replyText(replyToken, "No History Found!");
+                }
+                break;
+            }
+            case "recommend daily intake": {
+            	String clientagerange=null;
+            	int clientage=client.getAge();
+            	if (clientage<=50) {
+            		clientagerange="19-50";
+            	}
+            	else if (clientage>50 && clientage<=70) {
+            		clientagerange="51-70";
+            	}
+            	else
+            		clientagerange="70+";
+                try  {
+                	String reply = null;
+                	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
+                	this.replyText(replyToken,reply);
+                } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
                 }
                 break;
@@ -469,7 +489,11 @@ throws Exception{
                  reply += "Keyword: history ";
                  reply += '\n';
                  reply += '\n';
-                 reply += "It will provide you the personal health information";
+                 reply += "It will provide you the personal wegiht history and food history\n\n";
+                 reply += "Keyword: recommend daily intake ";
+                 reply += "\n\n";
+                 reply += "It will provide you the recommend daily serving\n\n";
+                 
                  reply += '\n';
                  reply += '\n';
 //                 reply += "Keyword: insert ";

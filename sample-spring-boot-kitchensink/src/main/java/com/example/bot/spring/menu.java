@@ -24,7 +24,7 @@ public class menu{
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=result+String.valueOf(rs.getDouble(5))+"\t"+String.valueOf(rs.getDouble(6))+"\t"+String.valueOf(rs.getDouble(7))+"\t"+String.valueOf(rs.getDouble(8))+String.valueOf(rs.getDouble(9))+"\n";
+					result="Vegetables & legumes/beans: "+String.valueOf(rs.getDouble(5))+"\nFruit: "+String.valueOf(rs.getDouble(6))+"\nGrain (cereal) foods, mostly wholegrain: "+String.valueOf(rs.getDouble(7))+"\nLean meat and poultry, fish, eggs, nuts and seeds, and legumes/beans: "+String.valueOf(rs.getDouble(8))+"\nMilk, yoghurt, cheese and/or alternatives (mostly reduced fat): "+String.valueOf(rs.getDouble(9));
 				}
 				rs.close();
 				stmt.close();
