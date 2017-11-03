@@ -172,8 +172,24 @@ public class KitchenSinkController {
 		if (imageText.equals(null)) {
 			replyText(replyToken, "Cannot recognize image, Please try again.");
 		}else {
+			
 			try {
-				handleTextContent(replyToken, event, imageText);
+				this.replyText(replyToken, imageText);
+				/**
+				String reply ="";
+				String[] parts = imageText.split(" ");
+				for(String s :parts) {
+					String result = menu_handler(s,0,"null");
+					if (result != null) {
+						reply += result;
+					}
+				if (reply!=null) {
+					this.replyText(replyToken, reply);
+				}else {
+					this.replyText(replyToken, "Cannot find menu.");
+				}
+				*/
+				}
 			} catch (Exception e) {
 				this.replyText(replyToken, "Error: "+e.getMessage());
 			}
@@ -266,7 +282,7 @@ public class KitchenSinkController {
         }
     }
 	
-	public static boolean isNumeric(String str)
+	public static boolean isNumberic(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
 			if (!Character.isDigit(str.charAt(i))){
@@ -310,7 +326,7 @@ public class KitchenSinkController {
 							this.replyText(replytoken, replytext);	
 					}
 					else if(complete_indicator==3) {
-						boolean temp = isNumeric(text);
+						boolean temp = isNumberic(text);
 						
 						if(temp==true) {
 							int i = Integer.parseInt(text);
