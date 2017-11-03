@@ -116,13 +116,13 @@ public class KitchenSinkController {
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
-					handleTextContent(replytoken, event, message);
+					handleTextContent(replytoken, event, message.getText());
 				}
 				else {
-					handleTextContent_newuser(replytoken,event,message,userId,complete_indicator);
+					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
 				}
 		 } catch (Exception e) {
-			 	handleTextContent_newuser(replytoken,event,message,userId,1);
+			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
 		 	}
 	}
 
@@ -143,6 +143,21 @@ public class KitchenSinkController {
 		final MessageContentResponse response;
 		String replyToken = event.getReplyToken();
 		String messageId = event.getMessage().getId();
+		String userId = event.getSource().getUserId();
+				
+		try {
+
+			int complete_indicator = client.isInfoComplete(userId);
+		
+			if(complete_indicator==0) {  // the user's info is full
+				this.replyText(replyToken, "Please set up your profile first.");
+				return;
+			}
+		} 
+		catch (Exception e) {
+			this.replyText(replyToken, "Please set up your profile first.");
+		}
+
 		try {
 			response = lineMessagingClient.getMessageContent(messageId).get();
 		} catch (InterruptedException | ExecutionException e) {
@@ -152,7 +167,16 @@ public class KitchenSinkController {
 		DownloadedContent jpg = saveContent("jpg", response);
 		OcrApiController OcrApi = new OcrApiController();
 		String imageText = OcrApi.recognize("URL",jpg.getUri());
-		this.replyText(replyToken, "Recognized message:"+jpg.getUri()+"   "+imageText);
+		//this.replyText(replyToken, "Recognized message:\n"+imageText);
+		if (imageText.equals(null)) {
+			replyText(replyToken, "Cannot recognize image, Please try again.");
+		}else {
+			try {
+				handleTextContent(replyToken, event, imageText);
+			} catch (Exception e) {
+				this.replyText(replyToken, "Error: "+e.getMessage());
+			}
+		}
 	}
 	
 	@EventMapping
@@ -265,9 +289,8 @@ public class KitchenSinkController {
 
 	}
 	
-	private void handleTextContent_newuser(String replytoken, Event event, TextMessageContent content,String userld,int complete_indicator)
+	private void handleTextContent_newuser(String replytoken, Event event, String text,String userld,int complete_indicator)
 			throws Exception {
-					String text = content.getText();
 					String replytext = null;
 					
 					if(complete_indicator==1) {   //there is no information at all
@@ -351,9 +374,8 @@ public class KitchenSinkController {
 		}
 	
 	
-	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
+	private void handleTextContent(String replyToken, Event event, String text)
 throws Exception{
-        String text = content.getText();
         String userId = event.getSource().getUserId();
         client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
