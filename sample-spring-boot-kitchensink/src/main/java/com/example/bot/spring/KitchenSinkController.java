@@ -278,11 +278,10 @@ public class KitchenSinkController {
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
 	private String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
-		 
-		 reply = mymenu.getMenu(text);
-			 
-			 
-		 if(reply==null) {
+		 if (response == null) {
+			 reply = mymenu.getMenu(text);
+		 }
+		 else	 {
 			 mymenu.insertMenu(text,price,ingredients);
 		 }
 			 return reply;
@@ -393,7 +392,12 @@ throws Exception{
        					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
        				}
        				else {
-       					stackmessage = stackmessage + q.printString() + "\n" + "is not found in database and is inserted into database\n\n";
+       					if(response == null) {
+       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
+       					}
+       					else {
+       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
+       					}
        				}
        			}
        			this.replyText(replyToken, stackmessage);
@@ -415,10 +419,17 @@ throws Exception{
                 	this.replyText(replyToken,reply);
                 break;
             }
+            
             case "insert":{
             	response = "insert";
             	break;
             }
+            
+            case "uninsert":{
+            	response = null;
+            	break;
+            }
+            
             case "history": {
                 try  {
                 	String reply = null;
@@ -429,6 +440,7 @@ throws Exception{
                 }
                 break;
             }
+            
             case "recommend daily intake": {
             	String clientagerange=null;
             	int clientage=client.getAge();
@@ -462,22 +474,9 @@ throws Exception{
 //                break;
 //            }
 
-//            case "insert":{
-//            	
-//            	break;
-//            }
-
             case "hi":{
             	String reply = null;
-//              String userid = event.getSource().getUserId();
-          	//first, search whether the user is a new user or not
-//              try {
-//          		user_name = database.search(userid);
-//          		user_name=lineMessagingClient.getProfile(userid);
-//          	} catch (Exception e) {
-//          		reply = "Welcome to the diet chatbot, please type: 'create' to create your personal file";
-//          		break;
-//          	}
+
                  reply = "Welcome back to the diet chatbot!";
                  reply += '\n';
                  reply += '\n';
@@ -497,16 +496,15 @@ throws Exception{
                  reply += "Keyword: recommend daily intake ";
                  reply += "\n\n";
                  reply += "It will provide you the recommend daily serving\n\n";
-                 
                  reply += '\n';
                  reply += '\n';
-//                 reply += "Keyword: insert ";
-//                 reply += '\n';
-//                 reply += '\n'
-//                 reply += "Now you can insert you own dish name to the database";
-//                 reply += '\n';
-//                 reply += '\n';
                  reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
+                 reply += '\n';
+                 reply += '\n';
+                 reply += "If you want to stop insert, type keyword:uninsert";
                  this.replyText(replyToken, reply);	
 
                break;
@@ -538,10 +536,14 @@ throws Exception{
               	
               	 	reply = menu_handler(text,0,"null");
               	 
-              	 	if(reply==null) {            
-              	 		reply = "The dish inputed has been inserted to the database successfully";
+              	 	if( (reply==null) && (response == null) ) {            
+              	 		reply = "Sorry, we could not find the dish name you input";
               	 	}
-                  
+              	 	
+              	 	if ( (reply==null) && (response == "insert") ) {
+              	 		reply = "The dish name has been inputted into the menu sucessfully.";
+              	 	}
+              	 	
               	 	this.replyText(replyToken,reply);
               	 	log.info("Returns echo message {}: {}", replyToken, reply);
               	 	break;
