@@ -149,13 +149,14 @@ public class KitchenSinkController {
 
 			int complete_indicator = client.isInfoComplete(userId);
 		
-			if(complete_indicator==0) {  // the user's info is full
-				this.replyText(replyToken, "Please set up your profile first.");
+			if(complete_indicator!=0) {  // the user's info is full
+				handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
 				return;
 			}
 		} 
 		catch (Exception e) {
-			this.replyText(replyToken, "Please set up your profile first.");
+			handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+			return;
 		}
 
 		try {
