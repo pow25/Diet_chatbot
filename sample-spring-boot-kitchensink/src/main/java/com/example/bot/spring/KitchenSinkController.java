@@ -150,7 +150,7 @@ public class KitchenSinkController {
 			int complete_indicator = client.isInfoComplete(userId);
 		
 			if(complete_indicator!=0) {  // the user's info is not full
-				handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+				handleTextContent_newuser(replyToken,event,"",userId,complete_indicator);
 
 				return;
 			}
