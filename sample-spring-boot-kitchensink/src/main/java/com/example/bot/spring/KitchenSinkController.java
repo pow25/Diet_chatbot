@@ -149,7 +149,7 @@ public class KitchenSinkController {
 
 			int complete_indicator = client.isInfoComplete(userId);
 		
-			if(complete_indicator!=0) {  // the user's info is full
+			if(complete_indicator!=0) {  // the user's info is not full
 				handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
 				return;
 			}
@@ -415,7 +415,10 @@ throws Exception{
                 	this.replyText(replyToken,reply);
                 break;
             }
-            
+            case "insert":{
+            	response = "insert";
+            	break;
+            }
             case "history": {
                 try  {
                 	String reply = null;
@@ -503,7 +506,7 @@ throws Exception{
 //                 reply += "Now you can insert you own dish name to the database";
 //                 reply += '\n';
 //                 reply += '\n';
-                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database, if there doesn't exist, it will insert it to the database. ";
+                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
                  this.replyText(replyToken, reply);	
 
                break;
@@ -600,7 +603,7 @@ throws Exception{
 	private String itscLOGIN;
 	private Client client;
 	private menu mymenu;
-	private static String response;
+	private String response;
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
