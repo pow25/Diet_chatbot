@@ -26,6 +26,12 @@ public class Client{
 		height=0;
 		weight=0;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public int getAge() {
+		return age;
+	}
 	public void loadClient(String userID) {
 		try {
 			Connection connection=getConnection();
@@ -65,7 +71,7 @@ public class Client{
 	}
 	public String getProfile() {
 		String result=null;
-		result=result+"Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight);
+		result=result+"Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
 		return result;
 	}
 	public void updateName(String name){
@@ -176,7 +182,7 @@ public class Client{
 				return result;
 			throw new SQLException("NOT COMPLETE");
 	}
-	public double calculateBMI() {
+	private double calculateBMI() {
 		if (weight!=0 && height!=0)
 			return (weight/height)/height;
 		else return 0;
