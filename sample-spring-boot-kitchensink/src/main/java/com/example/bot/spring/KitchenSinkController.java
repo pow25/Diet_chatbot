@@ -412,7 +412,7 @@ throws Exception{
             		clientagerange+="70+";
                 try  {
                 	String reply = null;
-                	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
+                	reply = mymenu.getRecommendServing(client.getGender(),"19-50",false);
                 	this.replyText(replyToken,reply);
                 } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
