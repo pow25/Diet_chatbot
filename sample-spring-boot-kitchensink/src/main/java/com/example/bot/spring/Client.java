@@ -182,7 +182,7 @@ public class Client{
 				return result;
 			throw new SQLException("NOT COMPLETE");
 	}
-	private double calculateBMI() {
+	public double calculateBMI() {
 		if (weight!=0 && height!=0)
 			return (weight/height)/height;
 		else return 0;

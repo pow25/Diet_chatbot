@@ -149,13 +149,18 @@ public class KitchenSinkController {
 
 			int complete_indicator = client.isInfoComplete(userId);
 		
-			if(complete_indicator!=0) {  // the user's info is full
-				handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+			if(complete_indicator!=0) {  // the user's info is not full
+				handleTextContent_newuser(replyToken,event,"",userId,complete_indicator);
 				return;
 			}
 		} 
 		catch (Exception e) {
-			handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+			try {
+				handleTextContent_newuser(replyToken,event,"",userId,1);
+			}
+			catch(Exception ex) {
+				replyText(replyToken, e.getMessage());
+			}
 			return;
 		}
 
@@ -190,7 +195,7 @@ public class KitchenSinkController {
 				}
 				*/
 				}
-			} catch (Exception e) {
+			 catch (Exception e) {
 				this.replyText(replyToken, "Error: "+e.getMessage());
 			}
 		}
