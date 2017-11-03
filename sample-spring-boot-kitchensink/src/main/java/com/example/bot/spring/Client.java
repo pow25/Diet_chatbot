@@ -57,7 +57,7 @@ public class Client{
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?,?);");
 			stmt.setString(2,null);
-			stmt.setString(1, null);
+			stmt.setString(1, userID);
 			stmt.setString(4,null);
 			stmt.setInt(3,0);
 			stmt.setDouble(5,0);
