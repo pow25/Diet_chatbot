@@ -56,12 +56,12 @@ public class Client{
 			this.userID=userID;
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?,?);");
-			stmt.setString(2,name);
-			stmt.setString(1, userID);
-			stmt.setString(4,gender);
-			stmt.setInt(3,age);
-			stmt.setDouble(5,height);
-			stmt.setDouble(6,weight);
+			stmt.setString(2,null);
+			stmt.setString(1, null);
+			stmt.setString(4,null);
+			stmt.setInt(3,0);
+			stmt.setDouble(5,0);
+			stmt.setDouble(6,0);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
