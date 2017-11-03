@@ -406,7 +406,11 @@ throws Exception{
         switch (text) {
             case "profile": {
                 	String reply = null;
+                	double  bmi=client.calculateBMI();
                 	reply = client.getProfile();
+                	reply += '\n';
+                	reply +="BMI:";
+                	reply += String.valueOf(bmi);
                 	this.replyText(replyToken,reply);
                 break;
             }
