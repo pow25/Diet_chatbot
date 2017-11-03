@@ -403,16 +403,16 @@ throws Exception{
             	String clientagerange=null;
             	int clientage=client.getAge();
             	if (clientage<=50) {
-            		clientagerange=clientagerange+"19-50";
+            		clientagerange="19-50";
             	}
             	else if (clientage>50 && clientage<=70) {
-            		clientagerange+="51-70";
+            		clientagerange="51-70";
             	}
             	else
-            		clientagerange+="70+";
+            		clientagerange="70+";
                 try  {
                 	String reply = null;
-                	reply = mymenu.getRecommendServing(client.getGender(),"19-50",false);
+                	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
                 	this.replyText(replyToken,reply);
                 } catch(Exception e)  {
                     this.replyText(replyToken, "Bot can't use profile,something wrong!");
