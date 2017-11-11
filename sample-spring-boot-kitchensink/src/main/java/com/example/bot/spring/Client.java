@@ -190,7 +190,7 @@ public class Client{
 	}
 	public void addHistory(LocalDate orderDate,String dish) throws Exception{
 		try {
-			Date date=Date.valueOf(orderDate);
+			Date date=new Date();//Date.valueOf(orderDate);
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
