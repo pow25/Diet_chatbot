@@ -191,9 +191,10 @@ public class Client{
 	public void addHistory(String dish) {
 		try {
 			Connection connection=getConnection();
+			LocalDate localdate=LocalDate.now();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,LocalDate.now());
+			stmt.setObject(2,localdate);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
