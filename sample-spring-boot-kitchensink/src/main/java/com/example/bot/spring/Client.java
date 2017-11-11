@@ -188,7 +188,7 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-	public void addHistory(String dish) throws Exception{
+	public void addHistory(String dish) {
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
@@ -200,7 +200,7 @@ public class Client{
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			throw e;
+			//throw e;
 		}
 	}
 	public String getHistory() throws Exception{
@@ -212,7 +212,7 @@ public class Client{
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=result+rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
+					result=rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
 				}
 				rs.close();
 				stmt.close();
