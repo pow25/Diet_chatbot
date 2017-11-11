@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.*;
 
 @Slf4j
 public class Client{
@@ -191,10 +192,10 @@ public class Client{
 	public void addHistory(String dish) {
 		try {
 			Connection connection=getConnection();
-			LocalDate localdate=LocalDate.now();
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setObject(2,localdate);
+			stmt.setDate(2,today);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
@@ -213,7 +214,7 @@ public class Client{
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
+					result=result+rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
 				}
 				rs.close();
 				stmt.close();
