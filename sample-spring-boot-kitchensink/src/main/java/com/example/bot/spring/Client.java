@@ -190,12 +190,10 @@ public class Client{
 	}
 	public void addHistory(String dish) throws Exception{
 		try {
-			java.util.Date utildate=new java.util.Date();
-			java.sql.Date sqldate= new java.sql.Date(utildate.getTime());
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,sqldate);
+			stmt.setDate(2,new java.sql.Date(new java.util.Date().getTime()));
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
