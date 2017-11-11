@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Slf4j
 public class Client{
@@ -72,7 +72,7 @@ public class Client{
 	}
 	public String getProfile() {
 		String result=null;
-		result=result+"Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
+		result="Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
 		return result;
 	}
 	public void updateName(String name){
@@ -193,7 +193,7 @@ public class Client{
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,new java.sql.Date(new java.util.Date().getTime()));
+			stmt.setDate(2,LocalDate.now());
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
