@@ -192,17 +192,18 @@ public class Client{
 	public void addHistory(String dish) {
 		try {
 			Connection connection=getConnection();
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			Calendar calendar=Calendar.getInstance();
+			java.sql.Date date=new java.sql.Date(calendar.getTime().getTime());
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,today);
+			stmt.setDate(2,date);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			//throw e;
+			
 		}
 	}
 	public String getHistory() throws Exception{
