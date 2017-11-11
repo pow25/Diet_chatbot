@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.time.LocalDate;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -314,6 +315,7 @@ public class KitchenSinkController {
 	private void handleTextContent_newuser(String replytoken, Event event, String text,String userld,int complete_indicator)
 			throws Exception {
 					String replytext = null;
+					caseCounter=0;
 					
 					if(complete_indicator==1) {   //there is no information at all
 						client.addClient(userld);
@@ -438,22 +440,26 @@ throws Exception{
                 	reply += '\n';
                 	reply +="BMI:";
                 	reply += String.valueOf(bmi);
+                	caseCounter=1;
                 	this.replyText(replyToken,reply);
                 break;
             }
             
             case "insert":{
             	response = "insert";
+            	caseCounter=2;
             	break;
             }
             
             case "uninsert":{
             	response = null;
+            	caseCounter=3;
             	break;
             }
             
             case "history": {
                 try  {
+                	caseCounter=4;
                 	String reply = null;
                 	reply = client.getHistory();
                 	this.replyText(replyToken,reply);
@@ -463,7 +469,15 @@ throws Exception{
                 break;
             }
             
+            
+            case "add history":{
+            	caseCounter=5;
+            	this.replyText(replyToken,"What do you eat today?");
+            	break;
+            }
+            
             case "recommend daily intake": {
+            	caseCounter=6;
             	String clientagerange=null;
             	int clientage=client.getAge();
             	if (clientage<=50) {
@@ -498,6 +512,7 @@ throws Exception{
 
             case "hi":{
             	String reply = null;
+            	caseCounter=7;
 
                  reply = "Welcome back to the diet chatbot!";
                  reply += '\n';
@@ -515,6 +530,8 @@ throws Exception{
                  reply += '\n';
                  reply += '\n';
                  reply += "It will provide you the personal wegiht history and food history\n\n";
+                 reply += "Keyword: add history \n\n";
+                 reply += "It will let you input what you eat today and record the eating history\n\n";
                  reply += "Keyword: recommend daily intake ";
                  reply += "\n\n";
                  reply += "It will provide you the recommend daily serving\n\n";
@@ -555,7 +572,16 @@ throws Exception{
 
               default:{
               	 	String reply = null;
-              	
+              	 	if (caseCounter==5) {
+              	 		//try {
+              	 			caseCounter=8;
+              	 			client.addHistory(text);
+              	 			this.replyText(replyToken,"new history added successfully!");
+              	 		//}catch (Exception e){
+              	 		//	this.replyText(replyToken, "Something goes wrong recording history...");
+              	 		//}
+              	 		break;
+              	 	}
               	 	reply = menu_handler(text,0,"null");
               	 
               	 	if( (reply==null) && (response == null) ) {            
@@ -576,7 +602,7 @@ throws Exception{
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
-
+	
 	private void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
@@ -621,6 +647,7 @@ throws Exception{
 		client = new Client();
 		mymenu=new menu();
 		response = null;
+		caseCounter=0;
 	}
 
 	private SQLDatabaseEngine database;
@@ -628,6 +655,7 @@ throws Exception{
 	private Client client;
 	private menu mymenu;
 	private String response;
+	private int caseCounter;
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below

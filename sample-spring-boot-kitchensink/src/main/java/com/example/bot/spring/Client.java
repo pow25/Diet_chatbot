@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.*;
 
 @Slf4j
 public class Client{
@@ -71,7 +73,7 @@ public class Client{
 	}
 	public String getProfile() {
 		String result=null;
-		result=result+"Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
+		result="Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
 		return result;
 	}
 	public void updateName(String name){
@@ -187,19 +189,21 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-	public void addHistory(Date orderDate,String dish){
+	public void addHistory(String dish) {
 		try {
 			Connection connection=getConnection();
+			Calendar calendar=Calendar.getInstance();
+			java.sql.Date date=new java.sql.Date(calendar.getTime().getTime());
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,orderDate);
+			stmt.setDate(2,date);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
+			
 		}
 	}
 	public String getHistory() throws Exception{
