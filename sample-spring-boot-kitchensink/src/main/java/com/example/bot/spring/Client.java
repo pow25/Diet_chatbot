@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Slf4j
 public class Client{
@@ -188,13 +188,14 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-	public void addHistory(LocalDate orderDate,String dish) throws Exception{
+	public void addHistory(String dish) throws Exception{
 		try {
-			Date date=new Date();//Date.valueOf(orderDate);
+			java.util.Date utildate=new java.util.Date();
+			java.sql.Date sqldate= new java.sql.Date(utildate.getTime());
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,date);
+			stmt.setDate(2,sqldate);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeQuery();

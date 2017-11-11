@@ -575,8 +575,7 @@ throws Exception{
               	 	if (caseCounter==5) {
               	 		try {
               	 			caseCounter=8;
-              	 			LocalDate localDate = LocalDate.now();
-              	 			client.addHistory(localDate,text);
+              	 			client.addHistory(text);
               	 			this.replyText(replyToken,"new history added successfully!");
               	 		}catch (Exception e){
               	 			this.replyText(replyToken, "Something goes wrong recording history...\n");
