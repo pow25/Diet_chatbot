@@ -579,7 +579,7 @@ throws Exception{
               	 			client.addHistory(localDate,text);
               	 			this.replyText(replyToken,"new history added successfully!");
               	 		}catch (Exception e){
-              	 			this.replyText(replyToken, "Something goes wrong recording history...");
+              	 			this.replyText(replyToken, "Something goes wrong recording history...\n");
               	 		}
               	 		break;
               	 	}
@@ -603,7 +603,7 @@ throws Exception{
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
-
+	
 	private void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
