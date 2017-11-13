@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 
@@ -49,6 +50,7 @@ import com.google.common.io.ByteStreams;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
@@ -112,6 +114,7 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
+
 		try {
 
 				int complete_indicator = client.isInfoComplete(userId);
@@ -264,7 +267,28 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private void push(@NonNull String to, @NonNull List<Message> messages) {
+		try {
+			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
+			log.info("Sent pushmessages: {}", apiResponse);
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void pushText(@NonNull String to, @NonNull String message) {
+		if (to.isEmpty()) {
+			throw new IllegalArgumentException("to must not be empty");
+		}
+		if (message.length() > 1000) {
+			message = message.substring(0, 1000 - 2) + "..";
+		}
+		TextMessage temp = new TextMessage(message);
+		this.push(to, Collections.singletonList(temp));
+	}
 
+	
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
@@ -511,40 +535,59 @@ throws Exception{
 //            }
 
             case "hi":{
-            	String reply = null;
-            	caseCounter=7;
+            	String replya = null;
+            	String replyb = null;
+            	String replyc = null;
+            	String replyd = null;
+            	String replye = null;
 
-                 reply = "Welcome back to the diet chatbot!";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "There are several functions you can use:";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "Keyword: profile ";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "It will provide you the personal information";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "Keyword: history ";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "It will provide you the personal wegiht history and food history\n\n";
-                 reply += "Keyword: add history \n\n";
-                 reply += "It will let you input what you eat today and record the eating history\n\n";
-                 reply += "Keyword: recommend daily intake ";
-                 reply += "\n\n";
-                 reply += "It will provide you the recommend daily serving\n\n";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
-                 reply += '\n';
-                 reply += '\n';
-                 reply += "If you want to stop insert, type keyword:uninsert";
-                 this.replyText(replyToken, reply);	
+            	caseCounter=7;
+            	List<Message> megs = new ArrayList<Message>();
+
+            
+                 replya = "Welcome back to the diet chatbot!";
+                 replya += '\n';
+                 replya += '\n';
+                 replya += "There are several functions you can use, to use the function, just type the keyword";
+
+                 replyb = "Keyword: profile ";
+                 replyb += '\n';
+                 replyb += '\n';
+                 replyb += "It will provide you the personal health information";
+
+                 replyc = "Keyword: history ";
+                 replyc += '\n';
+                 replyc += '\n';
+                 replyc += "It will provide you the personal wegiht history and food history\n\n";
+                 replyc += "Keyword: add history \n\n";
+                 replyc += "It will let you input what you eat today and record the eating history\n\n";
+                 
+                 replyd = "Keyword: recommend daily intake ";
+                 replyd += "\n\n";
+                 replyd += "It will provide you the recommend daily serving\n\n";
+
+                 replye = "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
+                 replye += '\n';
+                 replye += '\n';
+                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
+                 replye += '\n';
+                 replye += '\n';
+                 replye += "If you want to stop insert, type keyword:uninsert";
+            	
+             	Message a=  new TextMessage(replya);
+             	Message b = new TextMessage(replyb);
+             	Message c=  new TextMessage(replyc);
+             	Message d = new TextMessage(replyd);
+             	Message e=  new TextMessage(replye);
+
+             	megs.add(a);
+             	megs.add(b);
+             	megs.add(c);
+             	megs.add(d);
+             	megs.add(e);
+
+                 
+                 this.reply(replyToken, megs);	
 
                break;
               }
