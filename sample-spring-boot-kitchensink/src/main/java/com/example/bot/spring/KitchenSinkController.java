@@ -50,6 +50,7 @@ import com.google.common.io.ByteStreams;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
@@ -266,7 +267,28 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private void push(@NonNull String to, @NonNull List<Message> messages) {
+		try {
+			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
+			log.info("Sent pushmessages: {}", apiResponse);
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void pushText(@NonNull String to, @NonNull String message) {
+		if (to.isEmpty()) {
+			throw new IllegalArgumentException("to must not be empty");
+		}
+		if (message.length() > 1000) {
+			message = message.substring(0, 1000 - 2) + "..";
+		}
+		TextMessage temp = new TextMessage(message);
+		this.push(to, Collections.singletonList(temp));
+	}
 
+	
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
