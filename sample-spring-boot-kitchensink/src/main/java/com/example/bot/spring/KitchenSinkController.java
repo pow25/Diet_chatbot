@@ -145,7 +145,7 @@ public class KitchenSinkController {
 			reply(event.getReplyToken(),new TextMessage("Error: "+ex.toString()));
 			return;
 		}
-		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"/*+restaurantApi.printRestaurant()*/));
+		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"+restaurantApi.printRestaurant()));
 	}
 
 	@EventMapping
