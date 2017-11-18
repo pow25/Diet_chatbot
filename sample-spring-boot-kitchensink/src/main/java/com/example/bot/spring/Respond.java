@@ -36,7 +36,7 @@ public class Respond{
 	public class Restaurant {
 		private String name, vicinity;
 		private float rating;
-		private Photos photos;
+		private Photos[] photos;
 		
 		public Restaurant() {}
 		
@@ -48,7 +48,7 @@ public class Respond{
 	        return vicinity;
 	    }
 		
-		public Photos getPhotos() {
+		public Photos[] getPhotos() {
 	        return photos;
 	    }
 		
@@ -68,7 +68,7 @@ public class Respond{
 	        this.rating = rating;
 	    }
 	    
-	    public void setName(Photos photos) {
+	    public void setPhotos(Photos[] photos) {
 	        this.photos = photos;
 	    }
 		
@@ -76,7 +76,7 @@ public class Respond{
 	        return  "Name: " + name + "\n" +
 	                "Address: " + vicinity + "\n" +
 	                "Rating: " + String.valueOf(rating) + "\n" +
-	                "Detail: " + photos.print() + "\n";
+	                "Detail: " + photos[0].print() + "\n";
 	    }
 	}
 	
@@ -106,8 +106,8 @@ public class Respond{
 	}
 	
 	public String printRespond() {
-		//return result.printResult();
-		return "deubg";
+		return result.printResult();
+
 	}
 }
 
