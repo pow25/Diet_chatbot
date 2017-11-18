@@ -49,7 +49,8 @@ public class RestaurantAPI {
     }
 	
 	public String printRestaurant() {
-		String total = null;
+		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
+				"&rankby=distance&types=food&key=" + API_KEY;;
 		for(Restaurant r :restaurants) {
 			total += r.printRestaurant() + '\n';
 		}

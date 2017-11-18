@@ -140,7 +140,7 @@ public class KitchenSinkController {
 		LocationMessageContent locationMessage = event.getMessage();
 		RestaurantAPI restaurantApi = new RestaurantAPI(locationMessage.getLatitude(),locationMessage.getLongitude());
 		
-		reply(event.getReplyToken(),new TextMessage(restaurantApi.printRestaurant()));
+		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"+restaurantApi.printRestaurant()));
 	}
 
 	@EventMapping
