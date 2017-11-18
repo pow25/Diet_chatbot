@@ -49,9 +49,7 @@ public class RestaurantAPI {
     }
 	
 	public String printRestaurant() {
-		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
-				"&rankby=distance&types=food&key=" + API_KEY;;
-		total += respond.printRespond();
+		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + "&rankby=distance&types=food&key=" + API_KEY+"\n"+respond.printRespond();
 		return total;
 	}
 	
