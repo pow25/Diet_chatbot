@@ -114,20 +114,20 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
-		handleTextContent(replytoken, event, message.getText());
-//		try {
-//
-//				int complete_indicator = client.isInfoComplete(userId);
-//			
-//				if(complete_indicator==0) {  // the user's info is full
-//					handleTextContent(replytoken, event, message.getText());
-//				}
-//				else {
-//					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
-//				}
-//		 } catch (Exception e) {
-//			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
-//		 	}
+//		handleTextContent(replytoken, event, message.getText());
+		try {
+
+				int complete_indicator = client.isInfoComplete(userId);
+			
+				if(complete_indicator==0) {  // the user's info is full
+					handleTextContent(replytoken, event, message.getText());
+				}
+				else {
+					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+				}
+		 } catch (Exception e) {
+			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+		 	}
 	}
 
 	@EventMapping
@@ -277,6 +277,14 @@ public class KitchenSinkController {
 		}
 	}
 	
+	private void pushImage(@NonNull String to, @NonNull Message messages) {
+		try {
+			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
+			log.info("Sent pushmessages: {}", apiResponse);
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	private void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
@@ -392,7 +400,7 @@ public class KitchenSinkController {
 						boolean temp = isDouble(text);
 						
 						if(temp==true) {
-							double i = Double.parseDouble(text);;
+							double i = Double.parseDouble(text);
 							client.updateHeight(i);
 							// insert i to database
 							replytext = "Great, you have just inputed the height, now please input you weight(Kg)";
@@ -498,21 +506,37 @@ throws Exception{
             	String reply = null;
             	String temp = null;
             	caseCounter=10;
-            	long digit = System.currentTimeMillis();
-            	digit = digit % 1000000;
+            	long n_coupon = client.getCoupon();
             	
-            	reply = "Your 6-digit code is: ";
-            	temp = String.format("%06d", digit);
-
-            	reply += temp;
+            	if (n_coupon == -1) 
+            	{
+            		long digit = System.currentTimeMillis();
+            		digit = digit % 1000000;
             	
+            		reply = "Your 6-digit code is: ";
+            		temp = String.format("%06d", digit);
+            		client.updateCoupon(digit);
+            		reply += temp;
+            	}
+            	else {
+            		reply = "You have already got one:";
+            		reply += String.valueOf(n_coupon);
+            	}
             	this.replyText(replyToken,reply);
             	break;
             }
             
             case "code":{
+            	String reply = null;
             	caseCounter=11;
-            	String reply = "Please type in the 6-digit code ";
+      	 		boolean if_claim = client.ifclaim();
+      	 		if (if_claim) {
+      	 			reply = "Sorry, you have already claimed the coupon.";
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
+            	reply = "Please type in the 6-digit code ";
         
             	this.replyText(replyToken,reply);
             	break;
@@ -553,10 +577,14 @@ throws Exception{
                 break;
             }
             
-            case "img":{
-            	String imageUrl = createUri("/static/buttons/a.jpg");
-            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
-            	this.reply(replyToken, reply);
+            case "zhang":{
+            	
+            	String reply = "haha";
+            	int i =0;
+            	while(i<10) {
+            		this.pushText(userId, reply);
+            		i++;
+            	}
             	break;
             }
 //            case "confirm": {
@@ -637,6 +665,26 @@ throws Exception{
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
 //              	 		check(userld,text);
+              	 		long i = Long.parseLong(text);
+              	 		
+              	 		List<String> result = client.claim(i);
+              	 		              	 		
+              	 		if (result.isEmpty()) {
+              	 				reply = "Invalid code, please type \"code\" to start the process again.";
+              	 				this.replyText(replyToken, reply);
+              	 				break;
+              	 		}
+              	 		else {
+              	 			result.add(userId);
+              	 			String imageUrl = createUri("/static/buttons/a.jpg");
+                        	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
+              	 			
+                        	for(String m:result) { 
+                        		this.pushImage(m, img_reply);
+                        	}
+                        	break;
+              	 		}
+              	 	
               	 	}
               	 	
               	 	if (caseCounter==5) {
