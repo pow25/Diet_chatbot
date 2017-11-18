@@ -499,6 +499,12 @@ throws Exception{
             	this.replyText(replyToken,"What do you eat today?");
             	break;
             }
+            case "calculate nutrients":{
+            	caseCounter=9;
+            	this.replyText(replyToken, "please type the dish name, or you can type both the name and weight(g) of dish seperated by a ','\n"
+            			+ "for example: chilli chicken,135");
+            	break;
+            }
             
             case "recommend daily intake": {
             	caseCounter=6;
@@ -565,6 +571,7 @@ throws Exception{
                  replyd = "Keyword: recommend daily intake ";
                  replyd += "\n\n";
                  replyd += "It will provide you the recommend daily serving\n\n";
+                 
 
                  replye = "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
                  replye += '\n';
@@ -624,6 +631,15 @@ throws Exception{
               	 		//	this.replyText(replyToken, "Something goes wrong recording history...");
               	 		//}
               	 		break;
+              	 	}
+              	 	if (caseCounter==9) {
+              	 		caseCounter=8;
+              	 		int weight=0;
+              	 		String[] words=text.split(",");
+              	 		if (words.length==2)
+              	 			weight=Integer.parseInt(words[1]);
+              	 		String replyline=mymenu.calculateNutrients(words[0],weight);
+              	 		this.replyText(replyToken, replyline);
               	 	}
               	 	reply = menu_handler(text,0,"null");
               	 
