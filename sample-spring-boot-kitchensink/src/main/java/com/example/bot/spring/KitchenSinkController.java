@@ -114,20 +114,20 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
-		handleTextContent(replytoken, event, message.getText());
-//		try {
-//
-//				int complete_indicator = client.isInfoComplete(userId);
-//			
-//				if(complete_indicator==0) {  // the user's info is full
-//					handleTextContent(replytoken, event, message.getText());
-//				}
-//				else {
-//					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
-//				}
-//		 } catch (Exception e) {
-//			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
-//		 	}
+//		handleTextContent(replytoken, event, message.getText());
+		try {
+
+				int complete_indicator = client.isInfoComplete(userId);
+			
+				if(complete_indicator==0) {  // the user's info is full
+					handleTextContent(replytoken, event, message.getText());
+				}
+				else {
+					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+				}
+		 } catch (Exception e) {
+			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+		 	}
 	}
 
 	@EventMapping
@@ -277,6 +277,14 @@ public class KitchenSinkController {
 		}
 	}
 	
+	private void pushImage(@NonNull String to, @NonNull Message messages) {
+		try {
+			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
+			log.info("Sent pushmessages: {}", apiResponse);
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	private void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
@@ -664,16 +672,19 @@ throws Exception{
               	 		if (result.isEmpty()) {
               	 				reply = "Invalid code, please type \"code\" to start the process again.";
               	 				this.replyText(replyToken, reply);
+              	 				break;
               	 		}
               	 		else {
               	 			result.add(userId);
               	 			String imageUrl = createUri("/static/buttons/a.jpg");
                         	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
               	 			
-//                        	this.push(result, img_reply);
+                        	for(String m:result) { 
+                        		this.pushImage(m, img_reply);
+                        	}
+                        	break;
               	 		}
               	 	
-              	 		break;
               	 	}
               	 	
               	 	if (caseCounter==5) {
