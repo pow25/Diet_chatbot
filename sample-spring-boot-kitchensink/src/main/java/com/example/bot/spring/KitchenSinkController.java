@@ -502,10 +502,8 @@ throws Exception{
             	digit = digit % 1000000;
             	
             	reply = "Your 6-digit code is: ";
-            	temp = String.valueOf(digit);
-                while (temp.length() <6) {
-                    temp.insert(0, '0');
-                }
+            	temp = String.format("%06d", digit);
+
             	reply += temp;
             	
             	this.replyText(replyToken,reply);
