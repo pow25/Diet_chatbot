@@ -21,12 +21,12 @@ public class RestaurantAPI {
 	private static final String API_KEY = "AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8";
 	
 	@SuppressWarnings("unused")
-	private double _latitude;
+	private String _latitude;
 	@SuppressWarnings("unused")
-	private double _longitude;
+	private String _longitude;
 	
 	
-	public RestaurantAPI(double latitude,double longitude) {
+	public RestaurantAPI(String latitude,String longitude) {
 		this._latitude=latitude;
 		this._longitude=longitude;
 	}
@@ -40,16 +40,16 @@ public class RestaurantAPI {
 
 	}
 	
-	public double getLongitude() {
+	public String getLongitude() {
         return _longitude;
     }
 	
-	public double getLatitude() {
+	public String getLatitude() {
         return _latitude;
     }
 	
 	public String printRestaurant() {
-		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + "&rankby=distance&types=food&key=" + API_KEY+"\n"+respond.printRespond();
+		String total = HEADER + "location=" + _latitude + "," + _longitude + "&rankby=distance&types=food&key=" + API_KEY+"\n"+respond.printRespond();
 		return total;
 	}
 	

@@ -106,8 +106,8 @@ public class Respond{
 	}
 	
 	public String printRespond() {
-		return result.printResult();
-
+		//return result.printResult();
+		return "debug";
 	}
 }
 
