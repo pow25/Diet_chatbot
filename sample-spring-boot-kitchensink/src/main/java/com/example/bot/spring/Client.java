@@ -34,7 +34,7 @@ public class Client{
 	public int getAge() {
 		return age;
 	}
-	public void loadClient(String userID)throws Exception{
+	public void loadClient(String userID){
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM client WHERE userID=?;");
@@ -66,12 +66,14 @@ public class Client{
 			stmt.setDouble(6,0);
 			stmt.executeQuery();
 			long initi=-1;
-			PreparedStatement stmt2=connection.prepareStatement("insert into clientcoupon values(?,?,?);");
+			Connection connection2=getConnection();
+			PreparedStatement stmt2=connection2.prepareStatement("insert into clientcoupon values(?,?,?);");
 			stmt2.setString(1,userID);
 			stmt2.setLong(2, initi);
 			stmt2.setBoolean(3,false);
 			stmt.close();
 			stmt2.close();
+			connection2.close();
 			connection.close();
 		}catch (Exception e) {
 			System.out.println(e);
