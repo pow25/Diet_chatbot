@@ -65,19 +65,22 @@ public class Client{
 			stmt.setDouble(5,0);
 			stmt.setDouble(6,0);
 			stmt.executeQuery();
+			stmt.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		try {
 			long initi=-1;
 			Connection connection2=getConnection();
 			PreparedStatement stmt2=connection2.prepareStatement("insert into clientcoupon values(?,?,?);");
 			stmt2.setString(1,userID);
 			stmt2.setLong(2, initi);
 			stmt2.setBoolean(3,false);
-			stmt.close();
+			stmt2.executeQuery();
 			stmt2.close();
 			connection2.close();
-			connection.close();
-		}catch (Exception e) {
-			System.out.println(e);
-		}
+		}catch (Exception e) {}
 	}
 	public String getProfile() {
 		String result=null;
