@@ -553,13 +553,6 @@ throws Exception{
                 break;
             }
             
-            case "im":{
-            	String imageUrl = createUri("/static/buttons/a.jpg");
-
-            	this.replyText(replyToken, imageUrl);
-            	break;
-            }
-            
             case "img":{
             	String imageUrl = createUri("/static/buttons/a.jpg");
             	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
