@@ -235,7 +235,7 @@ public class Client{
 		long coupon=-1;
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("select coupon from couponclient where userid=?;");
+			PreparedStatement stmt=connection.prepareStatement("select coupon from clientcoupon where userid=?;");
 			stmt.setString(1,userID);
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
@@ -252,7 +252,7 @@ public class Client{
 	public void updateCoupon(long coupon) {
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("update couponclient set coupon=? where userid=?;");
+			PreparedStatement stmt=connection.prepareStatement("update clientcoupon set coupon=? where userid=?;");
 			stmt.setString(2, userID);
 			stmt.setLong(1, coupon);
 			stmt.executeUpdate();
@@ -266,7 +266,7 @@ public class Client{
 		boolean claim=false;
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("select claim from couponclient where userid=?;");
+			PreparedStatement stmt=connection.prepareStatement("select claim from clientcoupon where userid=?;");
 			stmt.setString(1,userID);
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
@@ -284,7 +284,7 @@ public class Client{
 		List<String> updateClients=new ArrayList<String>();
 		try {
 			Connection connection=getConnection();
-			PreparedStatement stmt=connection.prepareStatement("select * from couponclient where coupon=?;");
+			PreparedStatement stmt=connection.prepareStatement("select * from clientcoupon where coupon=?;");
 			stmt.setLong(1,coupon);
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
