@@ -512,6 +512,9 @@ throws Exception{
             
             case "code":{
             	caseCounter=11;
+            	String reply = "Please type in the 6-digit code ";
+        
+            	this.replyText(replyToken,reply);
             	break;
             }
            
@@ -552,8 +555,8 @@ throws Exception{
             
             case "img":{
             	String imageUrl = createUri("/static/buttons/1040.jpg");
-            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
-            	this.reply(replyToken, reply);
+//            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
+            	this.reply(replyToken, imageUrl);
             	break;
             }
 //            case "confirm": {
@@ -631,8 +634,9 @@ throws Exception{
               default:{
               	 	String reply = null;
               	 	
-              	 	if(caseCounter == 11) {
+              	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
+//              	 		check(userld,text);
               	 	}
               	 	
               	 	if (caseCounter==5) {
