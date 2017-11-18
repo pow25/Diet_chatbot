@@ -29,7 +29,7 @@ public class RestaurantAPI {
 	public RestaurantAPI(double latitude,double longitude) {
 		this._latitude=latitude;
 		this._longitude=longitude;
-		serachRestaurant();
+		//serachRestaurant();
 	}
 	
 	public void serachRestaurant() {
@@ -51,9 +51,9 @@ public class RestaurantAPI {
 	public String printRestaurant() {
 		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
 				"&rankby=distance&types=food&key=" + API_KEY;;
-		for(Restaurant r :restaurants) {
-			total += r.printRestaurant() + '\n';
-		}
+		//for(Restaurant r :restaurants) {
+			//total += r.printRestaurant() + '\n';
+		//}
 		return total;
 	}
 	
