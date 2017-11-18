@@ -288,9 +288,7 @@ public class Client{
 			stmt.setLong(1,coupon);
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
-				if (!rs.getBoolean(3)) {
-					updateClients.add(rs.getString(1));
-				}
+				updateClients.add(rs.getString(1));
 			}
 			connection.close();
 			stmt.close();
