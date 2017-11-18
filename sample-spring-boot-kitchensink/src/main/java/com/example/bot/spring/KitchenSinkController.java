@@ -548,7 +548,7 @@ throws Exception{
             }
             
             case "img":{
-            	String img_url = "../sample-spring-boot-kitchensink/a.jpg";
+            	String img_url = "http://cdn2.bigcommerce.com/server5100/09ec3/product_images/uploaded_images/ptg-coupon-code-photo.jpg";
             	ImageMessage reply =new ImageMessage(img_url,img_url);
             	this.reply(replyToken, reply);
             	break;
