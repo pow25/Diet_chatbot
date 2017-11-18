@@ -29,15 +29,15 @@ public class RestaurantAPI {
 	public RestaurantAPI(double latitude,double longitude) {
 		this._latitude=latitude;
 		this._longitude=longitude;
-		serachRestaurant();
 	}
 	
-	public void serachRestaurant() {
+	public void serachRestaurant() throws IOException{
 		String url = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
 				"&rankby=distance&types=food&key=" + API_KEY;
 		
 		RestTemplate restTemplate = new RestTemplate();
 		this.respond = restTemplate.getForObject(url, Respond.class);
+
 	}
 	
 	public double getLongitude() {
