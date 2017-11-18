@@ -116,7 +116,7 @@ public class KitchenSinkController {
 		//if userld is not in the database
 //		handleTextContent(replytoken, event, message.getText());
 		try {
-
+				client.loadClient(userId);
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
@@ -433,7 +433,7 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, String text)
 throws Exception{
         String userId = event.getSource().getUserId();
-        client.loadClient(userId);
+        
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
