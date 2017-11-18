@@ -70,6 +70,34 @@ public class menu{
 			System.out.println(e);
 		}
 	}
+	public String calculateNutrients(String name,double weight) {
+		String result=null;
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("with simitable(dbno,simi) as " + 
+					"(select ndbno,similarity(description,?) from nutrients) " + 
+					"select * from nutrients where ndbno=" + 
+					"(select dbno from simitable order by simi DESC limit 1);");
+			stmt.setString(1,name);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				if (weight==0) {
+					result="Description: "+rs.getString(2)+"\nWeight(g): "+String.valueOf(rs.getDouble(3))+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5))+"\nSodium, Na(mg): "
+						+String.valueOf(rs.getDouble(6))+"\nSaturated Fat(g): "+String.valueOf(rs.getDouble(7));
+				}
+				else{
+					result="Description: "+rs.getString(2)+"\nWeight(g): "+String.valueOf(weight)+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5)*weight/rs.getDouble(3))+"\nSodium, Na(mg): "
+						+String.valueOf(rs.getDouble(6)*weight/rs.getDouble(3))+"\nSaturated Fat(g): "+String.valueOf(rs.getDouble(7)*weight/rs.getDouble(3));
+				}
+			}
+			stmt.close();
+			rs.close();
+			connection.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return result;
+	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
