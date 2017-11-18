@@ -548,7 +548,7 @@ throws Exception{
             }
             
             case "img":{
-            	String img_url = "../sample-spring-boot-kitchensink/build/resources/a.jpg";
+            	String img_url = "../sample-spring-boot-kitchensink/a.jpg";
             	ImageMessage reply =new ImageMessage(img_url,img_url);
             	this.reply(replyToken, reply);
             	break;
