@@ -305,9 +305,9 @@ public class Client{
 		}
 		try {
 			Connection connection2=getConnection();
-			PreparedStatement stmt2=connection.preparedStatement("update clientcoupon set claim=true where userid=?;");
-			stmt.setString(1,userID);
-			stmt2.executeQuery();
+			PreparedStatement stmt2=connection2.prepareStatement("update clientcoupon set claim=true where userid=?;");
+			stmt2.setString(1,userID);
+			stmt2.executeUpdate();
 			connection2.close();
 			stmt2.close();
 		}catch (Exception e) {}
