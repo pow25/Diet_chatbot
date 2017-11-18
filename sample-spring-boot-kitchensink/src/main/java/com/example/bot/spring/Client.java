@@ -65,7 +65,11 @@ public class Client{
 			stmt.setDouble(5,0);
 			stmt.setDouble(6,0);
 			stmt.executeQuery();
+			PreparedStatement stmt2=connection.prepareStatement("insert into clientcoupon values(?,-1,?);");
+			stmt2.setString(1,userID);
+			stmt2.setBoolean(3,false);
 			stmt.close();
+			stmt2.close();
 			connection.close();
 		}catch (Exception e) {
 			System.out.println(e);
@@ -226,6 +230,75 @@ public class Client{
 			if (result != null)
 				return result;
 			throw new Exception("NOT FOUND");
+	}
+	public long getCoupon() {
+		long coupon=-1;
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("select coupon from couponclient where userid=?;");
+			stmt.setString(1,userID);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				coupon=rs.getLong(1);
+			}
+			connection.close();
+			stmt.close();
+			rs.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return coupon;
+	}
+	public void updateCoupon(long coupon) {
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("update couponclient set coupon=? where userid=?;");
+			stmt.setString(2, userID);
+			stmt.setLong(1, coupon);
+			stmt.executeUpdate();
+			connection.close();
+			stmt.close();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	public boolean ifclaim() {
+		boolean claim=false;
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("select claim from couponclient where userid=?;");
+			stmt.setString(1,userID);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				claim=rs.getBoolean(1);
+			}
+			connection.close();
+			stmt.close();
+			rs.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return claim;
+	}
+	public List<String> claim(long coupon) {
+		List<String> updateClients=new ArrayList<String>();
+		try {
+			Connection connection=getConnection();
+			PreparedStatement stmt=connection.prepareStatement("select * from couponclient where coupon=?;");
+			stmt.setLong(1,coupon);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				if (!rs.getBoolean(3)) {
+					updateClients.add(rs.getString(1));
+				}
+			}
+			connection.close();
+			stmt.close();
+			rs.close();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return updateClients;
 	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
