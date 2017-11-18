@@ -138,8 +138,8 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
 		LocationMessageContent locationMessage = event.getMessage();
-		reply(event.getReplyToken(), new LocationMessage(locationMessage.getTitle(), locationMessage.getAddress(),
-				locationMessage.getLatitude(), locationMessage.getLongitude()));
+		reply(event.getReplyToken(),new TextMessage(locationMessage.getTitle()+"\n"+locationMessage.getAddress()+"\n"+
+				locationMessage.getLatitude()+"\n"+locationMessage.getLongitude()));
 	}
 
 	@EventMapping
