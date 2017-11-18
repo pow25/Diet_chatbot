@@ -82,11 +82,11 @@ public class menu{
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
 				if (weight==0) {
-					result="Description: "+rs.getString(2)+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5))+"\nSodium, Na(mg): "
+					result="Description: "+rs.getString(2)+"\nWeight(g): "+String.valueOf(rs.getDouble(3))+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5))+"\nSodium, Na(mg): "
 						+String.valueOf(rs.getDouble(6))+"\nSaturated Fat(g): "+String.valueOf(rs.getDouble(7));
 				}
 				else{
-					result="Description: "+rs.getString(2)+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5)*weight/rs.getDouble(3))+"\nSodium, Na(mg): "
+					result="Description: "+rs.getString(2)+"\nWeight(g): "+String.valueOf(weight)+"\nEnergy(kcal): "+String.valueOf(rs.getDouble(5)*weight/rs.getDouble(3))+"\nSodium, Na(mg): "
 						+String.valueOf(rs.getDouble(6)*weight/rs.getDouble(3))+"\nSaturated Fat(g): "+String.valueOf(rs.getDouble(7)*weight/rs.getDouble(3));
 				}
 			}

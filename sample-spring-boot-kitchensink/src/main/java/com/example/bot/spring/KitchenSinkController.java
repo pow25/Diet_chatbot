@@ -572,7 +572,7 @@ throws Exception{
                  replyd += "\n\n";
                  replyd += "It will provide you the recommend daily serving\n\n";
                  replyd +="keyword: calculate nutrients\n\n ";
-                 replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n"
+                 replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
                  
 
                  replye = "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
