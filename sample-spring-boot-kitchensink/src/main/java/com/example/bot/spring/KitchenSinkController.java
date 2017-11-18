@@ -432,7 +432,7 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, String text)
 throws Exception{
         String userId = event.getSource().getUserId();
-        
+        client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
         
         //-----------------------------------------------------------//
