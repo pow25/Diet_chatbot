@@ -551,7 +551,7 @@ throws Exception{
             }
             
             case "img":{
-            	String imageUrl = createUri("/static/buttons/1040.jpg");
+            	String imageUrl = createUri("/static/buttons/10.jpg");
             	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
             	this.reply(replyToken, reply);
             	break;
