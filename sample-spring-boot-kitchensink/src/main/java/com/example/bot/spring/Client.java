@@ -65,8 +65,10 @@ public class Client{
 			stmt.setDouble(5,0);
 			stmt.setDouble(6,0);
 			stmt.executeQuery();
-			PreparedStatement stmt2=connection.prepareStatement("insert into clientcoupon values(?,-1,?);");
+			long initi=-1;
+			PreparedStatement stmt2=connection.prepareStatement("insert into clientcoupon values(?,?,?);");
 			stmt2.setString(1,userID);
+			stmt2.setLong(2, initi);
 			stmt2.setBoolean(3,false);
 			stmt.close();
 			stmt2.close();
