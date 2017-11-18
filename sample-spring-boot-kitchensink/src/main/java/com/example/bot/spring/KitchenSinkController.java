@@ -392,7 +392,7 @@ public class KitchenSinkController {
 						boolean temp = isDouble(text);
 						
 						if(temp==true) {
-							double i = Double.parseDouble(text);;
+							double i = Double.parseDouble(text);
 							client.updateHeight(i);
 							// insert i to database
 							replytext = "Great, you have just inputed the height, now please input you weight(Kg)";
@@ -498,17 +498,17 @@ throws Exception{
             	String reply = null;
             	String temp = null;
             	caseCounter=10;
-            	long n_coupon = getCoupon();
+            	long n_coupon = client.getCoupon();
             	
             	if (n_coupon == -1) 
             	{
-            	long digit = System.currentTimeMillis();
-            	digit = digit % 1000000;
+            		long digit = System.currentTimeMillis();
+            		digit = digit % 1000000;
             	
-            	reply = "Your 6-digit code is: ";
-            	temp = String.format("%06d", digit);
-            	client.updateCoupon(digit);
-            	reply += temp;
+            		reply = "Your 6-digit code is: ";
+            		temp = String.format("%06d", digit);
+            		client.updateCoupon(digit);
+            		reply += temp;
             	}
             	else {
             		reply = "You have already got one:";
@@ -519,15 +519,16 @@ throws Exception{
             }
             
             case "code":{
+            	String reply = null;
             	caseCounter=11;
       	 		boolean if_claim = client.ifclaim();
       	 		if (if_claim) {
-      	 			reply = "Sorry, you have already claimed the coupon."
+      	 			reply = "Sorry, you have already claimed the coupon.";
       	 			caseCounter = 8;
       	 			this.replyText(replyToken,reply);
       	 			break;
       	 		}
-            	String reply = "Please type in the 6-digit code ";
+            	reply = "Please type in the 6-digit code ";
         
             	this.replyText(replyToken,reply);
             	break;
@@ -568,7 +569,16 @@ throws Exception{
                 break;
             }
             
-
+            case "zhang":{
+            	
+            	String reply = "haha";
+            	int i =0;
+            	while(i<10) {
+            		this.pushText(userId, reply);
+            		i++;
+            	}
+            	break;
+            }
 //            case "confirm": {
 //                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
 //                        "Do it?",
@@ -647,7 +657,9 @@ throws Exception{
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
 //              	 		check(userld,text);
-              	 		<List>String result = client.claim(text);
+              	 		long i = Long.parseLong(text);
+              	 		
+              	 		List<String> result = client.claim(i);
               	 		              	 		
               	 		if (result.isEmpty()) {
               	 				reply = "Invalid code, please type \"code\" to start the process again.";
@@ -657,7 +669,8 @@ throws Exception{
               	 			result.add(userId);
               	 			String imageUrl = createUri("/static/buttons/a.jpg");
                         	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
-              	 			this.push(result, img_reply);
+              	 			
+//                        	this.push(result, img_reply);
               	 		}
               	 	
               	 		break;
