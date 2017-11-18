@@ -303,6 +303,14 @@ public class Client{
 		}catch (Exception e) {
 			System.out.println(e);
 		}
+		try {
+			Connection connection2=getConnection();
+			PreparedStatement stmt2=connection.preparedStatement("update clientcoupon set claim=true where userid=?;");
+			stmt.setString(1,userID);
+			stmt2.executeQuery();
+			connection2.close();
+			stmt2.close();
+		}catch (Exception e) {}
 		return updateClients;
 	}
 	private Connection getConnection() throws URISyntaxException, SQLException {

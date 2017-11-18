@@ -673,6 +673,11 @@ throws Exception{
               	 				this.replyText(replyToken, reply);
               	 				break;
               	 		}
+              	 		else if (result.contains(userId)) {
+              	 			reply="This is your own code, please type \"code\" to start the process again.";
+              	 			this.replyText(replyToken, reply);
+          	 				break;
+              	 		}
               	 		else {
               	 			result.add(userId);
               	 			String imageUrl = createUri("/static/buttons/a.jpg");
