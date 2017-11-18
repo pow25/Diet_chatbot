@@ -496,12 +496,17 @@ throws Exception{
             
             case "friend":{
             	String reply = null;
+            	String temp = null;
             	caseCounter=10;
             	long digit = System.currentTimeMillis();
             	digit = digit % 1000000;
             	
             	reply = "Your 6-digit code is: ";
-            	reply +=String.valueOf(digit);
+            	temp = String.valueOf(digit);
+                while (temp.length() <6) {
+                    temp.insert(0, '0');
+                }
+            	reply += temp;
             	
             	this.replyText(replyToken,reply);
             	break;
@@ -548,7 +553,7 @@ throws Exception{
             }
             
             case "img":{
-            	String imageUrl = createUri("/static/buttons/a.jpg");
+            	String imageUrl = createUri("/static/buttons/1040.jpg");
             	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
             	this.reply(replyToken, reply);
             	break;
