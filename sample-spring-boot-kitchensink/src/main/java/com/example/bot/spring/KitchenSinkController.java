@@ -553,10 +553,17 @@ throws Exception{
                 break;
             }
             
+            case "im":{
+            	String imageUrl = createUri("/static/buttons/1040.jpg");
+
+            	this.replyText(replyToken, imageUrl);
+            	break;
+            }
+            
             case "img":{
             	String imageUrl = createUri("/static/buttons/1040.jpg");
-//            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
-            	this.reply(replyToken, imageUrl);
+            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
+            	this.reply(replyToken, reply);
             	break;
             }
 //            case "confirm": {
