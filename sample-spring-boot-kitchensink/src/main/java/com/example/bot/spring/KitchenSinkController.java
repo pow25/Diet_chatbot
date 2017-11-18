@@ -498,20 +498,35 @@ throws Exception{
             	String reply = null;
             	String temp = null;
             	caseCounter=10;
+            	long n_coupon = getCoupon();
+            	
+            	if (n_coupon == -1) 
+            	{
             	long digit = System.currentTimeMillis();
             	digit = digit % 1000000;
             	
             	reply = "Your 6-digit code is: ";
             	temp = String.format("%06d", digit);
-
+            	client.updateCoupon(digit);
             	reply += temp;
-            	
+            	}
+            	else {
+            		reply = "You have already got one:";
+            		reply += String.valueOf(n_coupon);
+            	}
             	this.replyText(replyToken,reply);
             	break;
             }
             
             case "code":{
             	caseCounter=11;
+      	 		boolean if_claim = client.ifclaim();
+      	 		if (if_claim) {
+      	 			reply = "Sorry, you have already claimed the coupon."
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
             	String reply = "Please type in the 6-digit code ";
         
             	this.replyText(replyToken,reply);
@@ -553,12 +568,7 @@ throws Exception{
                 break;
             }
             
-            case "img":{
-            	String imageUrl = createUri("/static/buttons/a.jpg");
-            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
-            	this.reply(replyToken, reply);
-            	break;
-            }
+
 //            case "confirm": {
 //                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
 //                        "Do it?",
@@ -637,6 +647,20 @@ throws Exception{
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
 //              	 		check(userld,text);
+              	 		<List>String result = client.claim(text);
+              	 		              	 		
+              	 		if (result.isEmpty()) {
+              	 				reply = "Invalid code, please type \"code\" to start the process again.";
+              	 				this.replyText(replyToken, reply);
+              	 		}
+              	 		else {
+              	 			result.add(userId);
+              	 			String imageUrl = createUri("/static/buttons/a.jpg");
+                        	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
+              	 			this.push(result, img_reply);
+              	 		}
+              	 	
+              	 		break;
               	 	}
               	 	
               	 	if (caseCounter==5) {
