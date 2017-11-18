@@ -34,7 +34,7 @@ public class Client{
 	public int getAge() {
 		return age;
 	}
-	public void loadClient(String userID) {
+	public void loadClient(String userID)throws Exception{
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM client WHERE userID=?;");
