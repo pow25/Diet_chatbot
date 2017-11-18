@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Respond{
 	
+	public Respond(){};
 	private Result result;
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,10 +23,10 @@ public class Respond{
 		}
 		
 		public String printResult() {
-			String RList = null;
-			for(Restaurant r :restaurants) {
-				RList += r.printRestaurant() + '\n';
-			}
+			String RList = "Debug:\n";
+			//for(Restaurant r :restaurants) {
+				//RList += r.printRestaurant() + '\n';
+			//}
 			return RList;
 		}
 		

@@ -16,7 +16,7 @@ import java.net.URI;
 
 public class RestaurantAPI {
 
-	private Respond  respond;
+	private Respond respond;
 	private static final String HEADER = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 	private static final String API_KEY = "AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8";
 	
@@ -51,7 +51,7 @@ public class RestaurantAPI {
 	public String printRestaurant() {
 		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
 				"&rankby=distance&types=food&key=" + API_KEY;;
-		//total += respond.printRespond();
+		total += respond.printRespond();
 		return total;
 	}
 	
