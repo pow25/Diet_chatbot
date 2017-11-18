@@ -492,7 +492,26 @@ throws Exception{
                 }
                 break;
             }
+            //new requirement
             
+            case "friend":{
+            	String reply = null;
+            	caseCounter=10;
+            	long digit = System.currentTimeMillis();
+            	digit = digit % 1000000;
+            	
+            	reply = "Your 6-digit code is: ";
+            	reply +=String.valueOf(digit);
+            	
+            	this.replyText(replyToken,reply);
+            	break;
+            }
+            
+            case "code":{
+            	caseCounter=11;
+            	break;
+            }
+           
             
             case "add history":{
             	caseCounter=5;
@@ -506,7 +525,7 @@ throws Exception{
             	break;
             }
             
-            case "recommend daily intake": {
+            case "recommend": {
             	caseCounter=6;
             	String clientagerange=null;
             	int clientage=client.getAge();
@@ -528,7 +547,12 @@ throws Exception{
                 break;
             }
             
-
+            case "img":{
+            	String img_url = "../sample-spring-boot-kitchensink/build/resources/a.jpg";
+            	ImageMessage reply =new ImageMessage(img_url,img_url);
+            	this.reply(replyToken, reply);
+            	break;
+            }
 //            case "confirm": {
 //                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
 //                        "Do it?",
@@ -568,7 +592,7 @@ throws Exception{
                  replyc += "Keyword: add history \n\n";
                  replyc += "It will let you input what you eat today and record the eating history\n\n";
                  
-                 replyd = "Keyword: recommend daily intake ";
+                 replyd = "Keyword: recommend";
                  replyd += "\n\n";
                  replyd += "It will provide you the recommend daily serving\n\n";
                  replyd +="keyword: calculate nutrients\n\n ";
@@ -600,30 +624,14 @@ throws Exception{
 
                break;
               }
-//              case "carousel": {
-//                  String imageUrl = createUri("/static/buttons/1040.jpg");
-//                  CarouselTemplate carouselTemplate = new CarouselTemplate(
-//                          Arrays.asList(
-//                                  new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-//                                          new URIAction("Go to line.me",
-//                                                        "https://line.me"),
-//                                          new PostbackAction("Say hello1",
-//                                                             "hello")
-//                                  )),
-//                                  new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-//                                          new PostbackAction()
-//                                          new MessageAction("Say message",
-//                                                            "Rice")
-//                                  ))
-//                          ));
-//                  TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-//                  this.reply(replyToken, templateMessage);
-//                  break;
-//              }
-
 
               default:{
               	 	String reply = null;
+              	 	
+              	 	if(caseCounter == 11) {
+              	 		caseCounter=8;
+              	 	}
+              	 	
               	 	if (caseCounter==5) {
               	 		//try {
               	 			caseCounter=8;
