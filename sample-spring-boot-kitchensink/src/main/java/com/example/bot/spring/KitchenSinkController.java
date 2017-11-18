@@ -548,8 +548,8 @@ throws Exception{
             }
             
             case "img":{
-            	String img_url = "http://cdn2.bigcommerce.com/server5100/09ec3/product_images/uploaded_images/ptg-coupon-code-photo.jpg";
-            	ImageMessage reply =new ImageMessage(img_url,img_url);
+            	String imageUrl = createUri("/static/buttons/a.jpg");
+            	ImageMessage reply =new ImageMessage(imageUrl,imageUrl);
             	this.reply(replyToken, reply);
             	break;
             }
