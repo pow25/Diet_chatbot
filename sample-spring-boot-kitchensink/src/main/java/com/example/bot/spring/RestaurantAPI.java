@@ -16,7 +16,7 @@ import java.net.URI;
 
 public class RestaurantAPI {
 
-	private Restaurant[]  restaurants;
+	private Respond  respond;
 	private static final String HEADER = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 	private static final String API_KEY = "AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8";
 	
@@ -29,7 +29,7 @@ public class RestaurantAPI {
 	public RestaurantAPI(double latitude,double longitude) {
 		this._latitude=latitude;
 		this._longitude=longitude;
-		//serachRestaurant();
+		serachRestaurant();
 	}
 	
 	public void serachRestaurant() {
@@ -37,7 +37,7 @@ public class RestaurantAPI {
 				"&rankby=distance&types=food&key=" + API_KEY;
 		
 		RestTemplate restTemplate = new RestTemplate();
-		this.restaurants = restTemplate.getForObject(url, Restaurant[].class);
+		this.respond = restTemplate.getForObject(url, Respond.class);
 	}
 	
 	public double getLongitude() {
@@ -51,13 +51,11 @@ public class RestaurantAPI {
 	public String printRestaurant() {
 		String total = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
 				"&rankby=distance&types=food&key=" + API_KEY;;
-		//for(Restaurant r :restaurants) {
-			//total += r.printRestaurant() + '\n';
-		//}
+		total += respond.printRespond();
 		return total;
 	}
 	
-	public Restaurant getRestaurant(int number) {
-		return restaurants[number];
+	public Respond.Restaurant getRestaurant(int number) {
+		return respond.getResult().getRestaurant()[number];
 	}
 }
