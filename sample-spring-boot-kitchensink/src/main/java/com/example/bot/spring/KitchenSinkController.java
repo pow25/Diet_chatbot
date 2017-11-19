@@ -512,7 +512,12 @@ throws Exception{
             	String temp = null;
             	caseCounter=10;
             	long n_coupon = client.getCoupon();
-            	
+      	 		if (coupon_number==5000) {
+      	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
             	if (n_coupon == -1) 
             	{
             		long digit = System.currentTimeMillis();
@@ -541,6 +546,14 @@ throws Exception{
       	 			this.replyText(replyToken,reply);
       	 			break;
       	 		}
+      	 		
+      	 		if (coupon_number==5000) {
+      	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
+      	 		
             	reply = "Please type in the 6-digit code ";
         
             	this.replyText(replyToken,reply);
@@ -679,7 +692,11 @@ throws Exception{
                         	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
               	 			
                         	for(String m:result) { 
+                        		if (coupon_number==5000) {
+                        			break;
+                        		}
                         		this.pushImage(m, img_reply);
+                        		coupon_number +=1;
                         	}
                         	break;
               	 		}
@@ -771,6 +788,7 @@ throws Exception{
 		mymenu=new menu();
 		response = null;
 		caseCounter=0;
+		coupon_number =0 ;
 	}
 
 	private SQLDatabaseEngine database;
@@ -779,7 +797,7 @@ throws Exception{
 	private menu mymenu;
 	private String response;
 	private int caseCounter;
-
+	private int coupon_number;
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
 	//See https://projectlombok.org/features/Value
