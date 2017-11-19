@@ -137,8 +137,14 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
 		LocationMessageContent locationMessage = event.getMessage();
-		reply(event.getReplyToken(), new LocationMessage(locationMessage.getTitle(), locationMessage.getAddress(),
-				locationMessage.getLatitude(), locationMessage.getLongitude()));
+		RestaurantAPI restaurantApi = new RestaurantAPI(locationMessage.getLatitude(),locationMessage.getLongitude());
+		try {
+			restaurantApi.serachRestaurant();
+		}catch(Exception ex){
+			reply(event.getReplyToken(),new TextMessage("Error: "+ex.toString()));
+			return;
+		}
+		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"+restaurantApi.printRestaurant()));
 	}
 
 	@EventMapping
@@ -183,21 +189,26 @@ public class KitchenSinkController {
 		}else {
 			
 			try {
-				this.replyText(replyToken, imageText);
-				/**
+				//this.replyText(replyToken, imageText);
 				String reply ="";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
-					String result = menu_handler(s,0,"null");
-					if (result != null) {
-						reply += result;
+					if (s.length()>2) {
+						String result = mymenu.calculateNutrients(s,0.0);
+						if (result != null) {
+							reply += result;
+						}
+						if (reply.length()>900) {
+							break;
+						}
 					}
+				}
 				if (reply!=null) {
 					this.replyText(replyToken, reply);
 				}else {
 					this.replyText(replyToken, "Cannot find menu.");
 				}
-				*/
+				
 				}
 			 catch (Exception e) {
 				this.replyText(replyToken, "Error: "+e.getMessage());
@@ -506,7 +517,12 @@ throws Exception{
             	String temp = null;
             	caseCounter=10;
             	long n_coupon = client.getCoupon();
-            	
+      	 		if (coupon_number==5000) {
+      	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
             	if (n_coupon == -1) 
             	{
             		long digit = System.currentTimeMillis();
@@ -535,6 +551,14 @@ throws Exception{
       	 			this.replyText(replyToken,reply);
       	 			break;
       	 		}
+      	 		
+      	 		if (coupon_number==5000) {
+      	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
+      	 			caseCounter = 8;
+      	 			this.replyText(replyToken,reply);
+      	 			break;
+      	 		}
+      	 		
             	reply = "Please type in the 6-digit code ";
         
             	this.replyText(replyToken,reply);
@@ -583,26 +607,6 @@ throws Exception{
                 break;
             }
             
-            case "zhang":{
-            	
-            	String reply = "haha";
-            	int i =0;
-            	while(i<10) {
-            		this.pushText(userId, reply);
-            		i++;
-            	}
-            	break;
-            }
-//            case "confirm": {
-//                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-//                        "Do it?",
-//                        new MessageAction("Yes", "Yes!"),
-//                        new MessageAction("No", "No!")
-//                );
-//                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-//                this.reply(replyToken, templateMessage);
-//                break;
-//            }
 
             case "hi":{
             	String replya = null;
@@ -619,12 +623,21 @@ throws Exception{
                  replya += '\n';
                  replya += '\n';
                  replya += "There are several functions you can use, to use the function, just type the keyword";
+                 replya += "Keyword: profile ";
+                 replya += '\n';
+                 replya += '\n';
+                 replya += "It will provide you the personal health information";
 
-                 replyb = "Keyword: profile ";
+                 replyb = "Keyword:friend";
                  replyb += '\n';
                  replyb += '\n';
-                 replyb += "It will provide you the personal health information";
-
+                 replyb += "It will generate the coupon for you";
+                 replyb += "Keyword: code ";
+                 replyb += '\n';
+                 replyb += '\n';
+                 replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
+                		 
+                		 
                  replyc = "Keyword: history ";
                  replyc += '\n';
                  replyc += '\n';
@@ -691,7 +704,11 @@ throws Exception{
                         	ImageMessage img_reply =new ImageMessage(imageUrl,imageUrl);
               	 			
                         	for(String m:result) { 
+                        		if (coupon_number==5000) {
+                        			break;
+                        		}
                         		this.pushImage(m, img_reply);
+                        		coupon_number +=1;
                         	}
                         	break;
               	 		}
@@ -783,6 +800,7 @@ throws Exception{
 		mymenu=new menu();
 		response = null;
 		caseCounter=0;
+		coupon_number =0 ;
 	}
 
 	private SQLDatabaseEngine database;
@@ -791,7 +809,7 @@ throws Exception{
 	private menu mymenu;
 	private String response;
 	private int caseCounter;
-
+	private int coupon_number;
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
 	//See https://projectlombok.org/features/Value

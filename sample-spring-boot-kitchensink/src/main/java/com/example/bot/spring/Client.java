@@ -11,7 +11,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.*;
-
+/**
+ * Client using the chatbot service, it contains client profile
+ * @author Project Group 14
+ *
+ */
 @Slf4j
 public class Client{
 	private String userID;
@@ -28,12 +32,35 @@ public class Client{
 		height=0;
 		weight=0;
 	}
+	
+//	KEN----------------------------------------------------
+//	public String getGender() {
+//		return gender;
+//	}
+//	public int getAge() {
+//		return age;
+//	}
+//	public String getGender() {
+//		return gender;
+//	}
+//	public double getHeight() {
+//		return height;
+//	}
+//	public double getWeight() {
+//		return weight;
+//	}
+//	KEN----------------------------------------------------
+	
 	public String getGender() {
 		return gender;
 	}
 	public int getAge() {
 		return age;
 	}
+	/**
+	 * Load the data client's profile into the class from database
+	 * @param userID
+	 */
 	public void loadClient(String userID){
 		try {
 			Connection connection=getConnection();
@@ -53,6 +80,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Create proflie nd save into database for first time user
+	 * @param userID
+	 */
 	public void addClient(String userID) {
 		try {
 			this.userID=userID;
@@ -195,12 +226,23 @@ public class Client{
 				return result;
 			throw new SQLException("NOT COMPLETE");
 	}
+	/**
+	 * Calculate client's BMI
+	 * @return BMI
+	 */
 	public double calculateBMI() {
 		if (weight!=0 && height!=0)
 			return (weight/height)/height;
 		else return 0;
 	}
+
 	public void addHistory(String dish) throws Exception{
+=======
+	/**
+	 * Add client's dishes history that he had into the databasse for future analysis
+	 * @param dish
+	 */
+
 		try {
 			Connection connection=getConnection();
 			java.sql.Date sqlDate=new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -216,6 +258,11 @@ public class Client{
 			
 		}
 	}
+	/**
+	 * Get clien's eating history form database
+	 * @return dish history
+	 * @throws Exception Connect exxception of database
+	 */
 	public String getHistory() throws Exception{
 		String result = null;
 		 try {
@@ -241,6 +288,11 @@ public class Client{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
+	/**
+	 * Client get coupon for friends
+	 * @return coupon digits
+	 * 
+	 */
 	public long getCoupon() {
 		long coupon=-1;
 		try {
@@ -259,6 +311,10 @@ public class Client{
 		}
 		return coupon;
 	}
+	/** 
+	 * 
+	 * @param coupon
+	 */
 	public void updateCoupon(long coupon) {
 		try {
 			Connection connection=getConnection();
