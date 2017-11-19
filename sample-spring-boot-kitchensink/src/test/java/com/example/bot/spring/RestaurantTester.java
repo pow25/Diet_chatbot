@@ -82,7 +82,7 @@ public class RestaurantTester {
 		}catch(Exception ex){
 			thrown = true;
 		}
-		System.out.println("Restaurant nearby:\n"+restaurantApi.printRestaurant());
+		System.out.println("Restaurant nearby:\n\n"+restaurantApi.printRestaurant());
 		assertThat(thrown).isEqualTo(false);
 	}
 
