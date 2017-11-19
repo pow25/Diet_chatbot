@@ -137,8 +137,14 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
 		LocationMessageContent locationMessage = event.getMessage();
-		reply(event.getReplyToken(), new LocationMessage(locationMessage.getTitle(), locationMessage.getAddress(),
-				locationMessage.getLatitude(), locationMessage.getLongitude()));
+		RestaurantAPI restaurantApi = new RestaurantAPI(locationMessage.getLatitude(),locationMessage.getLongitude());
+		try {
+			restaurantApi.serachRestaurant();
+		}catch(Exception ex){
+			reply(event.getReplyToken(),new TextMessage("Error: "+ex.toString()));
+			return;
+		}
+		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"+restaurantApi.printRestaurant()));
 	}
 
 	@EventMapping
