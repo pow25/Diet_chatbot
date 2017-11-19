@@ -42,11 +42,11 @@ import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import com.example.bot.spring.DatabaseEngine;
+
 
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+
 @SpringBootTest(classes = { OcrTester.class, OcrApiController.class })
 public class OcrTester {
 	@Autowired
