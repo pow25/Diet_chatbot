@@ -193,12 +193,14 @@ public class KitchenSinkController {
 				String reply ="";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
-					String result = mymenu.calculateNutrients(s,0.0);
-					if (result != null) {
-						reply += result;
-					}
-					if (reply.length()>900) {
-						break;
+					if (s.length()>2) {
+						String result = mymenu.calculateNutrients(s,0.0);
+						if (result != null) {
+							reply += result;
+						}
+						if (reply.length()>900) {
+							break;
+						}
 					}
 				}
 				if (reply!=null) {
