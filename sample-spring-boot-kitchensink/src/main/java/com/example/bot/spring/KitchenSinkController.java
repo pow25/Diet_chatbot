@@ -850,7 +850,6 @@ throws Exception{
 
 
 	public KitchenSinkController() {
-		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 		client = new Client();
 		mymenu=new menu();
@@ -859,7 +858,6 @@ throws Exception{
 		insert_mode = null;
 	}
 
-	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private Client client;
 	private String insert_mode;
