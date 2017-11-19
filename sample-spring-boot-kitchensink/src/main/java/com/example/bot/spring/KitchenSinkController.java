@@ -582,26 +582,6 @@ throws Exception{
                 break;
             }
             
-            case "zhang":{
-            	
-            	String reply = "haha";
-            	int i =0;
-            	while(i<10) {
-            		this.pushText(userId, reply);
-            		i++;
-            	}
-            	break;
-            }
-//            case "confirm": {
-//                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-//                        "Do it?",
-//                        new MessageAction("Yes", "Yes!"),
-//                        new MessageAction("No", "No!")
-//                );
-//                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-//                this.reply(replyToken, templateMessage);
-//                break;
-//            }
 
             case "hi":{
             	String replya = null;
@@ -618,12 +598,21 @@ throws Exception{
                  replya += '\n';
                  replya += '\n';
                  replya += "There are several functions you can use, to use the function, just type the keyword";
+                 replya += "Keyword: profile ";
+                 replya += '\n';
+                 replya += '\n';
+                 replya += "It will provide you the personal health information";
 
-                 replyb = "Keyword: profile ";
+                 replyb = "Keyword:friend";
                  replyb += '\n';
                  replyb += '\n';
-                 replyb += "It will provide you the personal health information";
-
+                 replyb += "It will generate the coupon for you";
+                 replyb += "Keyword: code ";
+                 replyb += '\n';
+                 replyb += '\n';
+                 replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
+                		 
+                		 
                  replyc = "Keyword: history ";
                  replyc += '\n';
                  replyc += '\n';
