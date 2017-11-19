@@ -18,10 +18,12 @@ public class Respond{
 	}
 	
 	public String printRespond() {
+		int count=0;
 		String RestaurantList = new String();
 		for(Restaurant r:results) {
-			RestaurantList+=r.printRestaurant()+'\n';
-			if (RestaurantList.length()>900) {
+			count+=1;
+			RestaurantList+=String.valueOf(count)+".\n"+r.printRestaurant()+'\n';
+			if (RestaurantList.length()>950) {
 				return RestaurantList;
 			}
 		}
