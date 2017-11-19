@@ -203,10 +203,10 @@ public class Client{
 	public void addHistory(String dish) throws Exception{
 		try {
 			Connection connection=getConnection();
-			java.sql.Date date=new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			java.sql.Date sqlDate=new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
-			stmt.setDate(2,date);
+			stmt.setDate(2,sqlDate);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
 			stmt.executeUpdate();
