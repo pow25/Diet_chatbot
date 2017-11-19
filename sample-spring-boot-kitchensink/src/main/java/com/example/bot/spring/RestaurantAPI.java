@@ -53,7 +53,7 @@ public class RestaurantAPI {
 		return total;
 	}
 	
-	public Respond.Restaurant getRestaurant(int number) {
-		return respond.getResult().getRestaurant()[number];
-	}
+//	public Respond.Restaurant getRestaurant(int number) {
+//		return respond.getResult().getRestaurant()[number];
+//	}
 }
