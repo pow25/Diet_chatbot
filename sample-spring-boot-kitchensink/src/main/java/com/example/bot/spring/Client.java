@@ -289,7 +289,6 @@ public class Client{
 	 */
 	public long getCoupon() {
 		long coupon=-1;
-		int a=1;
 		try {
 			Connection connection=getConnection();
 			PreparedStatement stmt=connection.prepareStatement("select coupon from clientcoupon where userid=?;");
