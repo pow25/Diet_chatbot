@@ -343,8 +343,8 @@ public class KitchenSinkController {
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
 	private String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
-		 if (response == null) {
-			 reply = mymenu.getMenu(text);
+		 if (insert_mode == null) {
+			 reply = mymenu.calculateNutrients(text,0);
 		 }
 		 else	 {
 			 mymenu.insertMenu(text,price,ingredients);
@@ -354,13 +354,13 @@ public class KitchenSinkController {
 
 	}
 	
-	private void handleTextContent_newuser(String replytoken, Event event, String text,String userld,int complete_indicator)
+	private void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
 					
 					if(complete_indicator==1) {   //there is no information at all
-						client.addClient(userld);
+						client.addClient(userId);
 						replytext = "Welcome to the diet chatbot, system detects it is your first time to use the system, please create personal file.";
 						replytext += '\n';  
 						replytext += '\n';
@@ -458,7 +458,7 @@ throws Exception{
        					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
        				}
        				else {
-       					if(response == null) {
+       					if(insert_mode == null) {
        						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
        					}
        					else {
@@ -487,15 +487,39 @@ throws Exception{
                 break;
             }
             
+            case "search":{
+            	caseCounter =3 ;
+            	String reply = null;
+            	reply = "Now please input the dish name you want to search. ";
+            	reply += "\n\n";
+            	reply += "Remember, if you want to search again, you have to retype keyword search";
+            	this.replyText(replyToken, reply);
+            	break;
+            }
+            
             case "insert":{
-            	response = "insert";
+            	insert_mode = "insert";
             	caseCounter=2;
+            	String reply = null;
+            	reply = "Now please input the menu infomation as following format:";
+            	reply += "\n";
+            	reply += "\n";
+            	reply += "first line:dish name";
+            	reply += "second line:price(must be interger)";
+            	reply += "third line:gredients";
+            	this.replyText(replyToken, reply);
             	break;
             }
             
             case "uninsert":{
-            	response = null;
-            	caseCounter=3;
+            	insert_mode = null;
+            	caseCounter=8;
+            	
+            	String reply = null;
+            	reply = "Now you have exit the insert mode";
+            	
+            	this.replyText(replyToken, reply);
+            	
             	break;
             }
             
@@ -644,8 +668,10 @@ throws Exception{
                  replyd +="keyword: calculate nutrients\n\n ";
                  replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
                  
-
-                 replye = "In addition, you can simply type the meal name, image or url as you wish. The chatbot will search your input menu in the database ";
+                 replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
+                 replye += '\n';
+                 replye += '\n';
+                 replye += "In addition, you can simply type the meal image and url as you wish. The chatbot will return you the content";
                  replye += '\n';
                  replye += '\n';
                  replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
@@ -676,7 +702,7 @@ throws Exception{
               	 	
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
-//              	 		check(userld,text);
+
               	 		long i = Long.parseLong(text);
               	 		
               	 		List<String> result = client.claim(i);
@@ -727,16 +753,45 @@ throws Exception{
               	 		String replyline=mymenu.calculateNutrients(words[0],weight);
               	 		this.replyText(replyToken, replyline);
               	 	}
-              	 	reply = menu_handler(text,0,"null");
+              	 	
+              	 	if(caseCounter == 2) {
+              	 		String[] words = text.split("\n");
+              	 		
+              	 		if (words.length != 3) {
+              	 			reply = "You must follow the format, please type \" insert \" ";
+              	 			caseCounter = 8;
+              	 			this.replyText(replyToken, reply);
+              	 			break;
+              	 		}
+						boolean temp = isNumberic(words[1]);
+						              	 		
+              	 		if (temp==true) {
+              	 			mymenu.insertMenu(words[0], Integer.parseInt(words[1]),words[2]);
+              	 			reply = "The dish name has been inputted into the menu sucessfully.";
+              	 		}
+              	 		else {
+              	 			reply = "The price you entered is not double format, plase do it again";
+              	 		}
+              	 		
+          	 			this.replyText(replyToken, reply);
+          	 			break;
+              	 	}
+              	 	
+              	 	if(caseCounter == 3) {
+              	 		caseCounter = 8;
+              	 		reply = mymenu.calculateNutrients(text,0);
+                  	 	
+              	 		if( reply==null ) {            
+                  	 		reply = "Sorry, we could not find the dish name you input";
+                  	 	}
+              	 		
+          	 			this.replyText(replyToken, reply);
+          	 			break;
+              	 	}
+              	 	
               	 
-              	 	if( (reply==null) && (response == null) ) {            
-              	 		reply = "Sorry, we could not find the dish name you input";
-              	 	}
               	 	
-              	 	if ( (reply==null) && (response == "insert") ) {
-              	 		reply = "The dish name has been inputted into the menu sucessfully.";
-              	 	}
-              	 	
+              	 	reply = "Sorry, we could recongize your input, if you want help, please type hi";
               	 	this.replyText(replyToken,reply);
               	 	log.info("Returns echo message {}: {}", replyToken, reply);
               	 	break;
@@ -791,16 +846,16 @@ throws Exception{
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 		client = new Client();
 		mymenu=new menu();
-		response = null;
 		caseCounter=0;
 		coupon_number =0 ;
+		insert_mode = null;
 	}
 
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private Client client;
+	private String insert_mode;
 	private menu mymenu;
-	private String response;
 	private int caseCounter;
 	private int coupon_number;
 	//The annontation @Value is from the package lombok.Value
