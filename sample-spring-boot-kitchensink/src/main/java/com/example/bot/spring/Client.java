@@ -237,7 +237,6 @@ public class Client{
 	}
 
 	public void addHistory(String dish) throws Exception{
-=======
 	/**
 	 * Add client's dishes history that he had into the databasse for future analysis
 	 * @param dish
