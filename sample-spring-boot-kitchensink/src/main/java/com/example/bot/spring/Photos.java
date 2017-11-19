@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    }
 	    
 	    public String print() {
-	    	if (html_attributions == null){
+	    	if (getHtml_attributions() == null){
 	    		return "No detial";
 	    	}else {	
 	    		return html_attributions[0].split("\"")[1];

@@ -189,21 +189,26 @@ public class KitchenSinkController {
 		}else {
 			
 			try {
-				this.replyText(replyToken, imageText);
-				/**
+				//this.replyText(replyToken, imageText);
 				String reply ="";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
-					String result = menu_handler(s,0,"null");
-					if (result != null) {
-						reply += result;
+					if (s.length()>2) {
+						String result = mymenu.calculateNutrients(s,0.0);
+						if (result != null) {
+							reply += result;
+						}
+						if (reply.length()>900) {
+							break;
+						}
 					}
+				}
 				if (reply!=null) {
 					this.replyText(replyToken, reply);
 				}else {
 					this.replyText(replyToken, "Cannot find menu.");
 				}
-				*/
+				
 				}
 			 catch (Exception e) {
 				this.replyText(replyToken, "Error: "+e.getMessage());
