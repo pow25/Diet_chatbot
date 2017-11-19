@@ -358,7 +358,7 @@ public class KitchenSinkController {
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
-					client.loadClient(userld);
+					client.loadClient(userId);
 					
 					if(complete_indicator==1) {   //there is no information at all
 						client.addClient(userId);
