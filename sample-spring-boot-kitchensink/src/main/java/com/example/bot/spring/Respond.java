@@ -20,10 +20,12 @@ public class Respond{
 	public String printRespond() {
 		String RestaurantList = new String();
 		for(Restaurant r:results) {
-			//RestaurantList+=r.printRestaurant()+'\n';
+			RestaurantList+=r.printRestaurant()+'\n';
+			if (RestaurantList.length()>900) {
+				return RestaurantList;
+			}
 		}
-		RestaurantList += "1.\n"+results[0].printRestaurant()+'\n';
-		RestaurantList += "2.\n"+results[2].printRestaurant();
+
 		return RestaurantList;
 	}
 }
