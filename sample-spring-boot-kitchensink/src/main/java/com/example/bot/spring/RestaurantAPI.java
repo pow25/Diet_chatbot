@@ -33,7 +33,7 @@ public class RestaurantAPI {
 	
 	public void serachRestaurant() throws IOException{
 		String url = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
-				"&rankby=distance&types=food&key=" + API_KEY;
+				"&rankby=distance&types=restaurant&key=" + API_KEY;
 		
 		RestTemplate restTemplate = new RestTemplate();
 		this.respond = restTemplate.getForObject(url, Respond.class);
