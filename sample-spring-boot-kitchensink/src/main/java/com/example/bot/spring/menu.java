@@ -57,13 +57,13 @@ public class menu{
 					ResultSet rs2=stmt2.executeQuery();
 					while (rs2.next()) {
 						if (analy.equals("underweight")&&rs2.getDouble(3)>2) {
-							return "recommended dish: "+rs2.getString(1);
+							return "You are under weight.\nRecommended dish: "+rs2.getString(1);
 						}
 						if (analy.equals("overweight")&&rs2.getDouble(3)<1) {
-							return "recommended dish: "+rs2.getString(1);
+							return "You are overweight.\nRecommended dish: "+rs2.getString(1);
 						}
 						if (analy.equals("healthy")&&rs2.getDouble(3)>=1&&rs2.getDouble(3)<=2) {
-							return "recommended dish: "+rs2.getString(1);
+							return "You are healthy.\nRecommended dish: "+rs2.getString(1);
 						}
 					}
 				}catch (Exception e) {

@@ -84,7 +84,7 @@ public class Client{
 	}
 	public String getProfile() {
 		String result=null;
-		result="Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();;
+		result="Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();
 		return result;
 	}
 	public void updateName(String name){
@@ -200,17 +200,16 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-	public void addHistory(String dish) {
+	public void addHistory(String dish) throws Exception{
 		try {
 			Connection connection=getConnection();
-			Calendar calendar=Calendar.getInstance();
-			java.sql.Date date=new java.sql.Date(calendar.getTime().getTime());
+			java.sql.Date date=new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			PreparedStatement stmt=connection.prepareStatement("INSERT INTO history VALUES (?,?,?,?);");
 			stmt.setString(1,userID);
 			stmt.setDate(2,date);
 			stmt.setDouble(3,weight);
 			stmt.setString(4,dish);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {

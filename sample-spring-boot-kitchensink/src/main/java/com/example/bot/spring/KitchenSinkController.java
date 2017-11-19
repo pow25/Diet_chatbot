@@ -699,13 +699,13 @@ throws Exception{
               	 	}
               	 	
               	 	if (caseCounter==5) {
-              	 		//try {
+              	 		try {
               	 			caseCounter=8;
               	 			client.addHistory(text);
               	 			this.replyText(replyToken,"new history added successfully!");
-              	 		//}catch (Exception e){
-              	 		//	this.replyText(replyToken, "Something goes wrong recording history...");
-              	 		//}
+              	 		}catch (Exception e){
+              	 			this.replyText(replyToken, "Something goes wrong recording history...");
+              	 		}
               	 		break;
               	 	}
               	 	if (caseCounter==9) {
