@@ -190,13 +190,15 @@ public class KitchenSinkController {
 			
 			try {
 				//this.replyText(replyToken, imageText);
-				String reply ="";
+				String reply = null;
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
-					if (s.length()>2) {
+					s=s.replaceAll("^a-zA-Z ", "");
+					s=s.toLowerCase();
+					if (s.length()>3) {
 						String result = mymenu.calculateNutrients(s,0.0);
 						if (result != null) {
-							reply += result;
+							reply += result + "\n\n";
 						}
 						if (reply.length()>900) {
 							break;
