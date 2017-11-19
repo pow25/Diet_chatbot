@@ -32,7 +32,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.common.io.ByteStreams;
-import com.example.bot.spring.DatabaseEngine;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
