@@ -36,6 +36,59 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
+	public String getRecommendDish(String userID,double bmi) {
+		String result=null;
+		String analy=analyzeBMI(bmi);
+		if (analy==null) {
+			return "maybe the weight and height you provide are not correct.";
+		}
+		try {
+			Connection connection= getConnection();
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM history where userID=?;");
+			stmt.setString(1, userID);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				try {
+					Connection connection2=getConnection();
+					PreparedStatement stmt2=connection.prepareStatement("with simitable(des,simi,ener) as " + 
+							"(select description,similarity(description,?),energy/weight from nutrients) " + 
+							"select * from simitable order by simi DESC limit 6;");
+					stmt2.setString(1,rs.getString(4));
+					ResultSet rs2=stmt2.executeQuery();
+					while (rs2.next()) {
+						if (analy.equals("underweight")&&rs2.getDouble(3)>2) {
+							return "recommended dish: "+rs2.getString(1);
+						}
+						if (analy.equals("overweight")&&rs2.getDouble(3)<1) {
+							return "recommended dish: "+rs2.getString(1);
+						}
+						if (analy.equals("healthy")&&rs2.getDouble(3)>=1&&rs2.getDouble(3)<=2) {
+							return "recommended dish: "+rs2.getString(1);
+						}
+					}
+				}catch (Exception e) {
+					return "sorry, maybe your history provided is not enough";
+				}
+			}
+		}catch (Exception e) {
+			return "sorry, maybe your history provided is not enough";
+		}
+		return "sorry, maybe your history proveded is not enough";
+	}
+	private String analyzeBMI(double bmi) {
+		if (bmi<=0) {
+			return null;
+		}
+		else if(bmi>0 && bmi<18.5) {
+			return "underweight";
+		}
+		else if(bmi>=18.5 && bmi<23) {
+			return "healthy";
+		}
+		else {
+			return "overweight";
+		}
+	}
 	public String getMenu(String dish){
 		String result = null;
 		 try {

@@ -226,7 +226,11 @@ public class Client{
 				ResultSet rs = stmt.executeQuery();
 				
 				while (rs.next()) {
-					result=result+rs.getDate(2).toString()+"\t"+String.valueOf(rs.getDouble(3))+"\t"+rs.getString(4)+"\n";
+					if (result==null) {
+						result="Date & Dish History:\n"+rs.getDate(2).toString()+"\t"+rs.getString(4)+"\n";
+					}
+					else
+						result=result+rs.getDate(2).toString()+"\t"+rs.getString(4)+"\n";
 				}
 				rs.close();
 				stmt.close();

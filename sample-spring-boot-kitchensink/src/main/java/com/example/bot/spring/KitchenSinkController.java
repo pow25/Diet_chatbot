@@ -540,6 +540,13 @@ throws Exception{
             	this.replyText(replyToken,reply);
             	break;
             }
+            case "recommend dish":{
+            	String reply=null;
+            	caseCounter=12;
+            	reply=mymenu.getRecommendDish(userId,client.calculateBMI());
+            	this.replyText(replyToken,reply);
+            	break;
+            }
            
             
             case "add history":{
@@ -554,7 +561,7 @@ throws Exception{
             	break;
             }
             
-            case "recommend": {
+            case "recommend serving": {
             	caseCounter=6;
             	String clientagerange=null;
             	int clientage=client.getAge();
@@ -625,7 +632,7 @@ throws Exception{
                  replyc += "Keyword: add history \n\n";
                  replyc += "It will let you input what you eat today and record the eating history\n\n";
                  
-                 replyd = "Keyword: recommend";
+                 replyd = "Keyword: recommend serving";
                  replyd += "\n\n";
                  replyd += "It will provide you the recommend daily serving\n\n";
                  replyd +="keyword: calculate nutrients\n\n ";
