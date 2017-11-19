@@ -20,8 +20,9 @@ public class Respond{
 	public String printRespond() {
 		String RestaurantList = new String();
 		for(Restaurant r:results) {
-			RestaurantList+=r.printRestaurant()+'\n';
+			//RestaurantList+=r.printRestaurant()+'\n';
 		}
+		RestaurantList = results[0].printRestaurant();
 		return RestaurantList;
 	}
 }
