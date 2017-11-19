@@ -648,6 +648,11 @@ throws Exception{
                  replya += '\n';
                  replya += '\n';
                  replya += "There are several functions you can use, to use the function, just type the keyword";
+                 replya += '\n';
+                 replya += '\n';
+                 replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
+                 replya += '\n';
+                 replya += '\n';
                  replya += "Keyword: profile ";
                  replya += '\n';
                  replya += '\n';
