@@ -22,7 +22,8 @@ public class Respond{
 		for(Restaurant r:results) {
 			//RestaurantList+=r.printRestaurant()+'\n';
 		}
-		RestaurantList = results[2].printRestaurant();
+		RestaurantList = results[0].printRestaurant()+'\n';
+		RestaurantList += results[2].printRestaurant();
 		return RestaurantList;
 	}
 }
