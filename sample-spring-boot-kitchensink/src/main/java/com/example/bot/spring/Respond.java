@@ -18,7 +18,7 @@ public class Respond{
 	}
 	
 	public String printRespond() {
-		String RestaurantList=null;
+		String RestaurantList = new String();
 		for(Restaurant r:results) {
 			RestaurantList+=r.printRestaurant()+'\n';
 		}

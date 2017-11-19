@@ -63,36 +63,29 @@ public class RestaurantTester {
 	@Test
 	public void testapi()  throws Exception{
 		boolean thrown = false;
+//		try {
+//			RestaurantAPI restaurantApi = new RestaurantAPI(22.327786,114.215811);
+//			restaurantApi.serachRestaurant();
+//			String result=restaurantApi.printRestaurant();
+//			System.out.println("\n\n\nResult:\n\n\n"+result);
+//			if (result.equals("null")){
+//				thrown = true;
+//			}
+//		} catch (Exception e) {
+//			thrown = true;
+//			System.out.println("\n\n\nError:\n\n\n"+e.toString());
+//		}
+//		assertThat(thrown).isEqualTo(false);
+		RestaurantAPI restaurantApi = new RestaurantAPI(22.327786,114.215811);
 		try {
-			RestaurantAPI restaurantApi = new RestaurantAPI("22.327786","114.215811");
 			restaurantApi.serachRestaurant();
-			String result=restaurantApi.printRestaurant();
-			System.out.println("\n\n\nResult:\n\n\n"+result);
-			if (result.equals("null")){
-				thrown = true;
-			}
-		} catch (Exception e) {
+		}catch(Exception ex){
 			thrown = true;
-			System.out.println("\n\n\nError:\n\n\n"+e.toString());
 		}
+		System.out.println("Restaurant nearby:\n"+restaurantApi.printRestaurant());
 		assertThat(thrown).isEqualTo(false);
 	}
+
 	
-	@Test
-	public void testresttemplate() throws Exception{
-		boolean thrown = false;
-		try {
-			RestTemplate restTemplate = new RestTemplate();
-			Respond respond = restTemplate.getForObject("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=22.327786,114.215811&rankby=distance&types=food&key=AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8", Respond.class);
-			System.out.println("\n\n\nResult:\n\n\n"+respond);
-			
-		} catch (Exception e) {
-			thrown = true;
-			System.out.println("\n\n\nError:\n\n\n"+e.toString());
-		}
-		assertThat(thrown).isEqualTo(false);
-		
-		
-	}
 }
 
