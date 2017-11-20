@@ -114,6 +114,7 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		String reply = null;
+		List<Message> megs = new ArrayList<Message>();
 		//if userld is not in the database
 //		reply = handleTextContent(replytoken, userId, message.getText());
 		client.loadClient(userId);
@@ -121,11 +122,12 @@ public class KitchenSinkController {
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
-					String input1 = message.getText().toLowerCase();
+					String input1 = message.getText();
 					
-					if (input1 == "hi"){
+					if (input1.equals("hi") ){
 							
-						hi_func();   
+						megs = hi_func();   
+						this.reply(replytoken, megs);
 						}
 						else{
 							reply = handleTextContent(replytoken, userId, message.getText());
@@ -140,7 +142,7 @@ public class KitchenSinkController {
 		this.replyText(replytoken, reply);
 	}
 
-	public void hi_func() {
+	public List<Message> hi_func() {
 		
 		
 		String replya = null;
@@ -189,7 +191,9 @@ public class KitchenSinkController {
 		replyd += "It will provide you the recommend daily serving\n\n";
 		replyd +="keyword: calculate nutrients\n\n ";
 		replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
-     
+		replyd += "\n\n";
+		replyd +="You can also send location in Line client, and we will recommend the nearby restaurant for you";
+		
 		replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
 		replye += '\n';
 		replye += '\n';
@@ -217,7 +221,7 @@ public class KitchenSinkController {
  		megs.add(e);
 
      
- 		this.reply(replytoken, megs);	
+ 		return megs;
 		
 	}
 	

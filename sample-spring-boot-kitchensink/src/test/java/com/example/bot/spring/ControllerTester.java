@@ -252,11 +252,13 @@ public class ControllerTester {
 		KitchenSinkController ksc = new KitchenSinkController();
 			String replytoken = "123";
 			String text = "http://wwwabd-efcom.000webhostapp.com/data.json";
+			String text2 = "haha";
 			String userid = "12";
 			ksc.setvalues(null,20,0);
 			String result = ksc.handleTextContent(replytoken,userid,text);
 			ksc.setvalues("insert",20,0);
 			result = ksc.handleTextContent(replytoken,userid,text);
+			result = ksc.handleTextContent(replytoken,userid,text2);
 			if(result==null ) {
 					thrown = true;
 				}
@@ -287,30 +289,15 @@ public class ControllerTester {
 			
 			assertThat(thrown).isEqualTo(false);
 	}		
-	
-	
-	
-//	@Test
-//	public void testreplytext()  throws Exception{
-//		boolean thrown = false;
-//		 whenCall(retrofitMock.pushMessage(any()),BOT_API_SUCCESS_RESPONSE);
-//		KitchenSinkController ksc = new KitchenSinkController();
-//			String replyToken = "asd";
-//			String message = new String();
-//			message="random";
-//			System.out.println(message.length());
-//			try{
-//				ksc.replyText(replyToken,"random");
-//			}
-//			catch(Exception e) {
-//				thrown = false;
-//			}
-//			assertThat(thrown).isEqualTo(false);
-//	}
-//	
-	
-	
-	
+
+	@Test
+	public void testofhi()  throws Exception{
+		boolean thrown = false;
+		KitchenSinkController ksc = new KitchenSinkController();
+		List<Message> megs = new ArrayList<Message>();
+		megs = ksc.hi_func();
+		assertThat(thrown).isEqualTo(false);
+}
 
 	@Test
 	public void testTextimageSearcher()  throws Exception{
