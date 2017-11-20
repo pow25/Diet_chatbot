@@ -83,6 +83,7 @@ public class menuTester{
 			if (testMenu.calculateNutrients("abc",100)==null) {
 				thrown=true;
 			}
+			testMenu.deleteRecord("double cheeze hamburger");
 		}catch (Exception e) {
 			thrown=true;
 		}

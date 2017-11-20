@@ -70,7 +70,6 @@ public class Client{
 			rs.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -88,7 +87,7 @@ public class Client{
 			stmt.setInt(3,0);
 			stmt.setDouble(5,0);
 			stmt.setDouble(6,0);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
@@ -101,7 +100,7 @@ public class Client{
 			stmt2.setString(1,userID);
 			stmt2.setLong(2, initi);
 			stmt2.setBoolean(3,false);
-			stmt2.executeQuery();
+			stmt2.executeUpdate();
 			stmt2.close();
 			connection2.close();
 		}catch (Exception e) {}
@@ -126,11 +125,10 @@ public class Client{
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set name=? where userID=?;");
 			stmt.setString(2,userID);
 			stmt.setString(1,name);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -144,11 +142,10 @@ public class Client{
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set age=? where userID=?;");
 			stmt.setString(2,userID);
 			stmt.setInt(1,age);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -162,11 +159,10 @@ public class Client{
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set gender=? where userID=?;");
 			stmt.setString(2,userID);
 			stmt.setString(1,gender);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -180,11 +176,10 @@ public class Client{
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set height=? where userID=?;");
 			stmt.setString(2,userID);
 			stmt.setDouble(1,height);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -198,11 +193,10 @@ public class Client{
 			PreparedStatement stmt=connection.prepareStatement("UPDATE client set weight=? where userID=?;");
 			stmt.setString(2,userID);
 			stmt.setDouble(1,weight);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -242,7 +236,6 @@ public class Client{
 				stmt.close();
 				connection.close();
 		 	} catch (Exception e) {
-			    System.out.println(e);
 		 	 	}
 			return result;
 	}
@@ -299,7 +292,6 @@ public class Client{
 				stmt.close();
 				connection.close();
 		 	 } catch (Exception e) {
-			    System.out.println(e);
 		 	 }
 			return result;
 	}
@@ -322,7 +314,6 @@ public class Client{
 			stmt.close();
 			rs.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 		return coupon;
 	}
@@ -340,7 +331,6 @@ public class Client{
 			connection.close();
 			stmt.close();
 		}catch(Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -361,7 +351,6 @@ public class Client{
 			stmt.close();
 			rs.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 		return claim;
 	}
@@ -384,7 +373,6 @@ public class Client{
 			stmt.close();
 			rs.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 		try {
 			Connection connection2=getConnection();
@@ -395,6 +383,35 @@ public class Client{
 			stmt2.close();
 		}catch (Exception e) {}
 		return updateClients;
+	}
+	public void deleteRecord(String userID) {
+		try {
+			Connection connection1=getConnection();
+			PreparedStatement stmt1=connection1.prepareStatement("delete from client where userid=?;");
+			stmt1.setString(1, userID);
+			stmt1.executeUpdate();
+			stmt1.close();
+			connection1.close();
+		}
+		catch (Exception e) {}
+		try {
+			Connection connection2=getConnection();
+			PreparedStatement stmt2=connection2.prepareStatement("delete from history where userid=?;");
+			stmt2.setString(1, userID);
+			stmt2.executeUpdate();
+			stmt2.close();
+			connection2.close();
+		}
+		catch (Exception e) {}
+		try {
+			Connection connection3=getConnection();
+			PreparedStatement stmt3=connection3.prepareStatement("delete from clientcoupon where userid=?;");
+			stmt3.setString(1, userID);
+			stmt3.executeUpdate();
+			stmt3.close();
+			connection3.close();
+		}
+		catch (Exception e) {}
 	}
 	/**
 	 * Connect with database
