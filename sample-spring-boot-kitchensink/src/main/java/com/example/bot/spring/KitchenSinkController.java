@@ -125,7 +125,7 @@ public class KitchenSinkController {
 					
 					if (input1 == "hi"){
 							
-						hi_func();   
+						hi_func(replytoken);   
 						}
 						else{
 							reply = handleTextContent(replytoken, userId, message.getText());
@@ -140,7 +140,7 @@ public class KitchenSinkController {
 		this.replyText(replytoken, reply);
 	}
 
-	public void hi_func() {
+	public void hi_func(String replytoken) {
 		
 		
 		String replya = null;
