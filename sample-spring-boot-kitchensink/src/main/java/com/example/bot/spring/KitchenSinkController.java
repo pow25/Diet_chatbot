@@ -115,19 +115,19 @@ public class KitchenSinkController {
 		String userId = event.getSource().getUserId();
 		String reply = null;
 		//if userld is not in the database
-//		handleTextContent(replytoken, event, message.getText());
-		try {
-				int complete_indicator = client.isInfoComplete(userId);
-			
-				if(complete_indicator==0) {  // the user's info is full
-					reply = handleTextContent(replytoken, userId, message.getText());
-				}
-				else {
-					reply=handleTextContent_newuser(replytoken,message.getText(),userId,complete_indicator);
-				}
-		 } catch (Exception e) {
-			 	reply=handleTextContent_newuser(replytoken,message.getText(),userId,1);
-		 	}
+		reply = handleTextContent(replytoken, userId, message.getText());
+//		try {
+//				int complete_indicator = client.isInfoComplete(userId);
+//			
+//				if(complete_indicator==0) {  // the user's info is full
+//					reply = handleTextContent(replytoken, userId, message.getText());
+//				}
+//				else {
+//					reply=handleTextContent_newuser(replytoken,message.getText(),userId,complete_indicator);
+//				}
+//		 } catch (Exception e) {
+//			 	reply=handleTextContent_newuser(replytoken,message.getText(),userId,1);
+//		 	}
 		this.replyText(replytoken, reply);
 	}
 
