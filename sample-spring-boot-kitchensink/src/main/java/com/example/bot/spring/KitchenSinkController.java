@@ -448,37 +448,15 @@ public class KitchenSinkController {
         client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
         
-        //-----------------------------------------------------------//
-       	try {//it gives error when url is https://
-       		if (text != "https://") {
-       			URL url = new URL(text);
-       			JsonHandler jsonHandler = new JsonHandler(text);
-       			Quote[] quote = jsonHandler.getQuote();
-       			String stackmessage = null;
-       			for(Quote q: quote) {
-       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
-       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
-       				}
-       				else {
-       					if(insert_mode == null) {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
-       					}
-       					else {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
-       					}
-       				}
-       			}
-       			this.replyText(replyToken, stackmessage);
-       			return;
-       		}
-       	}catch(MalformedURLException e) {
-       		String reply = null;
-       		reply = "url handle json failed, perhaps not a real url";
-       		this.replyText(replyToken, reply);
-      	}
-        //-----------------------------------------------------------//
 
         switch (text) {
+        	case "json":{
+        		caseCounter =20;
+        		this.replyText(replyToken, "Now, please input the url, if you want to input it again, type json first");
+        		break;
+        	}
+        
+        
             case "profile": {
                 	String reply = null;
                 	double  bmi=client.calculateBMI();
@@ -690,13 +668,16 @@ public class KitchenSinkController {
                  replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
                  replye += '\n';
                  replye += '\n';
-                 replye += "In addition, you can simply type the meal image and url as you wish. The chatbot will return you the content";
+                 replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
                  replye += '\n';
                  replye += '\n';
-                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
+                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
                  replye += '\n';
                  replye += '\n';
                  replye += "If you want to stop insert, type keyword:uninsert";
+                 replye += '\n';
+                 replye += '\n';
+                 replye += "In order to input JSON, please type \"json\" first, then input the link";
             	
              	Message a=  new TextMessage(replya);
              	Message b = new TextMessage(replyb);
@@ -723,6 +704,44 @@ public class KitchenSinkController {
             
               default:{
               	 	String reply = null;
+              	 	
+              	 	if(caseCounter == 20) {
+              	 		caseCounter = 8;
+              	        //-----------------------------------------------------------//
+              	       	try {//it gives error when url is https://
+              	       		if (text != "https://") {
+              	       			URL url = new URL(text);
+              	       			JsonHandler jsonHandler = new JsonHandler(text);
+              	       			Quote[] quote = jsonHandler.getQuote();
+              	       			String stackmessage = null;
+              	       			for(Quote q: quote) {
+              	       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+              	       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+              	       				}
+              	       				else {
+              	       					if(insert_mode == null) {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
+              	       					}
+              	       					else {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
+              	       					}
+              	       				}
+              	       			}
+              	       			this.replyText(replyToken, stackmessage);
+              	       			break;
+              	       		}
+              	       	}catch(MalformedURLException e) {
+              	       		
+              	       		reply = "url handle json failed, perhaps not a real url";
+              	       		this.replyText(replyToken, reply);
+              	       		break;
+              	      	}
+              	        //-----------------------------------------------------------//
+              	 		
+              	 		
+              	 	}
+              	 	
+              	 	
               	 	
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
