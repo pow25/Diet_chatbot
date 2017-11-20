@@ -72,7 +72,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    	}else {
 	    		Restaurantinfo += "No detail";
 	    	}
-	    	Restaurantinfo += "\n";
+
 	    	
 	    	
 	        return  Restaurantinfo;
