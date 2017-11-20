@@ -275,7 +275,7 @@ public class KitchenSinkController {
 			
 			try {
 				//this.replyText(replyToken, imageText);
-				String reply = null;
+				String reply = "";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
 					s=s.replaceAll("^a-zA-Z ", "");
@@ -696,9 +696,14 @@ public class KitchenSinkController {
                 try  {
                 	String reply = null;
                 	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
-                	return reply;
+
+                	if (reply!=null)
+                		return reply;
+                	else
+                		return "Can't get recommended serving,something wrong!";
                 } catch(Exception e)  {
-                	return "Bot can't use profile,something wrong!";
+                    return "Can't get recommended serving,something wrong!";
+
                 }
                 
             }

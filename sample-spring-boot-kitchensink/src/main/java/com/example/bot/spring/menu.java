@@ -12,7 +12,7 @@ import java.net.URI;
 
 @Slf4j
 public class menu{
-	public String getRecommendServing(String gender,String ageRange,boolean pregnant) throws Exception{
+	public String getRecommendServing(String gender,String ageRange,boolean pregnant) {
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -32,9 +32,7 @@ public class menu{
 		 	 } catch (Exception e) {
 			    System.out.println(e);
 		 	 	}
-			if (result != null)
-				return result;
-			throw new Exception("NOT FOUND");
+			return result;
 	}
 	public String getRecommendDish(String userID,double bmi) {
 		String result=null;
@@ -89,7 +87,7 @@ public class menu{
 			return "overweight";
 		}
 	}
-	public String getMenu(String dish){
+	/*public String getMenu(String dish){
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -108,7 +106,7 @@ public class menu{
 		 	 }
 			return result;
 			
-	}
+	}*/
 	public void insertMenu(String dish,int price,String ingredients){
 		try {
 			Connection connection=getConnection();

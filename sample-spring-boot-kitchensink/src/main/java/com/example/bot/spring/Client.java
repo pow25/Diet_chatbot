@@ -60,6 +60,7 @@ public class Client{
 			stmt.setString(1, userID);
 			ResultSet rs=stmt.executeQuery();
 			rs.next();
+			this.userID=rs.getString(1);
 			this.name=rs.getString(2);
 			this.age=rs.getInt(3);
 			this.gender=rs.getString(4);
@@ -91,7 +92,7 @@ public class Client{
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
+			
 		}
 		try {
 			long initi=-1;
@@ -221,7 +222,7 @@ public class Client{
 	 * @return BMI
 	 */
 	public double calculateBMI() {
-		if (weight!=0 && height!=0)
+		if (height!=0 && weight!=0)
 			return (weight/height)/height;
 		else return 0;
 	}

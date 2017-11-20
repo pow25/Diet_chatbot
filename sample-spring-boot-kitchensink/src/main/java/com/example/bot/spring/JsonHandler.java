@@ -16,14 +16,15 @@ import java.net.URI;
 
 public class JsonHandler {
 //	String message;
-	Quote[]  quote;
+	private Quote[]  quote;
+	
 	public JsonHandler(String url) {
 		RestTemplate restTemplate = new RestTemplate();
 		this.quote = restTemplate.getForObject(url, Quote[].class);
 //		message = quote.toString();
 	}
 	public String getJson() {
-		String total = null;
+		String total = "";
 		for(Quote q :quote) {
 			total += q.printString() + '\n';
 		}
