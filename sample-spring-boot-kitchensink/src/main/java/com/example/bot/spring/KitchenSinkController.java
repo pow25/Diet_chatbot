@@ -190,7 +190,7 @@ public class KitchenSinkController {
 			
 			try {
 				//this.replyText(replyToken, imageText);
-				String reply = null;
+				String reply = "";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
 					s=s.replaceAll("^a-zA-Z ", "");
