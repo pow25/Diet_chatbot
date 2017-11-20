@@ -49,7 +49,7 @@ public class RestaurantAPI {
     }
 	
 	public String printRestaurant() {
-		return result = respond.printRespond();
+		return respond.printRespond();
 	}
 	
 //	public Respond.Restaurant getRestaurant(int number) {
