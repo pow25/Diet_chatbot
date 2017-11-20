@@ -191,7 +191,9 @@ public class KitchenSinkController {
 		replyd += "It will provide you the recommend daily serving\n\n";
 		replyd +="keyword: calculate nutrients\n\n ";
 		replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
-     
+		replyd += "\n\n";
+		replyd +="You can also send location in Line client, and we will recommend the nearby restaurant for you";
+		
 		replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
 		replye += '\n';
 		replye += '\n';
