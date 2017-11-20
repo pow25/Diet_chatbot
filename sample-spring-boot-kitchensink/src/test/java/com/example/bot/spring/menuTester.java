@@ -1,6 +1,5 @@
 package com.example.bot.spring;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -8,6 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,47 +44,49 @@ import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Calendar;
+import java.util.*;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.client.RestTemplate;
-
-import lombok.extern.slf4j.Slf4j;
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import java.sql.*;
-import java.net.URISyntaxException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.lang.String;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
+import com.example.bot.spring.menu;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { JsonHandlerTester.class})
-public class JsonHandlerTester {
-	
-	@Test
-	public void jsonurl() throws Exception {
-		boolean thrown = false;
 
-		String url = "http://wwwabd-efcom.000webhostapp.com/data.json";
+@SpringBootTest(classes = {menuTester.class,menu.class })
+public class menuTester{
+	@Autowired
+	private menu testMenu;
+	@Test
+	public void test() throws Exception{
+		boolean thrown=false;
 		try {
-			JsonHandler jsonhandler = new JsonHandler(url);
-			System.out.println(jsonhandler.getJson());
-			if (!jsonhandler.getJson().equals("{name='Spicy Bean curd with Minced Pork served with Rice', price=35, ingredients=[Pork, Bean curd, Rice]}\n" + 
-					"{name='Sweet and Sour Pork served with Rice', price=36, ingredients=[Pork, Sweet and Sour Sauce, Pork]}\n" + 
-					"{name='Chili Chicken on Rice', price=28, ingredients=[Chili, Chicken, Rice]}\n")) {
-				thrown = true;
+			testMenu.insertMenu("double cheeze hamburger",24,"bread,cheeze,ham");
+			
+			if (testMenu.getRecommendServing("men","19-50",false)==null) {
+				thrown=true;
 			}
-		} catch (Exception e) {
-			thrown = true;
+			if (testMenu.getRecommendDish("1234567",-1)==null) {
+				thrown=true;
+			}
+			if (testMenu.getRecommendDish("1234567",10)==null) {
+				thrown=true;
+			}
+			if (testMenu.getRecommendDish("1234567",20)==null) {
+				thrown=true;
+			}
+			if (testMenu.getRecommendDish("1234567",30)==null) {
+				thrown=true;
+			}
+			if (testMenu.calculateNutrients("abc",0)==null) {
+				thrown=true;
+			}
+			if (testMenu.calculateNutrients("abc",100)==null) {
+				thrown=true;
+			}
+			testMenu.deleteRecord("double cheeze hamburger");
+		}catch (Exception e) {
+			thrown=true;
 		}
 		assertThat(thrown).isEqualTo(false);
 	}
-
 }

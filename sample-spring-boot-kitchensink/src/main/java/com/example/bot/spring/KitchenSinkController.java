@@ -120,6 +120,7 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		String reply = null;
+		List<Message> megs = new ArrayList<Message>();
 		//if userld is not in the database
 //		reply = handleTextContent(replytoken, userId, message.getText());
 		client.loadClient(userId);
@@ -127,85 +128,12 @@ public class KitchenSinkController {
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
-					String input1 = message.getText().toLowerCase();
+					String input1 = message.getText();
 					
-					if (input1 == "hi"){
-						String replya = null;
-						String replyb = null;
-						String replyc = null;
-						String replyd = null;
-						String replye = null;
-
-						
-						List<Message> megs = new ArrayList<Message>();
-
-	            
-						replya = "Welcome back to the diet chatbot!";
-						replya += '\n';
-						replya += '\n';
-						replya += "There are several functions you can use, to use the function, just type the keyword";
-						replya += '\n';
-						replya += '\n';
-						replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
-						replya += '\n';
-						replya += '\n';
-						replya += "Keyword: profile ";
-						replya += '\n';
-						replya += '\n';
-						replya += "It will provide you the personal health information";
-
-						replyb = "Keyword:friend";
-						replyb += '\n';
-						replyb += '\n';
-						replyb += "It will generate the coupon for you";
-						replyb += "Keyword: code ";
-						replyb += '\n';
-						replyb += '\n';
-						replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
-	                		 
-	                		 
-						replyc = "Keyword: history ";
-						replyc += '\n';
-						replyc += '\n';
-						replyc += "It will provide you the personal wegiht history and food history\n\n";
-						replyc += "Keyword: add history \n\n";
-						replyc += "It will let you input what you eat today and record the eating history\n\n";
-	                 
-						replyd = "Keyword: recommend serving";
-						replyd += "\n\n";
-						replyd += "It will provide you the recommend daily serving\n\n";
-						replyd +="keyword: calculate nutrients\n\n ";
-						replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
-	                 
-						replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
-						replye += '\n';
-						replye += '\n';
-						replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
-						replye += '\n';
-						replye += '\n';
-						replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
-						replye += '\n';
-						replye += '\n';
-						replye += "If you want to stop insert, type keyword:uninsert";
-	                 	replye += '\n';
-	                 	replye += '\n';
-	                 	replye += "In order to input JSON, please type \"json\" first, then input the link";
-	            	
-	             		Message a=  new TextMessage(replya);
-	             		Message b = new TextMessage(replyb);
-	             		Message c=  new TextMessage(replyc);
-	             		Message d = new TextMessage(replyd);
-	             		Message e=  new TextMessage(replye);
-
-	             		megs.add(a);
-	             		megs.add(b);
-	             		megs.add(c);
-	             		megs.add(d);
-	             		megs.add(e);
-
-	                 
-	             		this.reply(replytoken, megs);	
-	                           
+					if (input1.equals("hi") ){
+							
+						megs = hi_func();   
+						this.reply(replytoken, megs);
 						}
 						else{
 							reply = handleTextContent(replytoken, userId, message.getText());
@@ -220,9 +148,93 @@ public class KitchenSinkController {
 		this.replyText(replytoken, reply);
 	}
 	/**
-	 * Handling all sticker message event
-	 * @param event event
+	 * when user type hi
+	 * @return a message list of interaction that lcient can do
 	 */
+	public List<Message> hi_func() {
+		
+		
+		String replya = null;
+		String replyb = null;
+		String replyc = null;
+		String replyd = null;
+		String replye = null;
+
+		
+		List<Message> megs = new ArrayList<Message>();
+
+
+		replya = "Welcome back to the diet chatbot!";
+		replya += '\n';
+		replya += '\n';
+		replya += "There are several functions you can use, to use the function, just type the keyword";
+		replya += '\n';
+		replya += '\n';
+		replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
+		replya += '\n';
+		replya += '\n';
+		replya += "Keyword: profile ";
+		replya += '\n';
+		replya += '\n';
+		replya += "It will provide you the personal health information";
+
+		replyb = "Keyword:friend";
+		replyb += '\n';
+		replyb += '\n';
+		replyb += "It will generate the coupon for you";
+		replyb += "Keyword: code ";
+		replyb += '\n';
+		replyb += '\n';
+		replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
+    		 
+    		 
+		replyc = "Keyword: history ";
+		replyc += '\n';
+		replyc += '\n';
+		replyc += "It will provide you the personal wegiht history and food history\n\n";
+		replyc += "Keyword: add history \n\n";
+		replyc += "It will let you input what you eat today and record the eating history\n\n";
+     
+		replyd = "Keyword: recommend serving";
+		replyd += "\n\n";
+		replyd += "It will provide you the recommend daily serving\n\n";
+		replyd +="keyword: calculate nutrients\n\n ";
+		replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
+		replyd += "\n\n";
+		replyd +="You can also send location in Line client, and we will recommend the nearby restaurant for you";
+		
+		replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
+		replye += '\n';
+		replye += '\n';
+		replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
+		replye += '\n';
+		replye += '\n';
+		replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
+		replye += '\n';
+		replye += '\n';
+		replye += "If you want to stop insert, type keyword:uninsert";
+     	replye += '\n';
+     	replye += '\n';
+     	replye += "In order to input JSON, please type \"json\" first, then input the link";
+	
+ 		Message a=  new TextMessage(replya);
+ 		Message b = new TextMessage(replyb);
+ 		Message c=  new TextMessage(replyc);
+ 		Message d = new TextMessage(replyd);
+ 		Message e=  new TextMessage(replye);
+
+ 		megs.add(a);
+ 		megs.add(b);
+ 		megs.add(c);
+ 		megs.add(d);
+ 		megs.add(e);
+
+     
+ 		return megs;
+		
+	}
+	
+
 	@EventMapping
 	public void handleStickerMessageEvent(MessageEvent<StickerMessageContent> event) {
 		handleSticker(event.getReplyToken(), event.getMessage());
@@ -279,15 +291,22 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 		DownloadedContent jpg = saveContent("jpg", response);
+		replyText(replyToken, imagetextSearcher(jpg.getUri()));
+	
+	}
+	/**
+	 * 
+	 * @param jpg_uri uri of image
+	 * @return text recognized by ocr api
+	 */
+	public String imagetextSearcher(String jpg_uri) {
+		String results="";
 		OcrApiController OcrApi = new OcrApiController();
-		String imageText = OcrApi.recognize("URL",jpg.getUri());
-		//this.replyText(replyToken, "Recognized message:\n"+imageText);
+		String imageText = OcrApi.recognize("URL",jpg_uri);
 		if (imageText.equals(null)) {
-			replyText(replyToken, "Cannot recognize image, Please try again.");
+			results="Cannot recognize image, Please try again.";
 		}else {
-			
 			try {
-				//this.replyText(replyToken, imageText);
 				String reply = "";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
@@ -296,24 +315,21 @@ public class KitchenSinkController {
 					if (s.length()>3) {
 						String result = mymenu.calculateNutrients(s,0.0);
 						if (result != null) {
-							reply += result + "\n\n";
+							reply += result;
+							reply += "\n\n";
 						}
 						if (reply.length()>900) {
 							break;
 						}
 					}
 				}
-				if (reply!=null) {
-					this.replyText(replyToken, reply);
-				}else {
-					this.replyText(replyToken, "Cannot find menu.");
-				}
-				
-				}
-			 catch (Exception e) {
-				this.replyText(replyToken, "Error: "+e.getMessage());
+				results=reply;
+			}catch (Exception e) {
+				results="Error:";
+				results+= e.toString();
 			}
 		}
+		return results;
 	}
 	/**
 	 * Handling all audio message event
@@ -974,7 +990,8 @@ public class KitchenSinkController {
 	 * @param responseBody response body
 	 * @return a temp file of the content from client
 	 */
-	private static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
+	public static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
+
 		log.info("Got content-type: {}", responseBody);
 
 		DownloadedContent tempFile = createTempFile(ext);
@@ -991,7 +1008,7 @@ public class KitchenSinkController {
 	 * @param ext ext
 	 * @return class the store downloadedcontent
 	 */
-	private static DownloadedContent createTempFile(String ext) {
+	public static DownloadedContent createTempFile(String ext) {
 		String fileName = LocalDateTime.now().toString() + '-' + UUID.randomUUID().toString() + '.' + ext;
 		Path tempFile = KitchenSinkApplication.downloadedContentDir.resolve(fileName);
 		tempFile.toFile().deleteOnExit();

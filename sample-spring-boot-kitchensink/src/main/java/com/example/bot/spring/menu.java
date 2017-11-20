@@ -41,9 +41,7 @@ public class menu{
 				rs.close();
 				stmt.close();
 				connection.close();
-		 	 } catch (Exception e) {
-			    System.out.println(e);
-		 	 	}
+		 	 } catch (Exception e) {}
 			return result;
 	}
 	/**
@@ -115,7 +113,7 @@ public class menu{
 	 * @param dish dish
 	 * @return dishes in menu format
 	 */
-	public String getMenu(String dish){
+	/*public String getMenu(String dish){
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -130,10 +128,9 @@ public class menu{
 				stmt.close();
 				connection.close();
 		 	 } catch (Exception e) {
-			    System.out.println(e);
 		 	 }
 			return result;
-	}
+	}*/
 	/**
 	 * Insert dish and its info into menu database
 	 * @param dish dish
@@ -147,11 +144,10 @@ public class menu{
 			stmt.setString(1,dish);
 			stmt.setString(3,ingredients);
 			stmt.setInt(2,price);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 	/**
@@ -184,9 +180,19 @@ public class menu{
 			rs.close();
 			connection.close();
 		}catch (Exception e) {
-			System.out.println(e);
 		}
 		return result;
+	}
+	public void deleteRecord(String dishName) {
+		try {
+			Connection connection1=getConnection();
+			PreparedStatement stmt1=connection1.prepareStatement("delete from menu where dish=?;");
+			stmt1.setString(1, dishName);
+			stmt1.executeUpdate();
+			stmt1.close();
+			connection1.close();
+		}
+		catch (Exception e) {}
 	}
 	/**
 	 * Connect with database

@@ -42,45 +42,99 @@ import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.client.RestTemplate;
-
-import lombok.extern.slf4j.Slf4j;
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import java.sql.*;
-import java.net.URISyntaxException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.lang.String;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.bot.spring.Client;
 
 
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { JsonHandlerTester.class})
-public class JsonHandlerTester {
-	
-	@Test
-	public void jsonurl() throws Exception {
-		boolean thrown = false;
 
-		String url = "http://wwwabd-efcom.000webhostapp.com/data.json";
+@SpringBootTest(classes = {ClientTester.class,Client.class })
+public class ClientTester{
+	
+	@Autowired
+	private Client client;
+	@Test
+	public void test()  throws Exception{
+		boolean thrown = false;
 		try {
-			JsonHandler jsonhandler = new JsonHandler(url);
-			System.out.println(jsonhandler.getJson());
-			if (!jsonhandler.getJson().equals("{name='Spicy Bean curd with Minced Pork served with Rice', price=35, ingredients=[Pork, Bean curd, Rice]}\n" + 
-					"{name='Sweet and Sour Pork served with Rice', price=36, ingredients=[Pork, Sweet and Sour Sauce, Pork]}\n" + 
-					"{name='Chili Chicken on Rice', price=28, ingredients=[Chili, Chicken, Rice]}\n")) {
-				thrown = true;
+			if (client.isInfoComplete("123456")!=1) {
+				thrown=true;
 			}
-		} catch (Exception e) {
-			thrown = true;
+			if (client.calculateBMI()!=0) {
+				thrown=true;
+			}
+			client.addClient("123456");
+			if (client.getProfile()==null) {
+				thrown=true;
+			}
+			if (client.isInfoComplete("123456")!=2) {
+				thrown=true;
+			}
+			client.updateName("comp");
+			if (client.isInfoComplete("123456")!=3) {
+				thrown=true;
+			}
+			client.updateAge(3111);
+			if (client.isInfoComplete("123456")!=4) {
+				thrown=true;
+			}
+			client.updateGender("men");
+			if (client.isInfoComplete("123456")!=5) {
+				thrown=true;
+			}
+			client.updateHeight(2);
+			if (client.isInfoComplete("123456")!=6) {
+				thrown=true;
+			}
+			if (client.calculateBMI()!=0) {
+				thrown=true;
+			}
+			client.updateWeight(4);
+			if (client.isInfoComplete("123456")!=0) {
+				thrown=true;
+			}
+			client.loadClient("123456");
+			if (!client.getName().equals("comp")) {
+				thrown=true;
+			}
+			if (client.getAge()!=3111) {
+				thrown=true;
+			}
+			if (client.getHeight()==0) {
+				thrown=true;
+			}
+			if (client.getWeight()==0) {
+				thrown=true;
+			}
+			if (client.calculateBMI()==0) {
+				thrown=true;
+			}
+			if (!client.getGender().equals("men")) {
+				thrown=true;
+			}
+			client.addHistory("cheese burgur");
+			client.addHistory("egg burger");
+			if (client.getHistory()==null) {
+				thrown=true;
+			}
+			client.updateCoupon(1234567);
+			if (client.getCoupon()!=1234567) {
+				thrown=true;
+			}
+			if (client.ifclaim()==true) {
+				thrown=true;
+			}
+			if (client.claim(1234567)==null) {
+				thrown=true;
+			}
+			if (client.ifclaim()==false) {
+				thrown=true;
+			}
+			client.deleteRecord("123456");
+			
+		}catch (Exception e) {
+			thrown=true;
 		}
 		assertThat(thrown).isEqualTo(false);
 	}
