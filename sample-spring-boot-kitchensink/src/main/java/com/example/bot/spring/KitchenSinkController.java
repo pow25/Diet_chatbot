@@ -531,7 +531,10 @@ throws Exception{
                 	caseCounter=4;
                 	String reply = null;
                 	reply = client.getHistory();
-                	this.replyText(replyToken,reply);
+                	if (reply!=null)
+                		this.replyText(replyToken,reply);
+                	else
+                		this.replyText(replyToken, "No History Found!");
                 } catch(Exception e)  {
                     this.replyText(replyToken, "No History Found!");
                 }
