@@ -4,6 +4,11 @@ import com.asprise.ocr.Ocr;
 import java.io.File;
 import java.net.*;
 
+/**
+ * OCR API controller
+ * @author Group 14
+ *
+ */
 public class OcrApiController {
 	//input type
 	public final String TYPE_URL = "URL";
@@ -12,8 +17,13 @@ public class OcrApiController {
 	//just some constant for testing, can ignore this
 	private final String FILEURL = "http://asprise.com/ocr/img/test-image.png";
 	private final String FILENAME = "/app/sample-spring-boot-kitchensink/src/main/resources/static/test-image.png";
-	
-	//testing function
+
+	/**
+	 * Recognize text in photo
+	 * @param type tpye
+	 * @param type_content type_content
+	 * @return text recognized in photo
+	 */
 	public String recognize(String type,String type_content) {
 		Ocr.setUp(); // one time setup
 		Ocr ocr = new Ocr(); // create a new OCR engine

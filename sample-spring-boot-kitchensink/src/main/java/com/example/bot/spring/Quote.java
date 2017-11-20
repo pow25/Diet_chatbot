@@ -27,7 +27,7 @@ public class Quote {
     }
     /** 
      * Set name data member
-     * @param name
+     * @param name name
      */
     public void setName(String name) {
         this.name = name;
@@ -41,7 +41,7 @@ public class Quote {
     }
     /**
      * Set price data member
-     * @param price
+     * @param price price
      */
     public void setPrice(int price) {
         this.price = price;
@@ -55,7 +55,7 @@ public class Quote {
     }
     /**
      * Set ingredients data member
-     * @param ingredients
+     * @param ingredients ingredients
      */
     public void setIngredients(String[] ingredients) {
         this.ingredients = ingredients;

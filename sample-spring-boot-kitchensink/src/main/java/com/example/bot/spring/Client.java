@@ -33,25 +33,44 @@ public class Client{
 		weight=0;
 	}
 	
-	
+	/**
+	 * Get gender
+	 * @return gender
+	 */
 	public String getGender() {
 		return gender;
 	}
+	/**
+	 * Get age
+	 * @return age
+	 */
 	public int getAge() {
 		return age;
 	}
+	/**
+	 * Get name
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
+	/**
+	 * Get height
+	 * @return height
+	 */
 	public double getHeight() {
 		return height;
 	}
+	/**
+	 * Get weight
+	 * @return weight
+	 */
 	public double getWeight() {
 		return weight;
 	}
 	/**
 	 * Load the data client's profile into the class from database
-	 * @param userID
+	 * @param userID user's id
 	 */
 	public void loadClient(String userID){
 		try {
@@ -74,7 +93,7 @@ public class Client{
 	}
 	/**
 	 * Create proflie nd save into database for first time user
-	 * @param userID
+	 * @param userID user's id
 	 */
 	public void addClient(String userID) {
 		try {
@@ -116,7 +135,7 @@ public class Client{
 	}
 	/**
 	 * Update client name
-	 * @param name
+	 * @param name client name
 	 */
 	public void updateName(String name){
 		try {
@@ -133,7 +152,7 @@ public class Client{
 	}
 	/**
 	 * Update client name
-	 * @param age
+	 * @param age client name
 	 */
 	public void updateAge(int age){
 		try {
@@ -150,7 +169,7 @@ public class Client{
 	}
 	/**
 	 * Update client gender
-	 * @param gender
+	 * @param gender client gender
 	 */
 	public void updateGender(String gender){
 		try {
@@ -167,7 +186,7 @@ public class Client{
 	}
 	/**
 	 * Update client height
-	 * @param height
+	 * @param height client height
 	 */
 	public void updateHeight(double height){
 		try {
@@ -184,7 +203,7 @@ public class Client{
 	}
 	/**
 	 * Update client weight
-	 * @param weight
+	 * @param weight client wwight
 	 */
 	public void updateWeight(double weight){
 		try {
@@ -201,8 +220,8 @@ public class Client{
 	}
 	/**
 	 * Check if pclient profile is complete
-	 * @param userID
-	 * @return
+	 * @param userID client user id
+	 * @return the stages of the completiveness of client's profile 
 	 */
 	public int isInfoComplete(String userID){
 		int result = 1;
@@ -250,7 +269,8 @@ public class Client{
 	}
 	/**
 	 * Add ate dish of client into database
-	 * @param dish
+	 * @param dish client dish
+	 * @throws Exception if exception inside
 	 */
 	public void addHistory(String dish) throws Exception{
 		try {
@@ -271,7 +291,6 @@ public class Client{
 	/**
 	 * Get clien's eating history form database
 	 * @return dish history
-	 * @throws Exception Connect exxception of database
 	 */
 	public String getHistory(){
 		String result = null;
@@ -319,7 +338,7 @@ public class Client{
 	}
 	/**
 	 * Update coupon digits to the client's profile
-	 * @param coupon
+	 * @param coupon coupon for client
 	 */
 	public void updateCoupon(long coupon) {
 		try {
@@ -356,7 +375,7 @@ public class Client{
 	}
 	/**
 	 * Claim coupon for both client and friend
-	 * @param coupon
+	 * @param coupon coupon for client
 	 * @return the list of client and friend
 	 */
 	public List<String> claim(long coupon) {
@@ -416,8 +435,8 @@ public class Client{
 	/**
 	 * Connect with database
 	 * @return
-	 * @throws URISyntaxException
-	 * @throws SQLException
+	 * @throws URISyntaxException if there is uri syntax exception
+	 * @throws SQLException if there is connection problem to database
 	 */
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
