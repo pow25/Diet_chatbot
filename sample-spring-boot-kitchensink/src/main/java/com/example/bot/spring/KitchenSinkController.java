@@ -265,11 +265,11 @@ public class KitchenSinkController {
 		log.info("Received message(Ignored): {}", event);
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull Message message) {
+	public void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+	public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
 			log.info("Sent messages: {}", apiResponse);
@@ -278,7 +278,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void push(@NonNull String to, @NonNull List<Message> messages) {
+	public void push(@NonNull String to, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -287,7 +287,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void pushImage(@NonNull String to, @NonNull Message messages) {
+	public void pushImage(@NonNull String to, @NonNull Message messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -295,7 +295,7 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
-	private void pushText(@NonNull String to, @NonNull String message) {
+	public void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
 		}
@@ -307,7 +307,7 @@ public class KitchenSinkController {
 	}
 
 	
-	private void replyText(@NonNull String replyToken, @NonNull String message) {
+	public void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
 		}
@@ -318,7 +318,7 @@ public class KitchenSinkController {
 	}
 
 
-	private void handleSticker(String replyToken, StickerMessageContent content) {
+	public void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
@@ -331,7 +331,7 @@ public class KitchenSinkController {
         }
     }
 	
-	public static boolean isNumberic(String str)
+	public boolean isNumberic(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
 			if (!Character.isDigit(str.charAt(i))){
@@ -341,7 +341,7 @@ public class KitchenSinkController {
 		return true;
 	}
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
-	private String menu_handler(String text, int price,String ingredients) {
+	public String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
 		 if (insert_mode == null) {
 			 reply = mymenu.calculateNutrients(text,0);
@@ -354,7 +354,7 @@ public class KitchenSinkController {
 
 	}
 	
-	private void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
+	public void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
@@ -441,8 +441,7 @@ public class KitchenSinkController {
 		}
 	
 	
-	private void handleTextContent(String replyToken, Event event, String text)
-throws Exception{
+	public void handleTextContent(String replyToken, Event event, String text){
         String userId = event.getSource().getUserId();
         client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
@@ -471,7 +470,9 @@ throws Exception{
        			return;
        		}
        	}catch(MalformedURLException e) {
-       		log.info("url handle json failed, perhaps not a real url");
+       		String reply = null;
+       		reply = "url handle json failed, perhaps not a real url";
+       		this.replyText(replyToken, reply);
       	}
         //-----------------------------------------------------------//
 
@@ -816,7 +817,7 @@ throws Exception{
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
 	
-	private void system(String... args) {
+	public void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
 			Process start = processBuilder.start();
