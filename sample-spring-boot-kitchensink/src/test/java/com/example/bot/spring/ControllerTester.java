@@ -140,7 +140,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ControllerTester {
 
 	
-	@Test
+	/*	@Test
 	public void testhelpfunction1()  throws Exception{
 		boolean thrown = false;
 		
@@ -265,5 +265,17 @@ public class ControllerTester {
 	
 	
 	
-	
+*/	
+	@Test
+	public void testTextimageSearcher()  throws Exception{
+		boolean thrown = false;
+		
+		KitchenSinkController ksc = new KitchenSinkController();
+		String result=ksc.imagetextSearcher("http://asprise.com/ocr/img/test-image.png");
+		System.out.println(result);
+		if (result==null) {
+			thrown = true;
+		}
+		assertThat(thrown).isEqualTo(false);
+	}
 }
