@@ -227,7 +227,7 @@ public class ControllerTester {
 	
 
 
-
+	@Test
 	public void test_handletextcontent2()  throws Exception{
 		boolean thrown = false;
 		
