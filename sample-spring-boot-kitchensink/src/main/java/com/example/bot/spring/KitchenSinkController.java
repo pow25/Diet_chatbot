@@ -115,19 +115,102 @@ public class KitchenSinkController {
 		String userId = event.getSource().getUserId();
 		String reply = null;
 		//if userld is not in the database
-		reply = handleTextContent(replytoken, userId, message.getText());
-//		try {
-//				int complete_indicator = client.isInfoComplete(userId);
-//			
-//				if(complete_indicator==0) {  // the user's info is full
-//					reply = handleTextContent(replytoken, userId, message.getText());
-//				}
-//				else {
-//					reply=handleTextContent_newuser(replytoken,message.getText(),userId,complete_indicator);
-//				}
-//		 } catch (Exception e) {
-//			 	reply=handleTextContent_newuser(replytoken,message.getText(),userId,1);
-//		 	}
+//		reply = handleTextContent(replytoken, userId, message.getText());
+		client.loadClient(userId);
+		try {
+				int complete_indicator = client.isInfoComplete(userId);
+			
+				if(complete_indicator==0) {  // the user's info is full
+					String input1 = message.getText().toLowerCase();
+					
+					if (input1 == "hi"){
+						String replya = null;
+						String replyb = null;
+						String replyc = null;
+						String replyd = null;
+						String replye = null;
+
+						
+						List<Message> megs = new ArrayList<Message>();
+
+	            
+						replya = "Welcome back to the diet chatbot!";
+						replya += '\n';
+						replya += '\n';
+						replya += "There are several functions you can use, to use the function, just type the keyword";
+						replya += '\n';
+						replya += '\n';
+						replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
+						replya += '\n';
+						replya += '\n';
+						replya += "Keyword: profile ";
+						replya += '\n';
+						replya += '\n';
+						replya += "It will provide you the personal health information";
+
+						replyb = "Keyword:friend";
+						replyb += '\n';
+						replyb += '\n';
+						replyb += "It will generate the coupon for you";
+						replyb += "Keyword: code ";
+						replyb += '\n';
+						replyb += '\n';
+						replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
+	                		 
+	                		 
+						replyc = "Keyword: history ";
+						replyc += '\n';
+						replyc += '\n';
+						replyc += "It will provide you the personal wegiht history and food history\n\n";
+						replyc += "Keyword: add history \n\n";
+						replyc += "It will let you input what you eat today and record the eating history\n\n";
+	                 
+						replyd = "Keyword: recommend serving";
+						replyd += "\n\n";
+						replyd += "It will provide you the recommend daily serving\n\n";
+						replyd +="keyword: calculate nutrients\n\n ";
+						replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
+	                 
+						replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
+						replye += '\n';
+						replye += '\n';
+						replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
+						replye += '\n';
+						replye += '\n';
+						replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
+						replye += '\n';
+						replye += '\n';
+						replye += "If you want to stop insert, type keyword:uninsert";
+	                 	replye += '\n';
+	                 	replye += '\n';
+	                 	replye += "In order to input JSON, please type \"json\" first, then input the link";
+	            	
+	             		Message a=  new TextMessage(replya);
+	             		Message b = new TextMessage(replyb);
+	             		Message c=  new TextMessage(replyc);
+	             		Message d = new TextMessage(replyd);
+	             		Message e=  new TextMessage(replye);
+
+	             		megs.add(a);
+	             		megs.add(b);
+	             		megs.add(c);
+	             		megs.add(d);
+	             		megs.add(e);
+
+	                 
+	             		this.reply(replytoken, megs);	
+	                           
+						}
+						else{
+							reply = handleTextContent(replytoken, userId, message.getText());
+							}
+				 }
+				else {
+					reply=handleTextContent_newuser(replytoken,message.getText(),userId,complete_indicator);
+				}
+		 } catch (Exception e) {
+			 	reply=handleTextContent_newuser(replytoken,message.getText(),userId,1);
+		 	}
 		this.replyText(replytoken, reply);
 	}
 
@@ -362,7 +445,7 @@ public class KitchenSinkController {
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
-					client.loadClient(userId);
+				
 					
 					if(complete_indicator==1) {   //there is no information at all
 						client.addClient(userId);
@@ -447,10 +530,7 @@ public class KitchenSinkController {
 	
 	public String handleTextContent(String replyToken, String userId, String text){
         
-        client.loadClient(userId);
-        log.info("Got text message from {}: {}", replyToken, text);
-        
-
+		text = text.toLowerCase();
         switch (text) {
         	case "json":{
         		caseCounter =20;
@@ -489,7 +569,11 @@ public class KitchenSinkController {
             	reply += "\n";
             	reply += "\n";
             	reply += "first line:dish name";
+            	reply += "\n";
+            	reply += "\n";
             	reply += "second line:price(must be interger)";
+            	reply += "\n";
+            	reply += "\n";
             	reply += "third line:gredients";
             	return reply;
             	
@@ -620,85 +704,6 @@ public class KitchenSinkController {
             }
             
 
-            case "hi":{
-            	String replya = null;
-            	String replyb = null;
-            	String replyc = null;
-            	String replyd = null;
-            	String replye = null;
-
-            	caseCounter=7;
-            	List<Message> megs = new ArrayList<Message>();
-
-            
-                 replya = "Welcome back to the diet chatbot!";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "There are several functions you can use, to use the function, just type the keyword";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "Keyword: profile ";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "It will provide you the personal health information";
-
-                 replyb = "Keyword:friend";
-                 replyb += '\n';
-                 replyb += '\n';
-                 replyb += "It will generate the coupon for you";
-                 replyb += "Keyword: code ";
-                 replyb += '\n';
-                 replyb += '\n';
-                 replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
-                		 
-                		 
-                 replyc = "Keyword: history ";
-                 replyc += '\n';
-                 replyc += '\n';
-                 replyc += "It will provide you the personal wegiht history and food history\n\n";
-                 replyc += "Keyword: add history \n\n";
-                 replyc += "It will let you input what you eat today and record the eating history\n\n";
-                 
-                 replyd = "Keyword: recommend serving";
-                 replyd += "\n\n";
-                 replyd += "It will provide you the recommend daily serving\n\n";
-                 replyd +="keyword: calculate nutrients\n\n ";
-                 replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
-                 
-                 replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "If you want to stop insert, type keyword:uninsert";
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "In order to input JSON, please type \"json\" first, then input the link";
-            	
-             	Message a=  new TextMessage(replya);
-             	Message b = new TextMessage(replyb);
-             	Message c=  new TextMessage(replyc);
-             	Message d = new TextMessage(replyd);
-             	Message e=  new TextMessage(replye);
-
-             	megs.add(a);
-             	megs.add(b);
-             	megs.add(c);
-             	megs.add(d);
-             	megs.add(e);
-
-                 
-                this.reply(replyToken, megs);	
-
-               break;
-              }
 //            case "test":{
 //            	this.replyText(replyToken,replyToken );
 //            	break;
@@ -884,9 +889,10 @@ public class KitchenSinkController {
 	}
 
 
-	public void setvalues(String insert_mode,int caseCounter) {
+	public void setvalues(String insert_mode,int caseCounter,int coupon_number) {
 		this.caseCounter = caseCounter;
 		this.insert_mode = insert_mode;
+		this.coupon_number = coupon_number;
 	}
 
 
