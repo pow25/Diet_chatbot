@@ -33,29 +33,21 @@ public class Client{
 		weight=0;
 	}
 	
-//	KEN----------------------------------------------------
-//	public String getGender() {
-//		return gender;
-//	}
-//	public int getAge() {
-//		return age;
-//	}
-//	public String getGender() {
-//		return gender;
-//	}
-//	public double getHeight() {
-//		return height;
-//	}
-//	public double getWeight() {
-//		return weight;
-//	}
-//	KEN----------------------------------------------------
 	
 	public String getGender() {
 		return gender;
 	}
 	public int getAge() {
 		return age;
+	}
+	public String getName() {
+		return name;
+	}
+	public double getHeight() {
+		return height;
+	}
+	public double getWeight() {
+		return weight;
 	}
 	/**
 	 * Load the data client's profile into the class from database
@@ -188,7 +180,7 @@ public class Client{
 			System.out.println(e);
 		}
 	}
-	public int isInfoComplete(String userID) throws SQLException{
+	public int isInfoComplete(String userID){
 		int result = 1;
 		try {
 				Connection connection = getConnection();
@@ -222,9 +214,7 @@ public class Client{
 		 	} catch (Exception e) {
 			    System.out.println(e);
 		 	 	}
-			if (result != 1)
-				return result;
-			throw new SQLException("NOT COMPLETE");
+			return result;
 	}
 	/**
 	 * Calculate client's BMI
@@ -262,7 +252,7 @@ public class Client{
 	 * @return dish history
 	 * @throws Exception Connect exxception of database
 	 */
-	public String getHistory() throws Exception{
+	public String getHistory(){
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -282,10 +272,8 @@ public class Client{
 				connection.close();
 		 	 } catch (Exception e) {
 			    System.out.println(e);
-		 	 	}
-			if (result != null)
-				return result;
-			throw new Exception("NOT FOUND");
+		 	 }
+			return result;
 	}
 	/**
 	 * Client get coupon for friends
