@@ -190,13 +190,15 @@ public class KitchenSinkController {
 			
 			try {
 				//this.replyText(replyToken, imageText);
-				String reply ="";
+				String reply = null;
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
-					if (s.length()>2) {
+					s=s.replaceAll("^a-zA-Z ", "");
+					s=s.toLowerCase();
+					if (s.length()>3) {
 						String result = mymenu.calculateNutrients(s,0.0);
 						if (result != null) {
-							reply += result;
+							reply += result + "\n\n";
 						}
 						if (reply.length()>900) {
 							break;
@@ -530,7 +532,10 @@ public class KitchenSinkController {
                 	caseCounter=4;
                 	String reply = null;
                 	reply = client.getHistory();
-                	this.replyText(replyToken,reply);
+                	if (reply!=null)
+                		this.replyText(replyToken,reply);
+                	else
+                		this.replyText(replyToken, "No History Found!");
                 } catch(Exception e)  {
                     this.replyText(replyToken, "No History Found!");
                 }
