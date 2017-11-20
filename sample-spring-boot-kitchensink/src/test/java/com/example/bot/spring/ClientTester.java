@@ -131,7 +131,7 @@ public class ClientTester{
 			if (client.ifclaim()==false) {
 				thrown=true;
 			}
-			
+			client.deleteRecord("123456");
 			
 		}catch (Exception e) {
 			thrown=true;

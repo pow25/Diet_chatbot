@@ -29,9 +29,7 @@ public class menu{
 				rs.close();
 				stmt.close();
 				connection.close();
-		 	 } catch (Exception e) {
-			    System.out.println(e);
-		 	 	}
+		 	 } catch (Exception e) {}
 			return result;
 	}
 	public String getRecommendDish(String userID,double bmi) {
@@ -114,7 +112,7 @@ public class menu{
 			stmt.setString(1,dish);
 			stmt.setString(3,ingredients);
 			stmt.setInt(2,price);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			stmt.close();
 			connection.close();
 		}catch (Exception e) {
@@ -148,6 +146,17 @@ public class menu{
 			System.out.println(e);
 		}
 		return result;
+	}
+	public void deleteRecord(String dishName) {
+		try {
+			Connection connection1=getConnection();
+			PreparedStatement stmt1=connection1.prepareStatement("delete from menu where dish=?;");
+			stmt1.setString(1, dishName);
+			stmt1.executeUpdate();
+			stmt1.close();
+			connection1.close();
+		}
+		catch (Exception e) {}
 	}
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
