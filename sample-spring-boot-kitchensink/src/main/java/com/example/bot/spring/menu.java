@@ -114,7 +114,7 @@ public class menu{
 	 * @param dish
 	 * @return dishes in menu format
 	 */
-	public String getMenu(String dish){
+	/*public String getMenu(String dish){
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -131,7 +131,7 @@ public class menu{
 		 	 } catch (Exception e) {
 		 	 }
 			return result;
-	}
+	}*/
 	/**
 	 * Insert dish and its info into menu database
 	 * @param dish

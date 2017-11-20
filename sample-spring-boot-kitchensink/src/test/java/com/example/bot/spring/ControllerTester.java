@@ -244,6 +244,7 @@ public class ControllerTester {
 			assertThat(thrown).isEqualTo(false);
 	}
 	
+
 	@Test
 	public void test_handlecontent_json()  throws Exception{
 		boolean thrown = false;
