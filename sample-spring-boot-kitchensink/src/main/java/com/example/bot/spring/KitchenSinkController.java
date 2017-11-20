@@ -124,7 +124,7 @@ public class KitchenSinkController {
 				if(complete_indicator==0) {  // the user's info is full
 					String input1 = message.getText();
 					
-					if (input1 == "hi"){
+					if (input1.equals("hi") ){
 							
 						megs = hi_func();   
 						this.reply(replytoken, megs);
