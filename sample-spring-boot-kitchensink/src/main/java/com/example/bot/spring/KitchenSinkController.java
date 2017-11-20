@@ -113,20 +113,105 @@ public class KitchenSinkController {
 		TextMessageContent message = event.getMessage();
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
+		String reply = null;
 		//if userld is not in the database
-//		handleTextContent(replytoken, event, message.getText());
+//		reply = handleTextContent(replytoken, userId, message.getText());
+		client.loadClient(userId);
 		try {
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
-					handleTextContent(replytoken, event, message.getText());
-				}
+					String input1 = message.getText().toLowerCase();
+					
+					if (input1 == "hi"){
+						String replya = null;
+						String replyb = null;
+						String replyc = null;
+						String replyd = null;
+						String replye = null;
+
+						
+						List<Message> megs = new ArrayList<Message>();
+
+	            
+						replya = "Welcome back to the diet chatbot!";
+						replya += '\n';
+						replya += '\n';
+						replya += "There are several functions you can use, to use the function, just type the keyword";
+						replya += '\n';
+						replya += '\n';
+						replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
+						replya += '\n';
+						replya += '\n';
+						replya += "Keyword: profile ";
+						replya += '\n';
+						replya += '\n';
+						replya += "It will provide you the personal health information";
+
+						replyb = "Keyword:friend";
+						replyb += '\n';
+						replyb += '\n';
+						replyb += "It will generate the coupon for you";
+						replyb += "Keyword: code ";
+						replyb += '\n';
+						replyb += '\n';
+						replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
+	                		 
+	                		 
+						replyc = "Keyword: history ";
+						replyc += '\n';
+						replyc += '\n';
+						replyc += "It will provide you the personal wegiht history and food history\n\n";
+						replyc += "Keyword: add history \n\n";
+						replyc += "It will let you input what you eat today and record the eating history\n\n";
+	                 
+						replyd = "Keyword: recommend serving";
+						replyd += "\n\n";
+						replyd += "It will provide you the recommend daily serving\n\n";
+						replyd +="keyword: calculate nutrients\n\n ";
+						replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
+	                 
+						replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
+						replye += '\n';
+						replye += '\n';
+						replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
+						replye += '\n';
+						replye += '\n';
+						replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
+						replye += '\n';
+						replye += '\n';
+						replye += "If you want to stop insert, type keyword:uninsert";
+	                 	replye += '\n';
+	                 	replye += '\n';
+	                 	replye += "In order to input JSON, please type \"json\" first, then input the link";
+	            	
+	             		Message a=  new TextMessage(replya);
+	             		Message b = new TextMessage(replyb);
+	             		Message c=  new TextMessage(replyc);
+	             		Message d = new TextMessage(replyd);
+	             		Message e=  new TextMessage(replye);
+
+	             		megs.add(a);
+	             		megs.add(b);
+	             		megs.add(c);
+	             		megs.add(d);
+	             		megs.add(e);
+
+	                 
+	             		this.reply(replytoken, megs);	
+	                           
+						}
+						else{
+							reply = handleTextContent(replytoken, userId, message.getText());
+							}
+				 }
 				else {
-					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+					reply=handleTextContent_newuser(replytoken,message.getText(),userId,complete_indicator);
 				}
 		 } catch (Exception e) {
-			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+			 	reply=handleTextContent_newuser(replytoken,message.getText(),userId,1);
 		 	}
+		this.replyText(replytoken, reply);
 	}
 
 	@EventMapping
@@ -159,14 +244,14 @@ public class KitchenSinkController {
 			int complete_indicator = client.isInfoComplete(userId);
 		
 			if(complete_indicator!=0) {  // the user's info is not full
-				handleTextContent_newuser(replyToken,event,"",userId,complete_indicator);
+				handleTextContent_newuser(replyToken,"",userId,complete_indicator);
 
 				return;
 			}
 		} 
 		catch (Exception e) {
 			try {
-				handleTextContent_newuser(replyToken,event,"",userId,1);
+				handleTextContent_newuser(replyToken,"",userId,1);
 			}
 			catch(Exception ex) {
 				replyText(replyToken, e.getMessage());
@@ -190,7 +275,7 @@ public class KitchenSinkController {
 			
 			try {
 				//this.replyText(replyToken, imageText);
-				String reply = null;
+				String reply = "";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
 					s=s.replaceAll("^a-zA-Z ", "");
@@ -267,11 +352,11 @@ public class KitchenSinkController {
 		log.info("Received message(Ignored): {}", event);
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull Message message) {
+	public void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+	public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
 			log.info("Sent messages: {}", apiResponse);
@@ -280,7 +365,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void push(@NonNull String to, @NonNull List<Message> messages) {
+	public void push(@NonNull String to, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -289,7 +374,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void pushImage(@NonNull String to, @NonNull Message messages) {
+	public void pushImage(@NonNull String to, @NonNull Message messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -297,7 +382,7 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
-	private void pushText(@NonNull String to, @NonNull String message) {
+	public void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
 		}
@@ -309,7 +394,7 @@ public class KitchenSinkController {
 	}
 
 	
-	private void replyText(@NonNull String replyToken, @NonNull String message) {
+	public void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
 		}
@@ -320,7 +405,7 @@ public class KitchenSinkController {
 	}
 
 
-	private void handleSticker(String replyToken, StickerMessageContent content) {
+	public void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
@@ -333,7 +418,7 @@ public class KitchenSinkController {
         }
     }
 	
-	public static boolean isNumberic(String str)
+	public boolean isNumberic(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
 			if (!Character.isDigit(str.charAt(i))){
@@ -343,7 +428,7 @@ public class KitchenSinkController {
 		return true;
 	}
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
-	private String menu_handler(String text, int price,String ingredients) {
+	public String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
 		 if (insert_mode == null) {
 			 reply = mymenu.calculateNutrients(text,0);
@@ -356,11 +441,11 @@ public class KitchenSinkController {
 
 	}
 	
-	private void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
+	public String handleTextContent_newuser(String replytoken, String text,String userId,int complete_indicator)
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
-					client.loadClient(userId);
+				
 					
 					if(complete_indicator==1) {   //there is no information at all
 						client.addClient(userId);
@@ -368,14 +453,14 @@ public class KitchenSinkController {
 						replytext += '\n';  
 						replytext += '\n';
 						replytext += "Please input your name";
-						this.replyText(replytoken, replytext);	
+						return replytext;	
 					}
 					else if(complete_indicator==2) { //input the name
 						
 							client.updateName(text);
 							
 							replytext = "Great, you have just inputed the name, now please input you age";
-							this.replyText(replytoken, replytext);	
+							return replytext;	
 					}
 					else if(complete_indicator==3) {
 						boolean temp = isNumberic(text);
@@ -388,12 +473,12 @@ public class KitchenSinkController {
 							replytext +='\n';
 							replytext +='\n';
 							replytext += "The gender should be 'men' or 'women'";
-							this.replyText(replytoken, replytext);	
+							return replytext;		
 						}
 						else {
 							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your age";
 
-							this.replyText(replytoken, replytext);	
+							return replytext;		
 						}
 					}
 					
@@ -402,11 +487,11 @@ public class KitchenSinkController {
 							client.updateGender(text);
 						
 							replytext = "Great, you have just inputed the gender, now please input you height(m)";
-							this.replyText(replytoken, replytext);	
+							return replytext;	
 						}
 						else {
 							replytext = "sorry, you input is not 'men' nor 'women', please re-input you gender";
-							this.replyText(replytoken, replytext);	
+							return replytext;		
 						}
 					}
 					else if(complete_indicator==5) {
@@ -417,11 +502,11 @@ public class KitchenSinkController {
 							client.updateHeight(i);
 							// insert i to database
 							replytext = "Great, you have just inputed the height, now please input you weight(Kg)";
-							this.replyText(replytoken, replytext);	
+							return replytext;	
 						}
 						else {
 							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your height";
-							this.replyText(replytoken, replytext);	
+							return replytext;	
 						}
 					}
 					else {  //the last case, tell the user to update the weight
@@ -430,54 +515,30 @@ public class KitchenSinkController {
 						if(temp==true) {
 							double i = Double.parseDouble(text);;
 							client.updateWeight(i);
-							// insert i to database
+
 							replytext = "Great, you have just inputed the final piece of information, please type hi to start";
-							this.replyText(replytoken, replytext);	
+							return replytext;	
 						}
 						else {
 							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your weight";
-							this.replyText(replytoken, replytext);	
+							return replytext;		
 						}
 					}
 					
 		}
 	
 	
-	private void handleTextContent(String replyToken, Event event, String text)
-throws Exception{
-        String userId = event.getSource().getUserId();
-        client.loadClient(userId);
-        log.info("Got text message from {}: {}", replyToken, text);
+	public String handleTextContent(String replyToken, String userId, String text){
         
-        //-----------------------------------------------------------//
-       	try {//it gives error when url is https://
-       		if (text != "https://") {
-       			URL url = new URL(text);
-       			JsonHandler jsonHandler = new JsonHandler(text);
-       			Quote[] quote = jsonHandler.getQuote();
-       			String stackmessage = null;
-       			for(Quote q: quote) {
-       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
-       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
-       				}
-       				else {
-       					if(insert_mode == null) {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
-       					}
-       					else {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
-       					}
-       				}
-       			}
-       			this.replyText(replyToken, stackmessage);
-       			return;
-       		}
-       	}catch(MalformedURLException e) {
-       		log.info("url handle json failed, perhaps not a real url");
-      	}
-        //-----------------------------------------------------------//
-
+		text = text.toLowerCase();
         switch (text) {
+        	case "json":{
+        		caseCounter =20;
+        		return "Now, please input the url, if you want to input it again, type json first";
+        		
+        	}
+        
+        
             case "profile": {
                 	String reply = null;
                 	double  bmi=client.calculateBMI();
@@ -486,8 +547,8 @@ throws Exception{
                 	reply +="BMI:";
                 	reply += String.valueOf(bmi);
                 	caseCounter=1;
-                	this.replyText(replyToken,reply);
-                break;
+                	return reply;
+                
             }
             
             case "search":{
@@ -496,8 +557,8 @@ throws Exception{
             	reply = "Now please input the dish name you want to search. ";
             	reply += "\n\n";
             	reply += "Remember, if you want to search again, you have to retype keyword search";
-            	this.replyText(replyToken, reply);
-            	break;
+            	return reply;
+            	
             }
             
             case "insert":{
@@ -508,10 +569,14 @@ throws Exception{
             	reply += "\n";
             	reply += "\n";
             	reply += "first line:dish name";
+            	reply += "\n";
+            	reply += "\n";
             	reply += "second line:price(must be interger)";
+            	reply += "\n";
+            	reply += "\n";
             	reply += "third line:gredients";
-            	this.replyText(replyToken, reply);
-            	break;
+            	return reply;
+            	
             }
             
             case "uninsert":{
@@ -521,9 +586,9 @@ throws Exception{
             	String reply = null;
             	reply = "Now you have exit the insert mode";
             	
-            	this.replyText(replyToken, reply);
+            	return reply;
             	
-            	break;
+            	
             }
             
             case "history": {
@@ -532,13 +597,13 @@ throws Exception{
                 	String reply = null;
                 	reply = client.getHistory();
                 	if (reply!=null)
-                		this.replyText(replyToken,reply);
+                		return reply;
                 	else
-                		this.replyText(replyToken, "No History Found!");
+                		return "No History Found!";
                 } catch(Exception e)  {
-                    this.replyText(replyToken, "No History Found!");
+                    return "No History Found!";
                 }
-                break;
+                
             }
             //new requirement
             
@@ -550,8 +615,8 @@ throws Exception{
       	 		if (coupon_number==5000) {
       	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
       	 			caseCounter = 8;
-      	 			this.replyText(replyToken,reply);
-      	 			break;
+      	 			return reply;
+      	 			
       	 		}
             	if (n_coupon == -1) 
             	{
@@ -567,8 +632,8 @@ throws Exception{
             		reply = "You have already got one:";
             		reply += String.valueOf(n_coupon);
             	}
-            	this.replyText(replyToken,reply);
-            	break;
+            	return reply;
+            	
             }
             
             case "code":{
@@ -578,41 +643,42 @@ throws Exception{
       	 		if (if_claim) {
       	 			reply = "Sorry, you have already claimed the coupon.";
       	 			caseCounter = 8;
-      	 			this.replyText(replyToken,reply);
-      	 			break;
+      	 			return reply;
+      	 			
       	 		}
       	 		
       	 		if (coupon_number==5000) {
       	 			reply = "Sorry, there are 5000 coupons already, the campaign is over.";
       	 			caseCounter = 8;
-      	 			this.replyText(replyToken,reply);
-      	 			break;
+      	 			return reply;
+      	 			
       	 		}
       	 		
             	reply = "Please type in the 6-digit code ";
         
-            	this.replyText(replyToken,reply);
-            	break;
+            	return reply;
+            	
             }
             case "recommend dish":{
             	String reply=null;
             	caseCounter=12;
             	reply=mymenu.getRecommendDish(userId,client.calculateBMI());
-            	this.replyText(replyToken,reply);
-            	break;
+            	return reply;
+            	
             }
            
             
             case "add history":{
             	caseCounter=5;
-            	this.replyText(replyToken,"What do you eat today?");
-            	break;
+            	return "What do you eat today?";
+            	
             }
             case "calculate nutrients":{
             	caseCounter=9;
-            	this.replyText(replyToken, "please type the dish name, or you can type both the name and weight(g) of dish seperated by a ','\n"
-            			+ "for example: chilli chicken,135");
-            	break;
+            	String reply = null;
+            	reply = "please type the dish name, or you can type both the name and weight(g) of dish seperated by a ','\n" + "for example: chilli chicken,135";
+            	return reply;
+            
             }
             
             case "recommend serving": {
@@ -630,88 +696,65 @@ throws Exception{
                 try  {
                 	String reply = null;
                 	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
-                	this.replyText(replyToken,reply);
+
+                	if (reply!=null)
+                		return reply;
+                	else
+                		return "Can't get recommended serving,something wrong!";
                 } catch(Exception e)  {
-                    this.replyText(replyToken, "Bot can't use profile,something wrong!");
+                    return "Can't get recommended serving,something wrong!";
+
                 }
-                break;
+                
             }
             
 
-            case "hi":{
-            	String replya = null;
-            	String replyb = null;
-            	String replyc = null;
-            	String replyd = null;
-            	String replye = null;
-
-            	caseCounter=7;
-            	List<Message> megs = new ArrayList<Message>();
-
+//            case "test":{
+//            	this.replyText(replyToken,replyToken );
+//            	break;
+//            }
             
-                 replya = "Welcome back to the diet chatbot!";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "There are several functions you can use, to use the function, just type the keyword";
-                 replya += "Keyword: profile ";
-                 replya += '\n';
-                 replya += '\n';
-                 replya += "It will provide you the personal health information";
-
-                 replyb = "Keyword:friend";
-                 replyb += '\n';
-                 replyb += '\n';
-                 replyb += "It will generate the coupon for you";
-                 replyb += "Keyword: code ";
-                 replyb += '\n';
-                 replyb += '\n';
-                 replyb += "After type \"code\", you can input the 6-digit number to receive coupon";
-                		 
-                		 
-                 replyc = "Keyword: history ";
-                 replyc += '\n';
-                 replyc += '\n';
-                 replyc += "It will provide you the personal wegiht history and food history\n\n";
-                 replyc += "Keyword: add history \n\n";
-                 replyc += "It will let you input what you eat today and record the eating history\n\n";
-                 
-                 replyd = "Keyword: recommend serving";
-                 replyd += "\n\n";
-                 replyd += "It will provide you the recommend daily serving\n\n";
-                 replyd +="keyword: calculate nutrients\n\n ";
-                 replyd +="It will let you input the name of dish then provide you the nutrients details.\n\n";
-                 
-                 replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "In addition, you can simply type the meal image and url as you wish. The chatbot will return you the content";
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
-                 replye += '\n';
-                 replye += '\n';
-                 replye += "If you want to stop insert, type keyword:uninsert";
-            	
-             	Message a=  new TextMessage(replya);
-             	Message b = new TextMessage(replyb);
-             	Message c=  new TextMessage(replyc);
-             	Message d = new TextMessage(replyd);
-             	Message e=  new TextMessage(replye);
-
-             	megs.add(a);
-             	megs.add(b);
-             	megs.add(c);
-             	megs.add(d);
-             	megs.add(e);
-
-                 
-                 this.reply(replyToken, megs);	
-
-               break;
-              }
-
+            
               default:{
               	 	String reply = null;
+              	 	
+              	 	if(caseCounter == 20) {
+              	 		caseCounter = 8;
+              	        //-----------------------------------------------------------//
+              	       	try {//it gives error when url is https://
+              	       		if (text != "https://") {
+              	       			URL url = new URL(text);
+              	       			JsonHandler jsonHandler = new JsonHandler(text);
+              	       			Quote[] quote = jsonHandler.getQuote();
+              	       			String stackmessage = null;
+              	       			for(Quote q: quote) {
+              	       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+              	       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+              	       				}
+              	       				else {
+              	       					if(insert_mode == null) {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
+              	       					}
+              	       					else {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
+              	       					}
+              	       				}
+              	       			}
+              	       			return  stackmessage;
+              	       			
+              	       		}
+              	       	}catch(MalformedURLException e) {
+              	       		
+              	       		reply = "url handle json failed, perhaps not a real url";
+              	       		return reply;
+              	       		
+              	      	}
+              	        //-----------------------------------------------------------//
+              	 		
+              	 		
+              	 	}
+              	 	
+              	 	
               	 	
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
@@ -722,13 +765,13 @@ throws Exception{
               	 		              	 		
               	 		if (result.isEmpty()) {
               	 				reply = "Invalid code, please type \"code\" to start the process again.";
-              	 				this.replyText(replyToken, reply);
-              	 				break;
+              	 				return reply;
+              	 				
               	 		}
               	 		else if (result.contains(userId)) {
               	 			reply="This is your own code, please type \"code\" to start the process again.";
-              	 			this.replyText(replyToken, reply);
-          	 				break;
+              	 			return reply;
+          	 				
               	 		}
               	 		else {
               	 			result.add(userId);
@@ -751,11 +794,11 @@ throws Exception{
               	 		try {
               	 			caseCounter=8;
               	 			client.addHistory(text);
-              	 			this.replyText(replyToken,"new history added successfully!");
+              	 			return "new history added successfully!";
               	 		}catch (Exception e){
-              	 			this.replyText(replyToken, "Something goes wrong recording history...");
+              	 			return  "Something goes wrong recording history...";
               	 		}
-              	 		break;
+              	 		
               	 	}
               	 	if (caseCounter==9) {
               	 		caseCounter=8;
@@ -764,7 +807,7 @@ throws Exception{
               	 		if (words.length==2)
               	 			weight=Integer.parseInt(words[1]);
               	 		String replyline=mymenu.calculateNutrients(words[0],weight);
-              	 		this.replyText(replyToken, replyline);
+              	 		return replyline;
               	 	}
               	 	
               	 	if(caseCounter == 2) {
@@ -773,8 +816,8 @@ throws Exception{
               	 		if (words.length != 3) {
               	 			reply = "You must follow the format, please type \" insert \" ";
               	 			caseCounter = 8;
-              	 			this.replyText(replyToken, reply);
-              	 			break;
+              	 			return reply;
+              	 			
               	 		}
 						boolean temp = isNumberic(words[1]);
 						              	 		
@@ -786,8 +829,8 @@ throws Exception{
               	 			reply = "The price you entered is not double format, plase do it again";
               	 		}
               	 		
-          	 			this.replyText(replyToken, reply);
-          	 			break;
+              	 		return reply;
+          	 			
               	 	}
               	 	
               	 	if(caseCounter == 3) {
@@ -798,25 +841,25 @@ throws Exception{
                   	 		reply = "Sorry, we could not find the dish name you input";
                   	 	}
               	 		
-          	 			this.replyText(replyToken, reply);
-          	 			break;
+              	 		return reply;
+          	 			
               	 	}
               	 	
+              	              	 	
+              	 	reply = "Sorry, we could recongize your input, if you want help, please type hi";
+              	 	return reply;
               	 
               	 	
-              	 	reply = "Sorry, we could recongize your input, if you want help, please type hi";
-              	 	this.replyText(replyToken,reply);
-              	 	log.info("Returns echo message {}: {}", replyToken, reply);
-              	 	break;
               }
         }
+        return null;
 	}
 
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
 	
-	private void system(String... args) {
+	public void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
 			Process start = processBuilder.start();
@@ -851,7 +894,11 @@ throws Exception{
 	}
 
 
-	
+	public void setvalues(String insert_mode,int caseCounter,int coupon_number) {
+		this.caseCounter = caseCounter;
+		this.insert_mode = insert_mode;
+		this.coupon_number = coupon_number;
+	}
 
 
 	public KitchenSinkController() {

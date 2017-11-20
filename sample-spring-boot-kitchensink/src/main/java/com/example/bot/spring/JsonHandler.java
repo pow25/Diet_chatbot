@@ -36,7 +36,7 @@ public class JsonHandler {
 	 * @return json content
 	 */
 	public String getJson() {
-		String total = null;
+		String total = "";
 		for(Quote q :quote) {
 			total += q.printString() + '\n';
 		}

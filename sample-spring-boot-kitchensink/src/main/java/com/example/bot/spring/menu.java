@@ -25,7 +25,7 @@ public class menu{
 	 * @return Info of serving of food types of the client
 	 * @throws Exception
 	 */
-	public String getRecommendServing(String gender,String ageRange,boolean pregnant) throws Exception{
+	public String getRecommendServing(String gender,String ageRange,boolean pregnant) {
 		String result = null;
 		 try {
 				Connection connection = getConnection();
@@ -45,9 +45,7 @@ public class menu{
 		 	 } catch (Exception e) {
 			    System.out.println(e);
 		 	 	}
-			if (result != null)
-				return result;
-			throw new Exception("NOT FOUND");
+			return result;
 	}
 	/**
 	 * Get recommeding dish for client base on BMI
@@ -136,7 +134,6 @@ public class menu{
 			    System.out.println(e);
 		 	 }
 			return result;
-			
 	}
 	/**
 	 * Insert dish and its info into menu database

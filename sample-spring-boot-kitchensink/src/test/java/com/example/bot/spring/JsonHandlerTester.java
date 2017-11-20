@@ -42,6 +42,7 @@ import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
@@ -60,39 +61,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { "JsonHandlerTester.class", "JsonHandler.class"})
+@SpringBootTest(classes = { JsonHandlerTester.class})
 public class JsonHandlerTester {
 	
 	@Test
 	public void jsonurl() throws Exception {
 		boolean thrown = false;
-		JsonHandler jsonHandler = new JsonHandler("https://wwwabd-efcom.000webhostapp.com/data.json");
 
-//		try {
-			Quote[] quote = jsonHandler.getQuote();
-			if (quote[1].getName() != "Spicy Bean curd with Minced Pork served with Rice"){
+		String url = "http://wwwabd-efcom.000webhostapp.com/data.json";
+		try {
+			JsonHandler jsonhandler = new JsonHandler(url);
+			System.out.println(jsonhandler.getJson());
+			if (!jsonhandler.getJson().equals("{name='Spicy Bean curd with Minced Pork served with Rice', price=35, ingredients=[Pork, Bean curd, Rice]}\n" + 
+					"{name='Sweet and Sour Pork served with Rice', price=36, ingredients=[Pork, Sweet and Sour Sauce, Pork]}\n" + 
+					"{name='Chili Chicken on Rice', price=28, ingredients=[Chili, Chicken, Rice]}\n")) {
 				thrown = true;
 			}
-//		}catch(Exception e) {
-//			thrown = true;
-//		}
+		} catch (Exception e) {
+			thrown = true;
+		}
 		assertThat(thrown).isEqualTo(false);
 	}
-//	@Test
-//	public void jsoninvalidurl() throws Exception {
-//		boolean thrown = false;
-//		String text = "https://wwwabd-efcom.000webhostapp.com/data.json";
-//		try {
-//			URL url = new URL(url);
-//			jsonhandler = new JsonHandler(text);
-//			Quote[] quote = jsonHandler.getQuote();
-//			if {quote[1].getName() == "Spicy Bean curd with Minced Pork served with Rice"){
-//				thrown = true;
-//			}
-//		}catch(Exception e) {
-//			thrown = true;
-//		}
-//		assertThar(thrown).isEqualTo(False);
-//	}
+
 }
