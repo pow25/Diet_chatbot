@@ -696,10 +696,10 @@ public class KitchenSinkController {
 
                break;
               }
-            case "test":{
-            	this.replyText(replyToken,replyToken );
-            	break;
-            }
+//            case "test":{
+//            	this.replyText(replyToken,replyToken );
+//            	break;
+//            }
             
             
               default:{
