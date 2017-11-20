@@ -103,7 +103,7 @@ public class KitchenSinkController {
 
 
 	@Autowired
-	public LineMessagingClient lineMessagingClient;
+	private LineMessagingClient lineMessagingClient;
 
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
