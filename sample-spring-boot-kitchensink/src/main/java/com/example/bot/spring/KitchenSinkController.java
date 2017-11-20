@@ -628,9 +628,12 @@ throws Exception{
                 try  {
                 	String reply = null;
                 	reply = mymenu.getRecommendServing(client.getGender(),clientagerange,false);
-                	this.replyText(replyToken,reply);
+                	if (reply!=null)
+                		this.replyText(replyToken,reply);
+                	else
+                		this.replyText(replyToken, "Can't get recommended serving,something wrong!");
                 } catch(Exception e)  {
-                    this.replyText(replyToken, "Bot can't use profile,something wrong!");
+                    this.replyText(replyToken, "Can't get recommended serving,something wrong!");
                 }
                 break;
             }

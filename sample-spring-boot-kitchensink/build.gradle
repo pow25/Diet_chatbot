@@ -31,5 +31,5 @@ dependencies {
 }
 
 test {
-    environment "DATABASE_URL", "postgres://gtsvaqdtiljbui:c8bed699b4041cbb6639beea0d90418d2676a92de4616cbe6b4b97946d9fb6bd@ec2-204-236-236-188.compute-1.amazonaws.com:5432/dej2qm4d746sp9"
+    environment "DATABASE_URL", "postgres://ehodocryrmbnhs:4a4c3c9300f1168ed60941cb84763cc066920dd93003f58e9405704a6833d599@ec2-54-225-94-143.compute-1.amazonaws.com:5432/dbj0nq0jl8tu8i"
 }
