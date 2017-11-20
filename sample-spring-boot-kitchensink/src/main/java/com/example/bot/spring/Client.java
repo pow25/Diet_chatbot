@@ -105,11 +105,19 @@ public class Client{
 			connection2.close();
 		}catch (Exception e) {}
 	}
+	/**
+	 * Get client proflie
+	 * @return Client Profile
+	 */
 	public String getProfile() {
 		String result=null;
 		result="Name: "+name+"\nGender: "+gender+"\nHeight(m): "+String.valueOf(height)+"\nWeight(kg): "+String.valueOf(weight)+"\nBMI(kg/m^2):"+this.calculateBMI();
 		return result;
 	}
+	/**
+	 * Update client name
+	 * @param name
+	 */
 	public void updateName(String name){
 		try {
 			this.name=name;
@@ -124,6 +132,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Update client name
+	 * @param age
+	 */
 	public void updateAge(int age){
 		try {
 			this.age=age;
@@ -138,6 +150,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Update client gender
+	 * @param gender
+	 */
 	public void updateGender(String gender){
 		try {
 			this.gender=gender;
@@ -152,6 +168,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Update client height
+	 * @param height
+	 */
 	public void updateHeight(double height){
 		try {
 			this.height=height;
@@ -166,6 +186,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Update client weight
+	 * @param weight
+	 */
 	public void updateWeight(double weight){
 		try {
 			this.weight=weight;
@@ -180,6 +204,11 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Check if pclient profile is complete
+	 * @param userID
+	 * @return
+	 */
 	public int isInfoComplete(String userID){
 		int result = 1;
 		try {
@@ -225,13 +254,11 @@ public class Client{
 			return (weight/height)/height;
 		else return 0;
 	}
-
-	public void addHistory(String dish) throws Exception{
 	/**
-	 * Add client's dishes history that he had into the databasse for future analysis
+	 * Add ate dish of client into database
 	 * @param dish
 	 */
-
+	public void addHistory(String dish) throws Exception{
 		try {
 			Connection connection=getConnection();
 			java.sql.Date sqlDate=new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -298,8 +325,8 @@ public class Client{
 		}
 		return coupon;
 	}
-	/** 
-	 * 
+	/**
+	 * Update coupon digits to the client's profile
 	 * @param coupon
 	 */
 	public void updateCoupon(long coupon) {
@@ -315,6 +342,10 @@ public class Client{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Check clietn claimed any coupon before
+	 * @return false if claim, true otherwise
+	 */
 	public boolean ifclaim() {
 		boolean claim=false;
 		try {
@@ -333,6 +364,11 @@ public class Client{
 		}
 		return claim;
 	}
+	/**
+	 * Claim coupon for both client and friend
+	 * @param coupon
+	 * @return the list of client and friend
+	 */
 	public List<String> claim(long coupon) {
 		List<String> updateClients=new ArrayList<String>();
 		try {
@@ -359,6 +395,12 @@ public class Client{
 		}catch (Exception e) {}
 		return updateClients;
 	}
+	/**
+	 * Connect with database
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws SQLException
+	 */
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));

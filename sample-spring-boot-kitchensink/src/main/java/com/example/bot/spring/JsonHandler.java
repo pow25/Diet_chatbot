@@ -14,14 +14,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+/**
+ * Cast json content from URL if it fulfill the formate in Qoute
+ * @author Group 14
+ *
+ */
 public class JsonHandler {
 //	String message;
-	Quote[]  quote;
+	private Quote[]  quote;
+	/**
+	 * Cast website content into Quote
+	 * @param url
+	 */
 	public JsonHandler(String url) {
 		RestTemplate restTemplate = new RestTemplate();
 		this.quote = restTemplate.getForObject(url, Quote[].class);
 //		message = quote.toString();
 	}
+	/**
+	 * Get the json content of the website
+	 * @return json content
+	 */
 	public String getJson() {
 		String total = null;
 		for(Quote q :quote) {
@@ -29,7 +42,10 @@ public class JsonHandler {
 		}
 		return total;
 	}
-	
+	/**
+	 * Get Quote
+	 * @return array of Quote
+	 */
 	public Quote[] getQuote() {
 		return quote;
 	}

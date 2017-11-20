@@ -14,6 +14,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+/**
+ * Link with the json resturnat api 
+ * to recommend nearby resturant base on 
+ * client's location or place client want to eat
+ * @author Group 14
+ *
+ */
 public class RestaurantAPI {
 
 	private Respond respond;
@@ -25,12 +32,19 @@ public class RestaurantAPI {
 	@SuppressWarnings("unused")
 	private double _longitude;
 	
-	
+	/**
+	 * Constructor
+	 * @param latitude
+	 * @param longitude
+	 */
 	public RestaurantAPI(double latitude,double longitude) {
 		this._latitude=latitude;
 		this._longitude=longitude;
 	}
-	
+	/**
+	 * Search resturant nearby base on the latitude and longitude
+	 * @throws IOException
+	 */
 	public void serachRestaurant() throws IOException{
 		String url = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 
 				"&rankby=distance&types=restaurant&key=" + API_KEY;
@@ -39,15 +53,24 @@ public class RestaurantAPI {
 		this.respond = restTemplate.getForObject(url, Respond.class);
 
 	}
-	
+	/**
+	 * Get longitude
+	 * @return longitude
+	 */
 	public double getLongitude() {
         return _longitude;
     }
-	
+	/**
+	 * Get latitude
+	 * @return latitude
+	 */
 	public double getLatitude() {
         return _latitude;
     }
-	
+	/**
+	 * Print all restaurant nearby
+	 * @return all nearby resturant in string
+	 */
 	public String printRestaurant() {
 		return respond.printRespond();
 	}

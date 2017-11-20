@@ -10,8 +10,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+/**
+ * Recommending menu for client
+ * @author Group 14
+ *
+ */
 @Slf4j
 public class menu{
+	/**
+	 * Get recommended serving of client base on client profile
+	 * @param gender
+	 * @param ageRange
+	 * @param pregnant
+	 * @return Info of serving of food types of the client
+	 * @throws Exception
+	 */
 	public String getRecommendServing(String gender,String ageRange,boolean pregnant) throws Exception{
 		String result = null;
 		 try {
@@ -36,6 +49,12 @@ public class menu{
 				return result;
 			throw new Exception("NOT FOUND");
 	}
+	/**
+	 * Get recommeding dish for client base on BMI
+	 * @param userID
+	 * @param bmi
+	 * @return dish name with health state
+	 */
 	public String getRecommendDish(String userID,double bmi) {
 		String result=null;
 		String analy=analyzeBMI(bmi);
@@ -75,6 +94,11 @@ public class menu{
 		}
 		return "sorry, maybe your history proveded is not enough";
 	}
+	/**
+	 * Analysis client BMI
+	 * @param bmi
+	 * @return health state
+	 */
 	private String analyzeBMI(double bmi) {
 		if (bmi<=0) {
 			return null;
@@ -89,6 +113,11 @@ public class menu{
 			return "overweight";
 		}
 	}
+	/**
+	 * Get Menu for client
+	 * @param dish
+	 * @return dishes in menu format
+	 */
 	public String getMenu(String dish){
 		String result = null;
 		 try {
@@ -109,6 +138,12 @@ public class menu{
 			return result;
 			
 	}
+	/**
+	 * Insert dish and its info into menu database
+	 * @param dish
+	 * @param price
+	 * @param ingredients
+	 */
 	public void insertMenu(String dish,int price,String ingredients){
 		try {
 			Connection connection=getConnection();
@@ -123,6 +158,12 @@ public class menu{
 			System.out.println(e);
 		}
 	}
+	/**
+	 * Calculate nutrients of a dish base on the food weight
+	 * @param name
+	 * @param weight
+	 * @return description of the food nutrients
+	 */
 	public String calculateNutrients(String name,double weight) {
 		String result=null;
 		try {
@@ -151,6 +192,12 @@ public class menu{
 		}
 		return result;
 	}
+	/**
+	 * Connect with database
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws SQLException
+	 */
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
