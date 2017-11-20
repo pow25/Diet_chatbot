@@ -95,16 +95,22 @@ import lombok.NonNull;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * Handler that handles all use cases of client interaction
+ * @author Group 14
+ * @version 1.0
+ */
 @Slf4j
 @LineMessageHandler
 public class KitchenSinkController {
-	
-
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
-
+	/**
+	 * handling all text message event
+	 * @param event event
+	 * @throws Exception if exception inside
+	 */
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -213,7 +219,10 @@ public class KitchenSinkController {
 		 	}
 		this.replyText(replytoken, reply);
 	}
-
+	/**
+	 * Handling all sticker message event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleStickerMessageEvent(MessageEvent<StickerMessageContent> event) {
 		handleSticker(event.getReplyToken(), event.getMessage());
@@ -231,7 +240,11 @@ public class KitchenSinkController {
 		}
 		reply(event.getReplyToken(),new TextMessage("Restaurant nearby:\n"+restaurantApi.printRestaurant()));
 	}
-
+	/**
+	 * Handling all image message event
+	 * @param event event
+	 * @throws IOException input or output exception
+	 */
 	@EventMapping
 	public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws IOException {
 		final MessageContentResponse response;
@@ -302,7 +315,11 @@ public class KitchenSinkController {
 			}
 		}
 	}
-	
+	/**
+	 * Handling all audio message event
+	 * @param event event
+	 * @throws IOException input output exception
+	 */
 	@EventMapping
 	public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
 		final MessageContentResponse response;
@@ -317,45 +334,71 @@ public class KitchenSinkController {
 		DownloadedContent mp4 = saveContent("mp4", response);
 		reply(event.getReplyToken(), new AudioMessage(mp4.getUri(), 100));
 	}
-
+	/**
+	 * Handling unfollow event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleUnfollowEvent(UnfollowEvent event) {
 		log.info("unfollowed this bot: {}", event);
 	}
-
+	/**
+	 * Handling follow event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event) {
 		String replyToken = event.getReplyToken();
 		this.replyText(replyToken, "Got followed event");
 	}
-
+	/**
+	 * Handling join event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleJoinEvent(JoinEvent event) {
 		String replyToken = event.getReplyToken();
 		this.replyText(replyToken, "Joined " + event.getSource());
 	}
-
+	/**
+	 * Hnadling post back event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handlePostbackEvent(PostbackEvent event) {
 		String replyToken = event.getReplyToken();
 		this.replyText(replyToken, "Got postback " + event.getPostbackContent().getData());
 	}
-
+	/**
+	 * Handling beacon event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleBeaconEvent(BeaconEvent event) {
 		String replyToken = event.getReplyToken();
 		this.replyText(replyToken, "Got beacon message " + event.getBeacon().getHwid());
 	}
-
+	/**
+	 * Handling otherwise event
+	 * @param event event
+	 */
 	@EventMapping
 	public void handleOtherEvent(Event event) {
 		log.info("Received message(Ignored): {}", event);
 	}
-
+	/**
+	 * reply the message to client
+	 * @param replyToken reply token of the message
+	 * @param message message to client
+	 */
 	public void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
-
+	/**
+	 * reply the list of messages to client
+	 * @param replyToken reply token of the message
+	 * @param messages messages to client
+	 */
 	public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
@@ -364,7 +407,11 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * Push list of messages
+	 * @param to  string
+	 * @param messages  list of messages
+	 */
 	public void push(@NonNull String to, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
@@ -373,7 +420,11 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * Push image
+	 * @param to string
+	 * @param messages message
+	 */
 	public void pushImage(@NonNull String to, @NonNull Message messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
@@ -382,6 +433,11 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
+	/**
+	 * Push text
+	 * @param to string
+	 * @param message message
+	 */
 	public void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
@@ -393,7 +449,11 @@ public class KitchenSinkController {
 		this.push(to, Collections.singletonList(temp));
 	}
 
-	
+	/**
+	 * Reply text to client
+	 * @param replyToken reply token of the message
+	 * @param message message to client
+	 */
 	public void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
@@ -403,12 +463,19 @@ public class KitchenSinkController {
 		}
 		this.reply(replyToken, new TextMessage(message));
 	}
-
-
+	/**
+	 * Handle sticker
+	 * @param replyToken reply token of the message
+	 * @param content content
+	 */
 	public void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
-
+	/**
+	 * Check if text input from client is number or not
+	 * @param str str
+	 * @return true if double type, false if not
+	 */
     public boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
@@ -417,7 +484,11 @@ public class KitchenSinkController {
             return false;
         }
     }
-	
+	/**
+	 * Check if there is any numberic text inside the text
+	 * @param str str
+	 * @return true if yes, false if not
+	 */
 	public boolean isNumberic(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
@@ -427,7 +498,16 @@ public class KitchenSinkController {
 		}
 		return true;
 	}
-	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
+	/**
+	 * Hadler the menu for client
+	 * @param text text
+	 * @param price price menu
+	 * @param ingredients ingredients of food
+	 * @return if the dish is in the database,
+	 * it will return the string(description), 
+	 * otherwise, it will return null, 
+	 * so that we insert the dish into the database.
+	 */
 	public String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
 		 if (insert_mode == null) {
@@ -437,10 +517,16 @@ public class KitchenSinkController {
 			 mymenu.insertMenu(text,price,ingredients);
 		 }
 			 return reply;
-		 
-
 	}
-	
+	/**
+	 * Handle interaction with new client to create client profile 
+	 * @param replytoken reply token of the message
+	 * @param text text
+	 * @param userId clients' user id
+	 * @param complete_indicator indicator whether complete or not client prolife
+	 * @return return different message to ask for client's info
+	 * @throws Exception exception if reply token problem
+	 */
 	public String handleTextContent_newuser(String replytoken, String text,String userId,int complete_indicator)
 			throws Exception {
 					String replytext = null;
@@ -523,22 +609,25 @@ public class KitchenSinkController {
 							replytext = "sorry, you input may contain none interger letters, like a space, please re-input your weight";
 							return replytext;		
 						}
-					}
-					
+					}			
 		}
 	
-	
+	/**
+	 * Handle interaction with client 
+	 * about different function that the client can do
+	 * @param replyToken reply token of the message
+	 * @param userId client's user id
+	 * @param text text
+	 * @return message to client according to 
+	 * different interaction the client choose
+	 */
 	public String handleTextContent(String replyToken, String userId, String text){
-        
 		text = text.toLowerCase();
         switch (text) {
         	case "json":{
         		caseCounter =20;
-        		return "Now, please input the url, if you want to input it again, type json first";
-        		
+        		return "Now, please input the url, if you want to input it again, type json first";	
         	}
-        
-        
             case "profile": {
                 	String reply = null;
                 	double  bmi=client.calculateBMI();
@@ -854,11 +943,18 @@ public class KitchenSinkController {
         }
         return null;
 	}
-
+	/**
+	 * Create URI
+	 * @param path uri path
+	 * @return uri
+	 */
 	static String createUri(String path) {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
-	
+	/**
+	 * System
+	 * @param args args
+	 */
 	public void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
@@ -872,7 +968,12 @@ public class KitchenSinkController {
 			Thread.currentThread().interrupt();
 		}
 	}
-
+	/**
+	 * Save content input by client
+	 * @param ext ext
+	 * @param responseBody response body
+	 * @return a temp file of the content from client
+	 */
 	private static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
 		log.info("Got content-type: {}", responseBody);
 
@@ -885,7 +986,11 @@ public class KitchenSinkController {
 			throw new UncheckedIOException(e);
 		}
 	}
-
+	/**
+	 * Create temp file to store client content
+	 * @param ext ext
+	 * @return class the store downloadedcontent
+	 */
 	private static DownloadedContent createTempFile(String ext) {
 		String fileName = LocalDateTime.now().toString() + '-' + UUID.randomUUID().toString() + '.' + ext;
 		Path tempFile = KitchenSinkApplication.downloadedContentDir.resolve(fileName);
@@ -893,14 +998,20 @@ public class KitchenSinkController {
 		return new DownloadedContent(tempFile, createUri("/downloaded/" + tempFile.getFileName()));
 	}
 
-
+	/**
+	 * Set values of the coupon number 
+	 * @param insert_mode insert mode
+	 * @param caseCounter count case
+	 * @param coupon_number number of coupon
+	 */
 	public void setvalues(String insert_mode,int caseCounter,int coupon_number) {
 		this.caseCounter = caseCounter;
 		this.insert_mode = insert_mode;
 		this.coupon_number = coupon_number;
 	}
-
-
+	/**
+	 * Constructor
+	 */
 	public KitchenSinkController() {
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 		client = new Client();
@@ -916,17 +1027,23 @@ public class KitchenSinkController {
 	private menu mymenu;
 	private int caseCounter;
 	private int coupon_number;
-	//The annontation @Value is from the package lombok.Value
-	//Basically what it does is to generate constructor and getter for the class below
-	//See https://projectlombok.org/features/Value
+	/**
+	 * The annontation @Value is from the package lombok.Value
+	 * Basically what it does is to generate constructor and getter for the class below
+	 * See https://projectlombok.org/features/Value
+	 * @author Group 14
+	 *
+	 */
 	@Value
 	public static class DownloadedContent {
 		Path path;
 		String uri;
 	}
-
-
-	//an inner class that gets the user profile and status message
+	/**
+	 * an inner class that gets the user profile and status message
+	 * @author Group 14
+	 *
+	 */
 	class ProfileGetter implements BiConsumer<UserProfileResponse, Throwable> {
 		private KitchenSinkController ksc;
 		private String replyToken;

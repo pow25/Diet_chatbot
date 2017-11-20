@@ -19,11 +19,10 @@ import java.net.URI;
 public class menu{
 	/**
 	 * Get recommended serving of client base on client profile
-	 * @param gender
-	 * @param ageRange
-	 * @param pregnant
+	 * @param gender gender
+	 * @param ageRange age range
+	 * @param pregnant pregnant
 	 * @return Info of serving of food types of the client
-	 * @throws Exception
 	 */
 	public String getRecommendServing(String gender,String ageRange,boolean pregnant) {
 		String result = null;
@@ -49,8 +48,8 @@ public class menu{
 	}
 	/**
 	 * Get recommeding dish for client base on BMI
-	 * @param userID
-	 * @param bmi
+	 * @param userID client;s user id
+	 * @param bmi BMI
 	 * @return dish name with health state
 	 */
 	public String getRecommendDish(String userID,double bmi) {
@@ -94,7 +93,7 @@ public class menu{
 	}
 	/**
 	 * Analysis client BMI
-	 * @param bmi
+	 * @param bmi BMI
 	 * @return health state
 	 */
 	private String analyzeBMI(double bmi) {
@@ -113,7 +112,7 @@ public class menu{
 	}
 	/**
 	 * Get Menu for client
-	 * @param dish
+	 * @param dish dish
 	 * @return dishes in menu format
 	 */
 	public String getMenu(String dish){
@@ -137,9 +136,9 @@ public class menu{
 	}
 	/**
 	 * Insert dish and its info into menu database
-	 * @param dish
-	 * @param price
-	 * @param ingredients
+	 * @param dish dish
+	 * @param price price
+	 * @param ingredients ingredients
 	 */
 	public void insertMenu(String dish,int price,String ingredients){
 		try {
@@ -157,8 +156,8 @@ public class menu{
 	}
 	/**
 	 * Calculate nutrients of a dish base on the food weight
-	 * @param name
-	 * @param weight
+	 * @param name name
+	 * @param weight weight
 	 * @return description of the food nutrients
 	 */
 	public String calculateNutrients(String name,double weight) {

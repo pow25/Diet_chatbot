@@ -34,8 +34,8 @@ public class RestaurantAPI {
 	
 	/**
 	 * Constructor
-	 * @param latitude
-	 * @param longitude
+	 * @param latitude latitude of the location
+	 * @param longitude longitude of the location
 	 */
 	public RestaurantAPI(double latitude,double longitude) {
 		this._latitude=latitude;
@@ -43,7 +43,7 @@ public class RestaurantAPI {
 	}
 	/**
 	 * Search resturant nearby base on the latitude and longitude
-	 * @throws IOException
+	 * @throws IOException if input or output exception
 	 */
 	public void serachRestaurant() throws IOException{
 		String url = HEADER + "location=" + String.valueOf(_latitude) + "," + String.valueOf(_longitude) + 

@@ -21,7 +21,7 @@ public class Respond{
 	}
 	/**
 	 * Set result data member
-	 * @param results
+	 * @param results nearby restaurant result 
 	 */
 	public void setResults(Restaurant[] results) {
 	       this.results = results;

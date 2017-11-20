@@ -24,7 +24,7 @@ public class JsonHandler {
 	private Quote[]  quote;
 	/**
 	 * Cast website content into Quote
-	 * @param url
+	 * @param url url from client
 	 */
 	public JsonHandler(String url) {
 		RestTemplate restTemplate = new RestTemplate();

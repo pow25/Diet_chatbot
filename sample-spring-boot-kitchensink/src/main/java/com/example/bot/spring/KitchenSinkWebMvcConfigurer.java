@@ -22,10 +22,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Handler configuraration of web service
+ * @author Group 14
+ *
+ */
 @Configuration
 @Slf4j
 public class KitchenSinkWebMvcConfigurer extends WebMvcConfigurerAdapter {
-    @Override
+    /**
+     * Web service handler
+     * @param registry registry
+     */
+	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         String downloadedContentUri = KitchenSinkApplication.downloadedContentDir

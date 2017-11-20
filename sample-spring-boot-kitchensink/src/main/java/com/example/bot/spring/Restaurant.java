@@ -48,28 +48,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		}
 		/**
 		 * Set name data member
-		 * @param name
+		 * @param name name of json
 		 */
 	    public void setName(String name) {
 	        this.name = name;
 	    }
 	    /**
 	     * Set vicinity data member
-	     * @param vicinity
+	     * @param vicinity vicinity of json
 	     */
 	    public void setVicinity(String vicinity) {
 	        this.vicinity = vicinity;
 	    }
 	    /**
 	     * Set rating data member
-	     * @param rating
+	     * @param rating rating of json
 	     */
 	    public void setRating(Float rating) {
 	        this.rating = rating;
 	    }
 	    /**
 	     * Set photos data member
-	     * @param photos
+	     * @param photos photos of json
 	     */
 	    public void setPhotos(Photos[] photos) {
 	        this.photos = photos;

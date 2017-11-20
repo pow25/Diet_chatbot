@@ -23,10 +23,22 @@ import java.nio.file.Path;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * This is an applicant that deal with dieting neeeds of clients,
+ * clients can view it's health status, get recommended menu, view nearby restaurant from it and etc.
+ * Sink Application with line
+ * @author Group 14
+ * @version 1.0
+ *
+ */
 @SpringBootApplication
 public class KitchenSinkApplication {
     static Path downloadedContentDir;
-
+    /**
+     * main
+     * @param args args
+     * @throws IOException system io exception
+     */
     public static void main(String[] args) throws IOException {
         downloadedContentDir = Files.createTempDirectory("line-bot");
         SpringApplication.run(KitchenSinkApplication.class, args);
