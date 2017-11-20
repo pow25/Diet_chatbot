@@ -297,7 +297,7 @@ public class ControllerTester {
 	
 		temp = ksc.createTempFile(" ");
 		assertThat(thrown).isEqualTo(false);
-	}	
+	}
 	
 //	@Test
 //	public void testreplytext()  throws Exception{
