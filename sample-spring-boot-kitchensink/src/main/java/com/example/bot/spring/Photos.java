@@ -3,24 +3,49 @@ package com.example.bot.spring;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import java.net.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 	public class Photos{
-		private String[] html_attributions;
+		private static final String API_KEY = "AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8";
+		private String photo_reference;
+		private int width=-1;
 		
-		public String[] getHtml_attributions() {
-			return html_attributions;
+		public int getWidth() {
+			return width;
 		}
 		
-	    public void setHtml_attributions(String[] html_attributions) {
-	        this.html_attributions = html_attributions;
+		public void setWidth(int width) {
+			this.width=width;
+		}
+		
+		public String getPhoto_reference() {
+			return photo_reference;
+		}
+		
+	    public void setPhoto_reference(String photo_reference) {
+	        this.photo_reference = photo_reference;
 	    }
 	    
 	    public String print() {
-	    	if (getHtml_attributions() == null){
+	    	if (getPhoto_reference() == null||getWidth() == -1){
 	    		return "No detial";
-	    	}else {	
-	    		return html_attributions[0].split("\"")[1];
+	    	}else {
+	    		try {
+	    			return resolve_url("https://maps.googleapis.com/maps/api/place/photo?maxwidth="+String.valueOf(width)+"&photoreference="+photo_reference+"&key="+API_KEY);
+	    		} catch (Exception ex) {
+	    			return "Error when loading";
+	    		}
 	    	}
+	    }
+	    
+	    public String resolve_url(String old_url) throws Exception {
+	    	String new_url = null;
+	    	HttpURLConnection connection = (HttpURLConnection) new URL(old_url).openConnection();
+	    	connection.setInstanceFollowRedirects(false);
+	    	while (connection.getResponseCode() / 100 == 3) {
+	    	    new_url = connection.getHeaderField("location");
+	    	    connection = (HttpURLConnection) new URL(new_url).openConnection();
+	    	}
+	    	return new_url;
 	    }
 	}
