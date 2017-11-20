@@ -139,7 +139,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest(classes = { ControllerTester.class})
 public class ControllerTester {
 
-<<<<<<< HEAD
+
 //	@Test
 //	public void testhelpfunction1()  throws Exception{
 //		boolean thrown = false;
@@ -225,98 +225,9 @@ public class ControllerTester {
 //			assertThat(thrown).isEqualTo(false);
 //	}
 //	
-//	@Test
-////test for default case with multiple caseCounter
-=======
-	
-	/*	@Test
-	public void testhelpfunction1()  throws Exception{
-		boolean thrown = false;
-		
-		KitchenSinkController ksc = new KitchenSinkController();
-			String ha = "123.35";
-			boolean result = ksc.isDouble(ha);
 
-			if(result==false) {
-				thrown = true;
-			}
-			System.out.println("there is exception");
-	
-			assertThat(thrown).isEqualTo(false);
-	}
-	
-	@Test
-	public void testhelpfunction2()  throws Exception{
-		boolean thrown = false;
-		
-		KitchenSinkController ksc = new KitchenSinkController();
-			String ha = "123";
-			boolean result = ksc.isNumberic(ha);
 
-			if(result==false) {
-				thrown = true;
-			}
-	
-			assertThat(thrown).isEqualTo(false);
-	}
-	
 
-	
-	@Test
-	public void testhelpfunction3()  throws Exception{
-		boolean thrown = false;
-		
-		KitchenSinkController ksc = new KitchenSinkController();
-			String ha = "123";
-			String result = ksc.menu_handler(ha,1,ha);
-			ksc.setvalues("insert",0,0);
-			String result2 = ksc.menu_handler(ha,1,ha);
-			assertThat(thrown).isEqualTo(false);
-	}
-	
-	@Test
-	public void test_handlenewuser()  throws Exception{
-		boolean thrown = false;
-		
-		KitchenSinkController ksc = new KitchenSinkController();
-			String replytoken = "123";
-			String text = "ha";
-			String text2 = "000";
-			String userid = "12";
-			for (int i = 0; i<7;i++) {
-				String result = ksc.handleTextContent_newuser(replytoken,text,userid,i);
-				String result2 = ksc.handleTextContent_newuser(replytoken,text2,userid,i);
-				if(result==null || result2 == null) {
-					thrown = true;
-				}
-			}
-			assertThat(thrown).isEqualTo(false);
-	}
-	
-	@Test
-	public void test_handletextcontent()  throws Exception{
-		boolean thrown = false;
-		
-		KitchenSinkController ksc = new KitchenSinkController();
-			String replytoken = "123";
-			String[] text = {"profile","json","insert","uninsert","search","add history","history","friend","code","recommend dish","calculate nutrients","recommend serving",};
-			String userid = "12";
-			for (String m:text) {
-				String result = ksc.handleTextContent(replytoken,userid,m);
-				if(result==null) {
-					thrown = true;
-				}
-			}
-			//test for coupon ==5000 with code and friend
-			ksc.setvalues(null,0,5000);
-			String result2 = ksc.handleTextContent(replytoken,userid,"code");
-			String result3 = ksc.handleTextContent(replytoken,userid,"friend");
-			assertThat(thrown).isEqualTo(false);
-	}
-	
-	@Test
-	//test for default case with multiple caseCounter
->>>>>>> dae00d123c2061acc11668f6580780c4f49ad7e8
 //	public void test_handletextcontent2()  throws Exception{
 //		boolean thrown = false;
 //		
@@ -409,7 +320,7 @@ public class ControllerTester {
 	
 	
 	
-*/	
+
 	@Test
 	public void testTextimageSearcher()  throws Exception{
 		boolean thrown = false;
