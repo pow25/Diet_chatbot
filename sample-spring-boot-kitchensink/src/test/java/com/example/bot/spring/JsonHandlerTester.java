@@ -43,6 +43,25 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.client.RestTemplate;
+
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.lang.String;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { JsonHandlerTester.class})
 public class JsonHandlerTester {
@@ -50,6 +69,7 @@ public class JsonHandlerTester {
 	@Test
 	public void jsonurl() throws Exception {
 		boolean thrown = false;
+
 		String url = "http://wwwabd-efcom.000webhostapp.com/data.json";
 		try {
 			JsonHandler jsonhandler = new JsonHandler(url);
@@ -64,4 +84,5 @@ public class JsonHandlerTester {
 		}
 		assertThat(thrown).isEqualTo(false);
 	}
+
 }

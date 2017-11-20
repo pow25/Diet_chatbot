@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.net.*;
+/**
+ * x
+ * @author Group 14
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 	public class Photos{
 		private static final String API_KEY = "AIzaSyAuvyI2NJqZY8SQYLAVSyFhwSldRCgLgf8";
