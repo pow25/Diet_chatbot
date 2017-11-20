@@ -114,6 +114,7 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		String reply = null;
+		List<Message> megs = new ArrayList<Message>();
 		//if userld is not in the database
 //		reply = handleTextContent(replytoken, userId, message.getText());
 		client.loadClient(userId);
@@ -121,11 +122,12 @@ public class KitchenSinkController {
 				int complete_indicator = client.isInfoComplete(userId);
 			
 				if(complete_indicator==0) {  // the user's info is full
-					String input1 = message.getText().toLowerCase();
+					String input1 = message.getText();
 					
 					if (input1 == "hi"){
 							
-						hi_func(replytoken);   
+						megs = hi_func();   
+						this.reply(replytoken, megs);
 						}
 						else{
 							reply = handleTextContent(replytoken, userId, message.getText());
@@ -140,7 +142,7 @@ public class KitchenSinkController {
 		this.replyText(replytoken, reply);
 	}
 
-	public void hi_func(String replytoken) {
+	public List<Message> hi_func() {
 		
 		
 		String replya = null;
@@ -217,7 +219,7 @@ public class KitchenSinkController {
  		megs.add(e);
 
      
- 		this.reply(replytoken, megs);	
+ 		return megs;
 		
 	}
 	
