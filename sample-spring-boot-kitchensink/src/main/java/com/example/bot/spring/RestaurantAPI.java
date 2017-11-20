@@ -49,9 +49,7 @@ public class RestaurantAPI {
     }
 	
 	public String printRestaurant() {
-		String result = respond.printRespond();
-		//result=result.replaceAll("/@", "/@"+String.valueOf(getLatitude())+','+String.valueOf(getLongitude()));
-		return result;
+		return result = respond.printRespond();
 	}
 	
 //	public Respond.Restaurant getRestaurant(int number) {

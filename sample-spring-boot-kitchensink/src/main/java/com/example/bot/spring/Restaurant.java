@@ -66,7 +66,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    		Restaurantinfo += "No detail";
 	    	}
 	    	
-	    	Restaurantinfo += "\nMap: ";
+	    	Restaurantinfo += "\nPhoto: ";
 	    	if (getPhotos()!=null) {
 	    		Restaurantinfo += getPhotos()[0].print();
 	    	}else {
