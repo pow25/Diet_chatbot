@@ -266,15 +266,18 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 		DownloadedContent jpg = saveContent("jpg", response);
+		replyText(replyToken, imagetextSearcher(jpg.getUri()));
+	
+	}
+	
+	public String imagetextSearcher(String jpg_uri) {
+		String results="";
 		OcrApiController OcrApi = new OcrApiController();
-		String imageText = OcrApi.recognize("URL",jpg.getUri());
-		//this.replyText(replyToken, "Recognized message:\n"+imageText);
+		String imageText = OcrApi.recognize("URL",jpg_uri);
 		if (imageText.equals(null)) {
-			replyText(replyToken, "Cannot recognize image, Please try again.");
+			results="Cannot recognize image, Please try again.";
 		}else {
-			
 			try {
-				//this.replyText(replyToken, imageText);
 				String reply = "";
 				String[] parts = imageText.split(" ");
 				for(String s :parts) {
@@ -283,24 +286,21 @@ public class KitchenSinkController {
 					if (s.length()>3) {
 						String result = mymenu.calculateNutrients(s,0.0);
 						if (result != null) {
-							reply += result + "\n\n";
+							reply += result;
+							reply += "\n\n";
 						}
 						if (reply.length()>900) {
 							break;
 						}
 					}
 				}
-				if (reply!=null) {
-					this.replyText(replyToken, reply);
-				}else {
-					this.replyText(replyToken, "Cannot find menu.");
-				}
-				
-				}
-			 catch (Exception e) {
-				this.replyText(replyToken, "Error: "+e.getMessage());
+				results=reply;
+			}catch (Exception e) {
+				results="Error:";
+				results+= e.toString();
 			}
 		}
+		return results;
 	}
 	
 	@EventMapping
