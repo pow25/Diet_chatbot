@@ -114,19 +114,19 @@ public class KitchenSinkController {
 		String replytoken = event.getReplyToken();
 		String userId = event.getSource().getUserId();
 		//if userld is not in the database
-//		handleTextContent(replytoken, event, message.getText());
-		try {
-				int complete_indicator = client.isInfoComplete(userId);
-			
-				if(complete_indicator==0) {  // the user's info is full
-					handleTextContent(replytoken, event, message.getText());
-				}
-				else {
-					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
-				}
-		 } catch (Exception e) {
-			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
-		 	}
+		handleTextContent(replytoken, event, message.getText());
+//		try {
+//				int complete_indicator = client.isInfoComplete(userId);
+//			
+//				if(complete_indicator==0) {  // the user's info is full
+//					handleTextContent(replytoken, event, message.getText());
+//				}
+//				else {
+//					handleTextContent_newuser(replytoken,event,message.getText(),userId,complete_indicator);
+//				}
+//		 } catch (Exception e) {
+//			 	handleTextContent_newuser(replytoken,event,message.getText(),userId,1);
+//		 	}
 	}
 
 	@EventMapping
@@ -267,11 +267,11 @@ public class KitchenSinkController {
 		log.info("Received message(Ignored): {}", event);
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull Message message) {
+	public void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+	public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
 			log.info("Sent messages: {}", apiResponse);
@@ -280,7 +280,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void push(@NonNull String to, @NonNull List<Message> messages) {
+	public void push(@NonNull String to, @NonNull List<Message> messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -289,7 +289,7 @@ public class KitchenSinkController {
 		}
 	}
 	
-	private void pushImage(@NonNull String to, @NonNull Message messages) {
+	public void pushImage(@NonNull String to, @NonNull Message messages) {
 		try {
 			BotApiResponse apiResponse = lineMessagingClient.pushMessage(new PushMessage(to, messages)).get();
 			log.info("Sent pushmessages: {}", apiResponse);
@@ -297,7 +297,7 @@ public class KitchenSinkController {
 			throw new RuntimeException(e);
 		}
 	}
-	private void pushText(@NonNull String to, @NonNull String message) {
+	public void pushText(@NonNull String to, @NonNull String message) {
 		if (to.isEmpty()) {
 			throw new IllegalArgumentException("to must not be empty");
 		}
@@ -309,7 +309,7 @@ public class KitchenSinkController {
 	}
 
 	
-	private void replyText(@NonNull String replyToken, @NonNull String message) {
+	public void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
 		}
@@ -320,7 +320,7 @@ public class KitchenSinkController {
 	}
 
 
-	private void handleSticker(String replyToken, StickerMessageContent content) {
+	public void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 
@@ -333,7 +333,7 @@ public class KitchenSinkController {
         }
     }
 	
-	public static boolean isNumberic(String str)
+	public boolean isNumberic(String str)
 	{
 		for (int i = 0; i < str.length(); i++){
 			if (!Character.isDigit(str.charAt(i))){
@@ -343,7 +343,7 @@ public class KitchenSinkController {
 		return true;
 	}
 	// if the dish is in the database, it will return the string(description), otherwise, it will return null, so that we insert the dish into the database.
-	private String menu_handler(String text, int price,String ingredients) {
+	public String menu_handler(String text, int price,String ingredients) {
 		 String reply = null;
 		 if (insert_mode == null) {
 			 reply = mymenu.calculateNutrients(text,0);
@@ -356,7 +356,7 @@ public class KitchenSinkController {
 
 	}
 	
-	private void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
+	public void handleTextContent_newuser(String replytoken, Event event, String text,String userId,int complete_indicator)
 			throws Exception {
 					String replytext = null;
 					caseCounter=0;
@@ -443,41 +443,20 @@ public class KitchenSinkController {
 		}
 	
 	
-	private void handleTextContent(String replyToken, Event event, String text)
-throws Exception{
+	public void handleTextContent(String replyToken, Event event, String text){
         String userId = event.getSource().getUserId();
         client.loadClient(userId);
         log.info("Got text message from {}: {}", replyToken, text);
         
-        //-----------------------------------------------------------//
-       	try {//it gives error when url is https://
-       		if (text != "https://") {
-       			URL url = new URL(text);
-       			JsonHandler jsonHandler = new JsonHandler(text);
-       			Quote[] quote = jsonHandler.getQuote();
-       			String stackmessage = null;
-       			for(Quote q: quote) {
-       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
-       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
-       				}
-       				else {
-       					if(insert_mode == null) {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
-       					}
-       					else {
-       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
-       					}
-       				}
-       			}
-       			this.replyText(replyToken, stackmessage);
-       			return;
-       		}
-       	}catch(MalformedURLException e) {
-       		log.info("url handle json failed, perhaps not a real url");
-      	}
-        //-----------------------------------------------------------//
 
         switch (text) {
+        	case "json":{
+        		caseCounter =20;
+        		this.replyText(replyToken, "Now, please input the url, if you want to input it again, type json first");
+        		break;
+        	}
+        
+        
             case "profile": {
                 	String reply = null;
                 	double  bmi=client.calculateBMI();
@@ -653,6 +632,11 @@ throws Exception{
                  replya += '\n';
                  replya += '\n';
                  replya += "There are several functions you can use, to use the function, just type the keyword";
+                 replya += '\n';
+                 replya += '\n';
+                 replya += "You can send the location, and we will sugest the best healthy restaurants near you!!";
+                 replya += '\n';
+                 replya += '\n';
                  replya += "Keyword: profile ";
                  replya += '\n';
                  replya += '\n';
@@ -684,13 +668,16 @@ throws Exception{
                  replye = "If you want to search some dish in database, type \"search\" first, at then type the dish name";
                  replye += '\n';
                  replye += '\n';
-                 replye += "In addition, you can simply type the meal image and url as you wish. The chatbot will return you the content";
+                 replye += "In addition, you can simply type the meal image. The chatbot will return you the content";
                  replye += '\n';
                  replye += '\n';
-                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name or url."; 
+                 replye += "However, if you want to insert the dish into the menu, please first input keyword:insert to change to insert mode, then type the dish name."; 
                  replye += '\n';
                  replye += '\n';
                  replye += "If you want to stop insert, type keyword:uninsert";
+                 replye += '\n';
+                 replye += '\n';
+                 replye += "In order to input JSON, please type \"json\" first, then input the link";
             	
              	Message a=  new TextMessage(replya);
              	Message b = new TextMessage(replyb);
@@ -709,9 +696,52 @@ throws Exception{
 
                break;
               }
-
+//            case "test":{
+//            	this.replyText(replyToken,replyToken );
+//            	break;
+//            }
+            
+            
               default:{
               	 	String reply = null;
+              	 	
+              	 	if(caseCounter == 20) {
+              	 		caseCounter = 8;
+              	        //-----------------------------------------------------------//
+              	       	try {//it gives error when url is https://
+              	       		if (text != "https://") {
+              	       			URL url = new URL(text);
+              	       			JsonHandler jsonHandler = new JsonHandler(text);
+              	       			Quote[] quote = jsonHandler.getQuote();
+              	       			String stackmessage = null;
+              	       			for(Quote q: quote) {
+              	       				if (menu_handler(q.getName(), q.getPrice(), q.getIngredients()) != null) {
+              	       					stackmessage = stackmessage + q.printString() + "\n" + "is found in database an have detailed info as below\n" + menu_handler(q.getName(), q.getPrice(), q.getIngredients()) + "\n\n";
+              	       				}
+              	       				else {
+              	       					if(insert_mode == null) {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is not found in database\n\n";
+              	       					}
+              	       					else {
+              	       						stackmessage = stackmessage + q.printString() + "\n" + "is inserted into database\n\n";
+              	       					}
+              	       				}
+              	       			}
+              	       			this.replyText(replyToken, stackmessage);
+              	       			break;
+              	       		}
+              	       	}catch(MalformedURLException e) {
+              	       		
+              	       		reply = "url handle json failed, perhaps not a real url";
+              	       		this.replyText(replyToken, reply);
+              	       		break;
+              	      	}
+              	        //-----------------------------------------------------------//
+              	 		
+              	 		
+              	 	}
+              	 	
+              	 	
               	 	
               	 	if(caseCounter == 11) {    //handle the input 6-digit case
               	 		caseCounter=8;
@@ -816,7 +846,7 @@ throws Exception{
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
 	}
 	
-	private void system(String... args) {
+	public void system(String... args) {
 		ProcessBuilder processBuilder = new ProcessBuilder(args);
 		try {
 			Process start = processBuilder.start();
