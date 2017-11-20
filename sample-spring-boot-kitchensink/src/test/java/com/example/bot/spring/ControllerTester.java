@@ -139,7 +139,6 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest(classes = { ControllerTester.class})
 public class ControllerTester {
 
-	
 //	@Test
 //	public void testhelpfunction1()  throws Exception{
 //		boolean thrown = false;
@@ -262,33 +261,41 @@ public class ControllerTester {
 //			assertThat(thrown).isEqualTo(false);
 //	}	
 
+//	@Test
+//	public void test_coupon()  throws Exception{
+//		boolean thrown = false;
+//		
+//		KitchenSinkController ksc = new KitchenSinkController();
+//			String replytoken = "123";
+//			String userid = "1";
+//			String digit = ksc.handleTextContent(replytoken,userid,"friend");
+//			digit=digit.substring(digit.length()-6);
+//			String result = ksc.handleTextContent(replytoken,userid,"friend");
+//			 result = ksc.handleTextContent(replytoken,userid,"code");
+//			 result = ksc.handleTextContent(replytoken,userid,digit);
+//			 result = ksc.handleTextContent(replytoken,"2","code");
+//			 result = ksc.handleTextContent(replytoken,"2","123456");
+//			 result = ksc.handleTextContent(replytoken,"2","code");
+//			 result = ksc.handleTextContent(replytoken,"2",digit);
+//			 result = ksc.handleTextContent(replytoken,"2","friend");
+//			if(result==null ) {
+//					thrown = true;
+//				}
+//			
+//			assertThat(thrown).isEqualTo(false);
+//	}		
+	
+	
 	@Test
-	public void test_coupon()  throws Exception{
+	public void test_system()  throws Exception{
 		boolean thrown = false;
-		
+
 		KitchenSinkController ksc = new KitchenSinkController();
-			String replytoken = "123";
-			String userid = "1";
-			String digit = ksc.handleTextContent(replytoken,userid,"friend");
-			String result = ksc.handleTextContent(replytoken,userid,"friend");
-			 result = ksc.handleTextContent(replytoken,userid,"code");
-			 result = ksc.handleTextContent(replytoken,userid,digit);
-			 result = ksc.handleTextContent(replytoken,"2","code");
-			 result = ksc.handleTextContent(replytoken,"2","123456");
-			 result = ksc.handleTextContent(replytoken,"2",digit);
-			 result = ksc.handleTextContent(replytoken,"2",digit);
-			 result = ksc.handleTextContent(replytoken,"2","friend");
-			if(result==null ) {
-					thrown = true;
-				}
-			
-			assertThat(thrown).isEqualTo(false);
-	}		
+		KitchenSinkController.DownloadedContent temp;
 	
-	
-	
-	
-	
+		temp = ksc.createTempFile(" ");
+		assertThat(thrown).isEqualTo(false);
+	}	
 	
 //	@Test
 //	public void testreplytext()  throws Exception{

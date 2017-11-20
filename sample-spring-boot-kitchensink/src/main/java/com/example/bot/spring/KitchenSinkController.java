@@ -103,7 +103,7 @@ public class KitchenSinkController {
 
 
 	@Autowired
-	private LineMessagingClient lineMessagingClient;
+	public LineMessagingClient lineMessagingClient;
 
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -873,7 +873,7 @@ public class KitchenSinkController {
 		}
 	}
 
-	private static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
+	public static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
 		log.info("Got content-type: {}", responseBody);
 
 		DownloadedContent tempFile = createTempFile(ext);
@@ -886,7 +886,7 @@ public class KitchenSinkController {
 		}
 	}
 
-	private static DownloadedContent createTempFile(String ext) {
+	public static DownloadedContent createTempFile(String ext) {
 		String fileName = LocalDateTime.now().toString() + '-' + UUID.randomUUID().toString() + '.' + ext;
 		Path tempFile = KitchenSinkApplication.downloadedContentDir.resolve(fileName);
 		tempFile.toFile().deleteOnExit();
