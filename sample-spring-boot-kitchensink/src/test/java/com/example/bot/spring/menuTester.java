@@ -89,4 +89,3 @@ public class menuTester{
 		assertThat(thrown).isEqualTo(false);
 	}
 }
-
